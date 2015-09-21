@@ -50,33 +50,6 @@ covariance is zero.
 \end{enumerate}
 \end{problem}
 
-\begin{enumerate}[label=(\alph*)]
-\item We first proof the fact that $\E(XY) = \E(X)\E(Y)$ if $X,Y$ are independent random variables. We make the assumption that $X,Y$ are continuous.
-\begin{proof}
-Let $f_X(x)$ and $f_Y(y)$ be the PDFs for $X,Y$, respectively, and $f_{X,Y}(x,y)$ the joint PDF. Then using the definition of expectation:
-\begin{align*}
-\E(XY) &= \int \int xyf_{X,Y}(x,y)dxdy \\
-&= \int \int xyf_{X}(x)f_Y(y)dx dy \tag{independence of $X,Y$} \\
-&= \left[\int xf_X(x)dx\right] \left[\int yf_Y(y)dy \right] \tag{properties of integrals}\\
-&=\E(X)\E(Y)
-\end{align*}
-\end{proof}
-A similar proof can be used to show the same fact for discrete variables. Given the above result, it is straighforward to show (a).
-\begin{align*}
-\cov(X,Y) &= \E(XY) - \E(X)E(Y) \\
-&= \E(X)\E(Y) - \E(X)\E(Y) = 0 \tag{by independence of $X,Y$}
-\end{align*}
-(b) We now let $a \in \mathbb{R}$. Then we have:
-\begin{align*}
-\E(X + aY) &= \int \int (x+ay)f_{X,Y}(x,y) dx dy \\
-&= \int \int xf_{X,Y}(x,y) dx dy + a\int \int y f_{X,Y}(x,y) dx dy \tag{linearity of integration} \\
-&= \int \int xf_X(x)f_{Y|X}(y) dx dy + a \int \int yf_{Y}(y)f_{X|Y}(x)dx \tag{definition of joint distribution}\\
-&= \left[\int xf_X(x) dx \right] \left[\int f_{Y|X}(y)dy \right] + a\left[\int yf_Y(y)dy \right]\left[\int f_{X|Y}(x)dx \right] \\
-&= \left[\int xf_X(x) dx \right] + a\left[\int yf_Y(y)dy \right] \tag{integral on entire support is $1$} \\
-&= \E(X) + a\E(Y)
-\end{align*}
-\end{enumerate}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{problem}[Densities]
@@ -90,13 +63,6 @@ Answer the following questions.
 \end{enumerate}
 \end{problem}
 
-\begin{enumerate}[label=(\alph*)]
-\item Yes. The only restriction is that the integral over the support be $1$. See below for an example of such a PDF.
-\item $f_X(x) = \frac{10}{\sqrt{2\pi}}\exp\{-50x^2\}$
-\item $\frac{10}{\sqrt{2\pi}}$
-\item The probability of the event $X = 0$ is almost surely $0$.
-\item The pdf for a continous random variable does not measure the probability of the variable realizing a particular values $x$. Rather, it is the density of the probability distribution, and to obtain the actual probability one must integrate over an interval (more generally, a set of non-zero measure) within the support, typically $(x - \epsilon, x + \epsilon)$ for some $\epsilon > 0$.
-\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -109,20 +75,6 @@ Let $\mu \in \R^m$ and $\Sigma, \Sigma' \in \R^{m \times m}$. Let $X$ be an $m$-
 \end{enumerate}
 \end{problem}
 
-\begin{enumerate}[label=(\alph*)]
-  \item The unconditional distribution of $Y$ is normally distributed with mean $\mu$ and variance $\Sigma + \Sigma'$. We can see this with the following. Consider the random variable $Y - X \mid X \sim \mathcal{N}(0,\Sigma')$. So $Y-X \mid X$ is normally distributed with mean $0$ and covariance matrix $\Sigma'$. This distribution does not depend on $X$, which implies that $Y - X \sim \mathcal{N}(0,\Sigma')$ (this is the unconditional distribution).
-
-  Then $Y$ is simply the sum of $Z \sim \mathcal{N}(0,\Sigma')$ and $X \sim \mathcal{N}(\mu, \Sigma)$. Therefore, $Y \sim \mathcal{N}(\mu, \Sigma' + \Sigma')$.
-  \item For this, we follow closely the results presented in Murphy's Theorem 4.3.1. We have already calculated the two marginal distribution of $X,Y$ (both MVN). Then the joint distribution, according to Theorem 4.3.1, is also a multivariate normal with:
-  \begin{align*}
-    \mu' = (\mu, \mu) \in \mathbb{R}^{m+m} \\
-    \Sigma' =  \left( \begin{array}{cc}
-\Sigma & \Sigma\\
-\Sigma & \Sigma + \Sigma' \end{array} \right)
-  \end{align*}
-  \item Following the statements of the result in Murphy 4.4.1, the conditional distribution of $X \mid Y$ is normally distributed with mean $(\Sigma^{-1} + \Sigma'^{-1})^{-1}(\Sigma^{-1}\mu + \Sigma'^{-1}Y)$ and variance $(\Sigma^{-1} + \Sigma'^{-1})^{-1}$.
-\end{enumerate}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{problem}[I can Ei-gen]
@@ -133,17 +85,6 @@ Let $X \in \R^{n \times m}$.
 \item Suppose $X$ is square, symmetric, and invertible. What are the eigenvalues of $X^{-1}$?
 \end{enumerate}
 \end{problem}
-
-\begin{enumerate}[label=(\alph*)]
-\item  Let $v$ be an eigenvector of $XX^T$ with eigenvalue $\lambda$. Then $X^Tv$ is an eigenvector of $X^TX$ with the same eigenvalue.
-\begin{align*}
-X^TX(X^Tv) &= X^T(XX^T)v \\
-&= X^T(\lambda v) \\
-&= \lambda(X^Tv)
-\end{align*}
-\item If we have a square, symmetric matrix, we know that all of the eigenvalues are real. The eigenvalues of $X+I$ are given by $\lambda_i + 1$ where $\lambda_i$ is an eigenvalue of $X$. This is because $(X+I)v = Xv + Iv = \lambda v + v = (\lambda + 1)v$.
-\item If $\lambda_i$ is an eigenvalue of $X$, then $\frac{1}{\lambda_i}$ is an eigenvalue of $X^{-1}$. This is simple to verify since $XX^{-1}v = v \implies X^{-1}v = \frac{1}{\lambda}v$ because $\frac{1}{\lambda}Xv = \frac{1}{\lambda}{\lambda}v = v$.
-\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -157,12 +98,6 @@ Let $x, y \in \R^m$ and $A \in \R^{m \times m}$. Please answer the following que
 \end{enumerate}
 \end{problem}
 
-\begin{enumerate}[label=(\alph*)]
-\item $y$.
-\item $2x$.
-\item $A + A^T$.
-\item $A$.
-\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -177,7 +112,6 @@ the bug occurs?
 Scrolling through the resulting output is easier and more efficient than using the debugger.
 \item[C)] If you are good at programming your code should not have bugs.
 \end{itemize}
-I use the debugger. It's nice to inspect the environment around where I believe the error has occurred. PDB is my go-to for Python, gdb for C,C++, and whatever the internet recommends for other languages.
 \end{problem}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -201,13 +135,4 @@ def linear_approximation_around_problematic_input(x):
     return ?? # return some expression here
 \end{lstlisting}
 \end{problem}
-
-The function is not numerically stable around the point $x = 0$. The problem is that, mathematically, around $x = 0$ we are attempting to divide by a very small value and approaching the indeterminate form $\frac{0}{0}$.
-
-In order to fix this, we can return the expression:
-\begin{lstlisting}[language=python]
-import numpy as np
-def linear_approximation_around_problematic_input(x):
-    return 2*x*np.cos(x**2)
-\end{lstlisting}
 \end{document}

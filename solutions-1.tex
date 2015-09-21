@@ -1,0 +1,445 @@
+% No 'submit' option for the problems by themselves.
+%\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Luis A. Perez}
+\email{luisperez@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+}
+
+% You don't need to change these.
+\course{CS281-F15}
+\assignment{Assignment \#1}
+\duedate{11:59pm September 23, 2015}
+
+\usepackage{url, enumitem}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{bm}
+
+% Some useful macros.
+\newcommand{\given}{\,|\,}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\text{var}}
+\newcommand{\cov}{\text{cov}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ep}{\varepsilon}
+
+\newcommand{\Dir}{\text{Dirichlet}}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[The Gaussian algebra, 10pts]
+Let $X$ and $Y$ be independent univariate Gaussian random variables. In the previous problem set, you likely used the fact that $X + Y$ is also Gaussian. Here you'll prove this fact.
+
+\begin{enumerate}[label=(\alph*)]
+\item Suppose $X$ and $Y$ have mean 0 and variances $\sigma_X^2$ and $\sigma_Y^2$ respectively. Write the pdf of $X + Y$ as an integral.
+\item Evaluate the integral from the previous part to find a closed-form expression for the pdf of $X+Y$, then argue that this expression implies that $X+Y$ is also Gaussian with mean $0$ and variance $\sigma_X^2 + \sigma_Y^2$. Hint: what is the integral, over the entire real line, of
+\[
+f(x) = \frac{1}{\sqrt{2\pi}s} \exp\left( -\frac{1}{2s^2}(x - m)^2 \right) ,
+\] i.e., the pdf of a univariate Gaussian random variable?
+\item Extend the above result to the case in which $X$ and $Y$ may have arbitrary means.
+\item Univariate Gaussians are supported on the entire real line. Sometimes this is undesirable because we're modeling a quantity with positive support. A common way to transform a Gaussian to solve this problem is to exponentiate it. Suppose $X$ is a univariate Gaussian with mean $\mu$ and variance $\sigma^2$. What is the pdf of $e^X$?
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+\item We have $X \sim \mathcal{N}(0, \sigma_X^2)$ and $Y \sim \mathcal{N}(0, \sigma_Y^2)$. We wish to calculate the PDF of $Z = X + Y$. Note that this PDF of $X,Y$ by considering a value $k$. Suppose $X = k$, then $Z = k + Y \implies Y = Z - k$. We can simply integrate over all such $k$ to obtain the PDF for $Z$. This gives the following integral:
+\begin{align*}
+f_{X+Y}(z) &= \int_{-\infty}^{\infty} f_X(k)f_Y(z-k) dk \tag{by independence}\\
+&= \int_{-\infty}^{\infty} \left(\frac{1}{\sigma_X\sqrt{2\pi}}e^{-\frac{1}{2\sigma_X^2}k^2} \right) \left(\frac{1}{\sigma_Y\sqrt{2\pi}}e^{-\frac{1}{2\sigma_Y^2}(z-k)^2} \right) dk
+\end{align*}
+\item We simply continue the integral evaluation from the previous part. The most relevant step is the decomposition of the exponent, so we focus on that now:
+\begin{align*}
+\frac{k^2}{2\sigma_X^2} + \frac{(z-k)^2}{2\sigma_Y^2} &= \frac{k^2\sigma_Y^2 + (z-k)^2\sigma_X^2}{2\sigma_X^2\sigma_Y^2}\\
+&= \frac{k^2(\sigma_X^2 + \sigma_Y^2)}{2\sigma_X^2\sigma_Y^2} + \frac{(z^2-2zk)(\sigma_X^2 + \sigma_Y^2)\sigma_X^2}{2\sigma_X^2\sigma_Y^2(\sigma_X^2 + \sigma_Y^2)} \\
+&=\frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)} + \frac{z^2\sigma_X^4 - k[2z\sigma_X^2(\sigma_X^2 + \sigma_Y^2)]}{2\sigma_X^2\sigma_Y^2(\sigma_X^2 + \sigma_Y^2)} + \frac{k^2(\sigma_X^2 + \sigma_Y^2)}{2\sigma_X^2\sigma_Y^2} \\
+&= \frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)} + \frac{\left(\frac{z^2\sigma_X^4}{\sigma_X^2 + \sigma_Y^2} \right) - k\left(2z\sigma_X^2 \right) + k^2(\sigma_X^2 + \sigma_Y^2)}{2\sigma_X^2\sigma_Y^2} \\
+&= \frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)} + \frac{(\sigma_X^2 + \sigma_Y^2)\left[ \left(\frac{z\sigma_X^2}{\sigma_X^2 + \sigma_Y^2}\right)^2 - k \left(\frac{2z\sigma_X^2}{\sigma_X^2 + \sigma_Y^2} \right) + k^2 \right]}{2\sigma_X^2\sigma_Y^2} \\
+&= \frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)} + \frac{\left[k - \left(\frac{z\sigma_X^2}{\sigma_X^2 + \sigma_Y^2} \right)\right]^2}{2\left(\frac{\sigma_X^2\sigma_Y^2}{\sigma_X^2 + \sigma_Y^2} \right)}
+\end{align*}
+With the above decompositions, we rewrite the PDF as:
+\begin{align*}
+f_{X+Y}(z) &= \int_{-\infty}^{\infty} \left[\frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)}}\right]\left[\frac{1}{\sigma_X\sigma_Y\sqrt{2\pi}}e^{-\frac{\left[k - \left(\frac{z\sigma_X^2}{\sigma_X^2 + \sigma_Y^2} \right) \right]}{2\left(\frac{\sigma_X^2\sigma_Y^2}{\sigma_X^2 + \sigma_Y^2} \right)}} \right] dk \\
+&= \left[\frac{1}{\sqrt{\sigma_X^2 + \sigma_Y^2}\sqrt{2\pi}}e^{-\frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)}}\right] \int_{-\infty}^{\infty} \left[\frac{\sqrt{\sigma_X^2 + \sigma_Y^2}}{\sigma_X\sigma_Y\sqrt{2\pi}}e^{-\frac{\left[k - \left(\frac{z\sigma_X^2}{\sigma_X^2 + \sigma_Y^2} \right) \right]}{2\left(\frac{\sigma_X^2\sigma_Y^2}{\sigma_X^2 + \sigma_Y^2} \right)}} \right] dk \tag{multiply by $\frac{\sqrt{\sigma_X^2 + \sigma_Y^2}}{\sqrt{\sigma_X^2 + \sigma_Y^2}}$ and factor constants} \\
+&= \frac{1}{\sqrt{2\pi(\sigma_X^2 + \sigma_Y^2)}}e^{-\frac{z^2}{2(\sigma_X^2 + \sigma_Y^2)}}
+\end{align*}
+Where in the last simplification we used the fact that an integral over the entire real line of the pdf of a univariate Gaussian random variable is $1$, because it answers the questions ``What's the probability that the random variable will be a value within the interval $(-\infty, \infty)$?''. The answer to this question is immediately and obviously $1$.
+
+Therefore, we note that the final form of $f_{X+Y}$ is simply that of a PDF of a random gaussian variable with mean zero and variance $\sigma_X^2 + \sigma_Y^2$. So $X + Y \sim N(0,\sigma_X^2 + \sigma_Y^2)$.
+\item In the case where we have arbitrary means $\mu_X$ and $\mu_Y$, note that we can rewriter $X = Z_X + \mu_X$ and $Y = Z_Y + \mu_Y$ where $Z_X \sim \mathcal{N}(0,\sigma_X^2)$ and $Z_Y \sim \mathcal{N}(0,\sigma_Y^2)$. We can do this because if we look at the PDF of $X$ (or $Y$), it's simply the shifted PDF of $Z_X$ (or $Z_Y)$, so these two representations are equivalent. In more detail, we prove the equivalent of $X$ and $Z_X + \mu_X$ (the proof is similar for $Y$ and $Z_Y + \mu_X$). First, note that $Z_X + \mu_X = x$ if and only if $Z_X = x - \mu_X$.
+\begin{align*}
+f_X(x) &= \frac{1}{\sigma_X\sqrt{2\pi}}e^{-\frac{(x-\mu_X)^2}{2\sigma_X^2}} \tag{by definition of univariate Gaussian pdf} \\
+f_{Z_X + \mu_X}(x) &= f_{Z_X}(x - \mu_X) = \frac{1}{\sigma_X\sqrt{2\pi}}e^{-\frac{(x-\mu_X)^2}{2\sigma_X^2}}
+\end{align*}
+The two PDFs are equivalent, so the r.v.s are equivalent.
+
+Therefore, if we now consider $Z = X+Y = Z_X + Z_Y + \mu_X + \mu_Y$,  we have that the PDF of $X + Y$ is given by:
+\begin{align*}
+f_{X+Y}(z) &= f_{Z_X + Z_Y}(z - \mu_X - \mu_Y) \\
+&= \frac{1}{\sqrt{2\pi(\sigma_X^2 + \sigma_Y^2)}}e^{-\frac{(z-\mu_X-\mu_Y)^2}{2(\sigma_X^2 + \sigma_Y^2)}}
+\end{align*}
+Intuitively, the event $X + Y = k$ for some $k \in \mathbb{R}$ occurs if and only if $Z_X + Z_Y = k - \mu_X -\mu_Y$ because the means are known.
+\item We have $X \sim \mathcal{N}(\mu, \sigma)$ and $Y = e^X$. Then using the change of variables formula we can calculate the PDF of $Y$ as:
+\begin{align*}
+f_{Y}(y) &= f_X(\ln y) \left|\frac{dx}{dy}\right| \\
+&= \frac{1}{2\sigma_X^2}e^{-\frac{(\ln y - \mu)^2}{2\sigma_X^2}} \left|\frac{1}{y} \right| \\
+&= \frac{1}{2y\sigma^2}e^{\frac{(\ln y - \mu)^2}{2\sigma^2}} \tag{restrict support to $y > 0$}
+\end{align*}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[Regression, 13pts]
+Suppose that $X \in \R^{n \times m}$ with $n \geq m$ and $Y \in \R^n$, and that $Y \sim \N(X\beta, \sigma^2 I)$. You learned in class that the maximum likelihood estimate $\hat\beta$ of $\beta$ is given by
+\[
+\hat\beta = (X^TX)^{-1}X^TY
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Why do we need to assume that $n \geq m$?
+\item Define $H = X(X^TX)^{-1}X^T$, so that the ``fitted" values $\hat Y = X\hat{\beta}$ satisfy $\hat Y = HY$. Show that $H$ is an orthogonal projection matrix that projects onto the column space of $X$, so that the fitted y-values are a projection of $Y$ onto the column space of $X$.
+\item What are the expectation and covariance matrix of $\hat\beta$?
+\item Compute the gradient with respect to $\beta$ of the log likelihood implied by the model above, assuming we have observed $Y$ and $X$.
+\item Suppose we place a normal prior on $\beta$. That is, we assume that $\beta \sim \N(0, \tau^2 I)$. Show that the MAP estimate of $\beta$ given $Y$ in this context is
+\[
+\hat \beta_{MAP} = (X^TX + \lambda I)^{-1}X^T Y
+\]
+where $\lambda = \sigma^2 / \tau^2$. (You may employ standard conjugacy results about Gaussians without proof in your solution.)
+
+Estimating $\beta$ in this way is called {\em ridge regression} because the matrix $\lambda I$ looks like a ``ridge". Ridge regression is a common form of {\em regularization} that is used to avoid the overfitting (resp. underdetermination) that happens when the sample size is close to (resp. higher than) the output dimension in linear regression.
+\item Do we need $n \geq m$ to do ridge regression? Why or why not?
+\item Show that ridge regression is equivalent to adding $m$ additional rows to $X$ where the $j$-th additional row has its $j$-th entry equal to $\sqrt{\lambda}$ and all other entries equal to zero, adding $m$ corresponding additional entries to $Y$ that are all 0, and and then computing the maximum likelihood estimate of $\beta$ using the modified $X$ and $Y$.
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+\item In machine learning parlance, if $n < m$, then we have more features than data points, the MLE of our model is ill-defined because we can't regress on it (in concrete terms, it's like trying to find the best degree $m$ polynomials when we're only given $n+1$ points -- there's an infinite number of such polynomials). In terms of linear algebra, in the case where $m > n$, we're attempting to find the projection of $Y$ closest to $Y$ from a superspace of $\mathbb{R}^m$, which could potentially have an infinite number of solutions. Another way to think about this is that with $n < m$, the matrix $X^TX$ (which is an $m \times m$) matrix, is not invertible.
+\item We show this is a orthogonal projections by showing two things. One, that images of $H$ remains unchanged after a second application of $H$ (so elements in the image that are already projected project to themselves) and elements orthogonal to the image are killed.
+
+We begin by showing $\hat{Y} \in \text{im } H$ remains unchanged by $H$.
+\begin{align*}
+H\hat{Y} &= HHY \\
+&= [X(X^TX)^{-1}X^T][X(X^TX)^{-1}X^T]Y \\
+&= [X(X^TX)^{-1}](X^T)X(X^TX)^{-1}X^TY \\
+&= [X(X^TX)^{-1}X^T]Y \\
+&= \hat{Y}
+\end{align*}
+Next, we show that any vector in the perpendicular space is killed by $H$. Take a vector $Y - \hat{Y} \in (\text{im } H)^{\bot}$
+\begin{align*}
+H(Y - \hat{Y}) &= HY - H\hat{Y} \\
+&= \hat{Y} - \hat{Y}\\
+&= 0
+\end{align*}
+From the above, we see that $H$ is an orthogonal projection. Lastly, we can clearly see that it is a projection onto the column space of $X$ since $\text{im } H \subset \text{im } X$. We can show this more rigorously by noting the following:
+\begin{align*}
+\hat{\beta} &= (X^TX)^{-1}XY \\
+\implies X^T\hat{\beta} &= X^YY \\
+\implies X^T(Y - X\hat{\beta}) &= 0
+\end{align*}
+The last statement is simple stating that each column of $X$ is perpendicular to $Y - X\hat{\beta}$. Then this implies that $X\hat{\beta}$ is the orthogonal projection onto the column space of $X$. Writing out fully, we have $X\hat{\beta} = [X(X^TX)^{-1}X^T]Y = HY$, so $H$ is the same resulting transformation, which means it must be an orthogonal projection onto the columns space of $X$ of $Y$.
+\item We can calculate these directly.
+\begin{align*}
+\E(\hat{\beta}) &= \E[(X^TX)^{-1}X^TY] \\
+&= (X^TX)^{-1}X^T\E[Y] \\
+&= (X^TX)^{-1}X^TX\beta \\
+&= \beta \\
+\var({\hat{\beta}}) &= \var[(X^TX)^{-1}XY] \\
+ &= \sigma(X^TX)^{-1}X^T[(X^TX)^{-1}X^T]^T \\
+ &= \sigma(X^TX)^{-1}X^TX(X^TX)^{-T} \\
+ &= \sigma(X^TX)^{-1}
+\end{align*}
+\item The log likelihood implied by the model is:
+\begin{align*}
+\mathcal{L}(\beta) &= \log p(Y \given X, \beta) \\
+&= \log \left(\frac{|\sigma^2 I|^{-1}}{2\pi}\right)^{\frac{n}{2}} \exp \left\{-\frac{1}{2} (Y - X\beta)^T(\sigma^2 I)^{-1}(Y-X\beta) \right\} \\
+&= \log \left(\frac{1}{2\pi\sigma^2}\right)^{\frac{n}{2}} - \frac{1}{2\sigma^2}(Y-X\beta)^T(Y -X\beta) \\
+&= n \log \frac{1}{\sigma\sqrt{2\pi}} - \frac{1}{2\sigma^2}(Y- X\beta)^T(Y - X\beta)
+\end{align*}
+Setting the above to $0$, we can solve for $\beta$ gives the known result from above.
+
+\item There is no need to use standard conjugacy results. By Bayes' Rule:
+\begin{align*}
+p(\beta \given Y,X) &\propto p(Y \given \beta,X) p(\beta \given X) \\
+\end{align*}
+We ignore the normalization constant and instead take the log to help maximize the function.
+\begin{align*}
+\log p(Y \given \beta, X)p(\beta, X) &= \log p(Y \given \beta, X) + \log p(\beta \given X) \\
+&= C_0 - \frac{1}{2\sigma^2}(Y - X\beta)^T(Y - X\beta) + C_2 + \frac{1}{2\tau^2}\beta^T\beta
+\end{align*}
+We collect constants into the $C_i$ because we'll be maximizing this function, which means terms not containing $\beta$ will disappear and constant scalar factors won't matter. We now do this, and set equal to $0$:
+\begin{align*}
+\frac{d}{d\beta} p(Y \given \beta,X)p(\beta \given X) &= -\frac{1}{\sigma^2}X^T(Y - X\beta) + \frac{1}{\tau^2}\beta = 0\\
+&\implies \frac{1}{\sigma^2}(X^TX + \frac{\sigma^2}{\tau^2}I)\beta = \frac{1}{\sigma^2}X^TY \\
+&\implies \beta = (X^TX + \frac{\sigma^2}{\tau^2}I)^{-1}X^TY
+\end{align*}
+This is the desired result, letting $\lambda = \frac{\sigma^2}{\tau^2}$.
+
+\item It is not required that $n \geq m$ (though preferred). With ridge regression, the matrix $(X^TX + \lambda I)$ is always invertible (note that $X^TX_{ii} \geq 0$ which implies the sum with the identity has full rank).
+\item We define $X' \in \mathbb{R}^{n+m}$ and $Y' \in \mathbb{R}^{n+m}$ as described in the problem (for simplicity, assume rows are appended at the bottom). Then plugging this into the formula found in $(a)$ we have $\beta' \in \mathbb{R}^m$:
+\begin{align*}
+\beta' &= (X'^TX')^{-1}X'^TY' \\
+&= (X'X'^T)^{-1}X^TY
+\end{align*}
+Then note that $X'^TY' \in \mathbb{R}^m$ and is exactly equal to $X^TY \in \mathbb{R}^m$ because in each row of $X^T$, the final $k$ entries for $k > n$  are killed by the final $k$ entries of $Y'$ (since they are all $0$).
+
+Similarly, note that $X'^T X' \in \mathbb{R}^{m \times m}$ is equivalent to $X^TX + \lambda I_m$. Taking a look at each of the diagonal entries of $X'^TX'$, where we let $x'_i$ be the $i$-th column of $X'$ and $x_i$ the $i$-th column of $X$, we have:
+\begin{align*}
+(X'^TX')_{ii} &= x'_i^Tx'_i \\
+&= x_i^Tx_i + \sqrt{\lambda}\sqrt{\lambda} \tag{first $n$ entries match, and others are killed except for the one with $\sqrt{\lambda}$} \\
+(X'^TX')_{i\neq j} &= x'_i^Tx'_i \\
+&= x_i^Tx_i \tag{first $n$ match, and the others are killed}
+\end{align*}
+From the above, we can rewrite our original MLE as:
+\begin{align*}
+\beta' &= (X^TX + \lambda I)^{-1}X^TY
+\end{align*}
+which is our MAP estimate using a Gaussian prior.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}[The Dirichlet and multinomial distributions, 12pts]
+The Dirichlet distribution over $K$ categories is a generalization of the beta distribution. It has a shape parameter $a \in \R^K$ with non-negative entries and is supported over the set of $K$-dimensional positive vectors whose components sum to 1. Its density is given by
+\[
+f(x | a) = \frac{\Gamma\left( \sum_{k=1}^K a_k \right)}{\Pi_{k=1}^K \Gamma(a_k)} \Pi_{k=1}^K x_k^{a_k - 1}
+\]
+(Notice that when $K=2$, this reduces to the density of a beta distribution since in that case $a_2 = 1 - a_1$.) For the rest of this problem, assume a fixed $K \geq 2$.
+\begin{enumerate}[label=(\alph*)]
+\item Suppose $X$ is Dirichlet-distributed with shape parameter $a$. Without proof, state the value of $E(X)$. Your answer should be a vector defined in terms of either $a$ or $K$ or potentially both.
+\item Suppose that $\theta \sim \text{Dirichlet}(a)$ and that $X \sim \text{Categorical}(\theta)$. That is, suppose we first sample a $K$-dimensional vector $\theta$ with entries in $(0,1)$ from a Dirichlet distribution and then roll a $K$-sided die such that the probability of rolling the number $k$ is $\theta_k$. Prove that $\theta | X$ also follows a Dirichlet distribution. What is its shape parameter?
+\item Now suppose that $\theta \sim \text{Dirichlet}(a)$ and that $X_1, X_2, \ldots \stackrel{iid}{\sim} \text{Categorical}(\theta)$. Show that
+\[
+P(X_n = k | X_1, \ldots, X_{n-1}) = \frac{a_{k,n}}{\sum_{k=1}^K a_{k,n}}
+\]
+where $a_{k,n} = a_k + \sum_{i=1}^{n-1} \mathbb{1}\{X_i = k\}$. (Bonus points if your solution does not involve any integrals.)
+\item Argue that the random variable $\lim_{n \rightarrow \infty} \frac{1}{n}\sum_{i=1}^n \mathbb{1}\{X_i = k\}$ is marginally beta-distributed. What is its shape parameter? If you're not sure how to rigorously talk about convergence of random variables, give an informal argument. Hint: what would you say if $\theta$ were fixed?
+\item Suppose we have $K$ distinct colors and an urn with $a_k$ balls of color $k$. At each time step, we choose a ball uniformly at random from the urn and then add into the urn an additional new ball of the same color as the chosen ball. (So if at the first time step we choose a ball of color 1, we'll end up with $a_1+1$ balls of color 1 and $a_k$ balls of color $k$ for all $k > 1$ at the start of the second time step.) Let $\rho_{k,n}$ be the fraction of all the balls that are of color $k$ at time $n$. What is the distribution of $\lim_{n \rightarrow \infty} \rho_k^n$? Prove your answer.
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+\item From the intuition behind the beta distribution of it being a pseudo count, it's reasonable to assume that $E(X) \in \mathbb{R}^k$ is given by:
+\begin{align*}
+E(X)_i &= \frac{a_i}{\sum_{a_k}^K a_k}
+\end{align*}
+\item Using Bayes' Theorem, we can calculate the distribution of $\theta \given X$ where $\theta \sim \text{Dirichlet}(a)$ and $X \sim \text{Categorical}(\theta)$. We assume that $X \in \{0,1\}^k$ is a one-hot encoding of the result of rolling the die (ie, $X_k = 1$ if the die roll was $k$, $0$ otherwise).
+\begin{align*}
+p(\theta \given X) &\propto p(X \given \theta)p(\theta) \\
+&\propto \prod_{k=1}^K \theta_k^{x_k} \prod_{k=1}^K \theta_k^{a_k-1} \\
+&= \prod_{k=1}^K \theta_k^{a_k + x_k - 1}
+\end{align*}
+The above is simply another Dirichlet distribution, so we immediately have $\theta \given X \sim \text{Dirichlet($a + X$)}$ where we keep in mind that $X$ is a one-hot encoding of the die roll (so the shape parameter is now $a + X$). This gives the full PDF as :
+\begin{align*}
+p(\theta \given X) &= \frac{\Gamma(\sum_{k=1}^K{a_k+x_k})}{\prod_{k=1}^K \Gamma(a_k + x_k)}\prod_{k=1}^K \theta_k^{a_k + x_k - 1}
+\end{align*}
+Intuitively, the above makes sense as the Dirichlet is a psedu-count and we have seen one more observation.
+\item Intuitively, we can arrive at this result if we think of the Dirichlet distribution as a pseudo count. Given $a$, and after seeing $X_1,X_2, \cdots, X_{n-1}$, the probability that $X_n = k$ is simply given by the total pseudo count of $k$ divided by the total pseudo-count.
+\begin{align*}
+p(X_n \given X_1, \cdots X_{n-1}, a) &= \frac{a_k + \sum_{i=1}^{n-1}\mathbb{1}\{X_i = k\}}{(n-1) + \sum_{k=1}^K a_K} \\
+&= \frac{a_{k,n}}{\sum_{k=1}^K a_{k,n}}
+\end{align*}
+More formally, we can integrate the values (for succinctness, we degine $c(a)$ as the normalizing constant of a Dirichlet distribution with shape $a$) and we image that $X)i \in \{0,1\}^K$ is one-hot encoded as we did in the previous part, with $X_{i,k}$ as the $k$-th element of $X_i$:
+\begin{align*}
+p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots, X_{n-1}, a)  d\theta \\
+&= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\thata} \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^{n-1}X_i)} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots X_{n-1}, a) d\theta \tag{multiply by $\frac{c(a')}{c(a')}$} \\
+&= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\theta} \text{Dirichlet}_{\theta}(a + \sum_{i=1}^n X_i) d\theta \tag{conjugacy results}\\
+&= \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^n X_i)} \tag{integral over entire space} \\
+&= \frac{\Gamma(n - 1 + \sum_{k=1}^{K}{a_k})\prod_{k=1}^K \Gamma(a_k + \sum_{i=1}^n X_{i,k})}{\Gamma(n + \sum_{k=1}^K a_k)\prod_{k=1}^K \Gamma(a_k + \sum_{i=1}^{n-1}X_{i,k})} \\
+&= \frac{a_k + \sum_{i=1}^{n-1}X_{i,k}}{n - 1 + \sum_{k=1}^K a_k}\\
+&= \frac{a_{k,n}}{\sum_{k=1}^K a_{k,n}}
+\end{align*}
+\item Following the hint, we first consider the scenario where $\theta$ is fixed. In this case, we have:
+\begin{align*}
+\frac{1}{n} \sum_{i=1}^n \mathbb{1} \{X_i = k\} &= \frac{1}{n}n\theta_k = \theta_k
+\end{align*}
+Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the overage number of times $X_i = k$ is we repeat the roll of the die $n$ times. Even if $\thata_k$ is not fixed, give our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\theta_k$ by the law of large numbers.
+
+Intuitively, the r.v measuring the probability that we roll $k$ after $n$ rolls with $n$ extremely large should be beta distributed with shape parameter $\thata_k$, our prior belief on the probability that we roll $k$.
+
+\item Generalizing the argument from the part above, the random variable is again the measure of the probability that we select a ball of color $k$ after having added $n$ balls for $n$ large. Note that the effect of adding a new ball decreases as $n$ increases, so the above certainly appears to converge. The probability that we draw a color $k$ ball is therefore distributed $\text{Dirichlet}(a)$ where $a$ is the vector of $a_k$'s as $n \to \infty.$
+
+For a formal proof, we want to show that the sequence $\rho_{k,n}$ converges to $\rho \sim \text{Dirichlet}(a_1,a_2,\cdots,a_k)$:
+\begin{align*}
+\lim_{n \to \infty} p(|\rho_{k,n} - \rho_k)|) \geq \epsilon) &= \lim_{n \to \infty} p\left(\frac{a_k + \sum_}{n + \sum_{k=1}^K a_k} - \frac{a_k}{\sum_{k=1}^K a_k} \right)
+\end{align*}
+
+Suppose we have $K$ distinct colors and an urn with $a_k$ balls of color $k$. At each time step, we choose a ball uniformly at random from the urn and then add into the urn an additional new ball of the same color as the chosen ball. (So if at the first time step we choose a ball of color 1, we'll end up with $a_1+1$ balls of color 1 and $a_k$ balls of color $k$ for all $k > 1$ at the start of the second time step.) Let $\rho_{k,n}$ be the fraction of all the balls that are of color $k$ at time $n$. What is the distribution of $\lim_{n \rightarrow \infty} \rho_k^n$? Prove your answer.
+\end{enumerate}
+
+\section*{Physicochemical Properties of Protein Tertiary Structure}
+
+In the following problems we will code two different approaches for
+solving linear regression problems and compare how they scale as a function of
+the dimensionality of the data.  We will also investigate the effects of
+linear and non-linear features in the predictions made by linear models.
+
+We will be working with the regression data set Protein
+Tertiary Structure:
+\url{https://archive.ics.uci.edu/ml/machine-learning-databases/00265/CASP.csv}.
+This data set contains information about predicted conformations for 45730
+proteins. In the data, the target variable $y$ is the root-mean-square
+deviation (RMSD) of the predicted conformations with respect to the true properly
+folded form of the protein. The RMSD is the measure of the average distance
+between the atoms (usually the backbone atoms) of superimposed proteins.
+The features $\mathbf{x}$ are
+physico-chemical properties of the proteins in their true folded form. After
+downloading the file CASP.csv we can load the data into python using
+\begin{verbatim}
+>>> import numpy as np
+>>> data = np.loadtxt('CASP.csv', delimiter = ',', skiprows = 1)
+\end{verbatim}
+We can then obtain the vector of target variables and the feature matrix using
+\begin{verbatim}
+>>> y = data[ : , 0 ]
+>>> X = data[ : , 1 : ]
+\end{verbatim}
+We can then split the original data into a training set with 90\% of the data
+entries in the file CASP.csv and a test set with the remaining 10\% of the
+entries. Normally, the spliting of the data is done at random, but here {\bf we ask
+you to put into the training set the first 90\% of the elements from the
+file CASP.csv} so that we can verify that the values that you will be reporting are correct.
+(This should not cause problems, because the rows of the file are in a random order.)
+The following python function splits the data as requested:
+\begin{verbatim}
+def split_train_test(X, y, fraction_train = 9.0 / 10.0):
+    end_train = round(X.shape[ 0 ] * fraction_train)
+    X_train = X[ 0 : end_train, ]
+    y_train = y[ 0 : end_train ]
+    X_test = X[ end_train :, ]
+    y_test = y[ end_train : ]
+    return X_train, y_train, X_test, y_test
+\end{verbatim}
+We can then normalize the features so that they have zero mean and unit deviation
+in the training set. This is a standard step before the application of many machine
+learning methods. We can use the following python function to perform this operation:
+\begin{verbatim}
+def normalize_features(X_train, X_test):
+    mean_X_train = np.mean(X_train, 0)
+    std_X_train = np.std(X_train, 0)
+    std_X_train[ std_X_train == 0 ] = 1
+    X_train_normalized = (X_train - mean_X_train) / std_X_train
+    X_test_normalized = (X_test - mean_X_train) / std_X_train
+    return X_train_normalized, X_test_normalized
+\end{verbatim}
+After these steps are done, we can concatenate a bias feature (one feature which
+always takes value 1) to the observations in the normalized training and test sets:
+\begin{verbatim}
+>>> X_train, y_train, X_test, y_test = split_train_test(X, y)
+>>> X_train, X_test = normalize_features(X_train, X_test)
+>>> X_train = np.concatenate((X_train, np.ones((X_train.shape[ 0 ], 1))), 1)
+>>> X_test = np.concatenate((X_test, np.ones((X_test.shape[ 0 ], 1))), 1)
+\end{verbatim}
+We are now ready to apply our machine learning methods to the normalized training set and
+evaluate their performance on the normalized test set.
+In the following problems, you will be asked to report some numbers and produce
+some figures. Include these numbers and figures in your assignment report.
+{\bf The numbers should be reported with up to 8 decimals}.
+
+
+
+%Notation consistent with prob 2?
+\begin{problem}[7pts]\label{prob:analytic_linear_model}
+Assume that the targets $y$ are obtained as a function of the normalized
+features $\mathbf{x}$ according to a Bayesian linear model with additive Gaussian noise with variance
+$\sigma^2 = 1.0$ and a Gaussian prior on the regression coefficients $\mathbf{w}$
+with precision matrix $\tau^{-2}\mathbf{I}$ where $\tau^{-2} = 10$. Code a routine that finds the Maximum a
+Posteriori (MAP) value $\hat{\mathbf{w}}$ for $\mathbf{w}$ given the normalized
+training data using the QR decomposition (see Section 7.5.2 in Murphy's book).
+\begin{itemize}
+\item Report the value of $\hat{\mathbf{w}}$ obtained.
+\item Report the root mean squared error (RMSE) of $\hat{\mathbf{w}}$ in the normalized test set.
+\end{itemize}
+\end{problem}
+
+\begin{problem}[14pts]\label{prob:numerical_linear_model}
+Write code that evaluates the log-posterior probability (up to an
+additive constant) of $\mathbf{w}$ according to the previous Bayesian linear model and the normalized training data.
+Write also code that evaluates the gradient of the log-posterior probability with respect to
+$\mathbf{w}$. Merge the two pieces of code into a
+function called \emph{obj\_and\_gradient} that, for a value of $\mathbf{w}$,
+returns the log-posterior probability value and the corresponding gradient.
+Verify that the gradient computation is correct using the approximation
+\begin{align}
+\frac{df(x)}{dx} \approx \frac{f(x + \epsilon) - f(x - \epsilon)}{2\epsilon}\,.
+\end{align}
+Write then a function that uses "obj\_and\_gradient" to find the MAP solution $\hat{\mathbf{w}}$ for
+$\mathbf{w}$ by running 100 iterations of the L-BFGS numerical optimization
+method with $\mathbf{0}$ as the initial point for the optimization.
+
+The L-BFGS method is an iterative method for solving nonlinear optimization problems.
+You will learn more about numerical optimization and about this method in one of the sections of this course. However,
+for this problem you can use the method as a black box that returns the MAP solution
+by sequentially evaluating the objective function and its gradient for different input values.
+In python, a variant of the L-BFGS method called L-BFGS-B is implemented in scipy.optimize.minimize.
+Since scipy.optimize.minimize only minimizes, you can work with the negative
+log-posterior probability to transform the maximization problem into a minimization one.
+
+\begin{itemize}
+\item Report the value of $\hat{\mathbf{w}}$ obtained.
+\item Report the RMSE of the predictions made with $\hat{\mathbf{w}}$ in the normalized test set.
+\end{itemize}
+\end{problem}
+
+Linear regression can be extended to model non-linear relationships by
+replacing the original features $\mathbf{x}$ with some non-linear functions of
+the original features $\bm \phi(\mathbf{x})$. We can automatically generate one
+such non-linear function by sampling a random weight vector $\mathbf{a}
+\sim \N(0,\mathbf{I})$ and a corresponding random bias $b \sim
+\text{U}[0, 2\pi]$ and then making $\phi(\mathbf{x}) = \cos(\mathbf{a}^\text{T}
+\mathbf{x} + b)$.  By repeating this process $d$ times we can generate $d$
+non-linear functions that, when applied to the original features, produce a
+non-linear mapping of the data into a new $d$ dimensional space.
+We can encode these $d$ functions into a matrix $\mathbf{A}$ with $d$ rows, each one
+with the weights for each function, and a $d$-dimensional vector $\mathbf{b}$
+with the biases for each function. The new mapped fetures are then obtained as
+$\bm \phi (\mathbf{x}) = \cos(\mathbf{A} \mathbf{x} + \mathbf{b})$, where
+$\cos$ applied to a vector returns another vector whose elements are the result
+of applying $\cos$ to the individual elements of the original vector.
+
+\begin{problem}[14pts]\label{prob:non_linear_model}
+Generate 4 sets of non-linear functions, each one with $d=100, 200, 400, 600$ functions, respectively, and use
+them to map the features in the original normalized training and test sets into
+4 new feature spaces, each one of dimensionality given by the value of $d$. After this, for each
+value of $d$, find the MAP solution $\hat{\mathbf{w}}$ for $\mathbf{w}$ using the
+corresponding new training set and the method from problem
+4. Use the same values for $\sigma^2$ and $\tau^{-2}$ as before.
+You are also asked to
+record the time taken by the method QR to obtain a value for $\hat{\mathbf{w}}$.
+In python  you can compute the time taken by a routine using the time package:
+\begin{verbatim}
+>>> import time
+>>> time_start = time.time()
+>>> routine_to_call()
+>>> running_time = time.time() - time_start
+\end{verbatim}
+Next, compute the RMSE of the resulting predictor in the normalized test
+set. Repeat this process with the method from problem
+\ref{prob:numerical_linear_model} (L-BFGS).
+
+\begin{itemize}
+\item Report the test RMSE obtained by each method for each value of $d$.
+\end{itemize}
+
+You are asked to generate a plot
+with the results obtained by each method (QR and L-BFGS)
+for each value of $d$. In this plot
+the $x$ axis should represent the time taken by each method to
+run and the $y$ axis should be the RMSE of the resulting predictor in the
+normalized test set. The plot should
+contain 4 points in red, representing the results obtained by the method QR for
+each value of $d$, and 4 points in blue, representing the results obtained
+by the method L-BFGS for each value of $d$. Answer the following questions:
+\begin{itemize}
+\item Do the non-linear transformations help to reduce the prediction error? Why?
+\item What method (QR or L-BFGS) is faster? Why?
+\end{itemize}
+\end{problem}
+
+\end{document}
