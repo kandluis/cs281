@@ -78,7 +78,7 @@ f_{X+Y}(z) &= \int_{-\infty}^{\infty} \left[\frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{
 Where in the last simplification we used the fact that an integral over the entire real line of the pdf of a univariate Gaussian random variable is $1$, because it answers the questions ``What's the probability that the random variable will be a value within the interval $(-\infty, \infty)$?''. The answer to this question is immediately and obviously $1$.
 
 Therefore, we note that the final form of $f_{X+Y}$ is simply that of a PDF of a random gaussian variable with mean zero and variance $\sigma_X^2 + \sigma_Y^2$. So $X + Y \sim N(0,\sigma_X^2 + \sigma_Y^2)$.
-\item In the case where we have arbitrary means $\mu_X$ and $\mu_Y$, note that we can rewriter $X = Z_X + \mu_X$ and $Y = Z_Y + \mu_Y$ where $Z_X \sim \mathcal{N}(0,\sigma_X^2)$ and $Z_Y \sim \mathcal{N}(0,\sigma_Y^2)$. We can do this because if we look at the PDF of $X$ (or $Y$), it's simply the shifted PDF of $Z_X$ (or $Z_Y)$, so these two representations are equivalent. In more detail, we prove the equivalent of $X$ and $Z_X + \mu_X$ (the proof is similar for $Y$ and $Z_Y + \mu_X$). First, note that $Z_X + \mu_X = x$ if and only if $Z_X = x - \mu_X$.
+\item In the case where we have arbitrary means $\mu_X$ and $\mu_Y$, note that we can rewriter $X = Z_X + \mu_X$ and $Y = Z_Y + \mu_Y$ where $Z_X \sim \mathcal{N}(0,\sigma_X^2)$ and $Z_Y \sim \mathcal{N}(0,\sigma_Y^2)$. We can do this because if we look at the PDF of $X$ (or $Y$), it's simply the shifted PDF of $Z_X$ (or $Z_Y)$, so these two representations are equivalent. In more detail, we prove the equivalent of $X$ and $Z_X + \mu_X$ (the proof is similar for $Y$ and $Z_Y + \mu_Y$). First, note that $Z_X + \mu_X = x$ if and only if $Z_X = x - \mu_X$.
 \begin{align*}
 f_X(x) &= \frac{1}{\sigma_X\sqrt{2\pi}}e^{-\frac{(x-\mu_X)^2}{2\sigma_X^2}} \tag{by definition of univariate Gaussian pdf} \\
 f_{Z_X + \mu_X}(x) &= f_{Z_X}(x - \mu_X) = \frac{1}{\sigma_X\sqrt{2\pi}}e^{-\frac{(x-\mu_X)^2}{2\sigma_X^2}}
@@ -123,7 +123,7 @@ Estimating $\beta$ in this way is called {\em ridge regression} because the matr
 \end{problem}
 
 \begin{enumerate}[label=(\alph*)]
-\item In machine learning parlance, if $n < m$, then we have more features than data points, the MLE of our model is ill-defined because we can't regress on it (in concrete terms, it's like trying to find the best degree $m$ polynomials when we're only given $n+1$ points -- there's an infinite number of such polynomials). In terms of linear algebra, in the case where $m > n$, we're attempting to find the projection of $Y$ closest to $Y$ from a superspace of $\mathbb{R}^m$, which could potentially have an infinite number of solutions. Another way to think about this is that with $n < m$, the matrix $X^TX$ (which is an $m \times m$) matrix, is not invertible.
+\item In machine learning parlance, if $n < m$, then we have more features than data points, the MLE of our model is ill-defined because we can't regress on it (in concrete terms, it's like trying to find the best degree $m$ polynomials when we're only given $n+1$ points -- there's an infinite number of such polynomials). In terms of linear algebra, in the case where $m > n$, we're attempting to find the projection of $Y$ closest to $Y$ from a superspace of $\mathbb{R}^m$, which could potentially have an infinite number of solutions. Another way to think about this is that with $n < m$, the matrix $X^TX$ (which is an $m \times m$) matrix, may not be invertible.
 \item We show this is a orthogonal projections by showing two things. One, that images of $H$ remains unchanged after a second application of $H$ (so elements in the image that are already projected project to themselves) and elements orthogonal to the image are killed.
 
 We begin by showing $\hat{Y} \in \text{im } H$ remains unchanged by $H$.
@@ -146,7 +146,7 @@ From the above, we see that $H$ is an orthogonal projection. Lastly, we can clea
 \implies X^T\hat{\beta} &= X^YY \\
 \implies X^T(Y - X\hat{\beta}) &= 0
 \end{align*}
-The last statement is simple stating that each column of $X$ is perpendicular to $Y - X\hat{\beta}$. Then this implies that $X\hat{\beta}$ is the orthogonal projection onto the column space of $X$. Writing out fully, we have $X\hat{\beta} = [X(X^TX)^{-1}X^T]Y = HY$, so $H$ is the same resulting transformation, which means it must be an orthogonal projection onto the columns space of $X$ of $Y$.
+The last statement is simply stating that each column of $X$ is perpendicular to $Y - X\hat{\beta}$. Then this implies that $X\hat{\beta}$ is the orthogonal projection onto the column space of $X$. Writing out fully, we have $X\hat{\beta} = [X(X^TX)^{-1}X^T]Y = HY$, so $H$ is the same resulting transformation, which means it must be an orthogonal projection onto the columns space of $X$ of $Y$.
 \item We can calculate these directly.
 \begin{align*}
 \E(\hat{\beta}) &= \E[(X^TX)^{-1}X^TY] \\
@@ -184,7 +184,7 @@ We collect constants into the $C_i$ because we'll be maximizing this function, w
 \end{align*}
 This is the desired result, letting $\lambda = \frac{\sigma^2}{\tau^2}$.
 
-\item It is not required that $n \geq m$ (though preferred). With ridge regression, the matrix $(X^TX + \lambda I)$ is always invertible (note that $X^TX_{ii} \geq 0$ which implies the sum with the identity has full rank).
+\item It is not required that $n \geq m$ (though preferred). With ridge regression, the matrix $(X^TX + \lambda I)$ is always invertible (note that the matrix is positive definite, therefore has full-rank, and is therefore invertible).
 \item We define $X' \in \mathbb{R}^{n+m}$ and $Y' \in \mathbb{R}^{n+m}$ as described in the problem (for simplicity, assume rows are appended at the bottom). Then plugging this into the formula found in $(a)$ we have $\beta' \in \mathbb{R}^m$:
 \begin{align*}
 \beta' &= (X'^TX')^{-1}X'^TY' \\
@@ -247,7 +247,7 @@ Intuitively, the above makes sense as the Dirichlet is a pseudo-count and we hav
 p(X_n \given X_1, \cdots X_{n-1}, a) &= \frac{a_k + \sum_{i=1}^{n-1}\mathbb{1}\{X_i = k\}}{(n-1) + \sum_{k=1}^K a_K} \\
 &= \frac{a_{k,n}}{\sum_{k=1}^K a_{k,n}}
 \end{align*}
-More formally, we can integrate the values (for succinctness, we define $c(a)$ as the normalizing constant of a Dirichlet distribution with shape $a$) and we image that $X)i \in \{0,1\}^K$ is one-hot encoded as we did in the previous part, with $X_{i,k}$ as the $k$-th element of $X_i$:
+More formally, we can integrate the values (for succinctness, we define $c(a)$ as the normalizing constant of a Dirichlet distribution with shape $a$) and we image that $X_i \in \{0,1\}^K$ is one-hot encoded as we did in the previous part, with $X_{i,k}$ as the $k$-th element of $X_i$:
 \begin{align*}
 p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots, X_{n-1}, a)  d\theta \\
 &= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\theta} \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^{n-1}X_i)} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots X_{n-1}, a) d\theta \tag{multiply by $\frac{c(a')}{c(a')}$} \\
@@ -261,17 +261,16 @@ p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{
 \begin{align*}
 \frac{1}{n} \sum_{i=1}^n \mathbb{1} \{X_i = k\} =  \frac{1}{n}n\theta_k = \theta_k
 \end{align*}
-Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the average number of times $X_i = k$ if we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, given our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\alpha = \theta_k$ and $\beta = 1 - \theta_K$ (ie, we'd expect the value to be $\theta_k$ and to lie in $[0,1]$, and to be a probability, which is exactly what the beta distribution is intended to match). As $n \to \infty$, each new draw affects the overall probability very little, and given that we know nothing else about our data other that our prior, then  $\lim_{n\to\infty} \frac{1}{n}\sum_{i=1}^{N} \mathcal{1} (X_ki = k) \sim$ Beta$(\theta_k, 1- \theta_k)$.
+Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the average number of times $X_i = k$ if we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, given our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\alpha = \theta_k$ and $\beta = 1 - \theta_K$ (ie, we'd expect the value to be $\theta_k$ and to lie in $[0,1]$, and to be a probability, which is exactly what the beta distribution is intended to match). As $n \to \infty$, each new draw affects the overall probability very little, and given that we know nothing else about our data other that our prior, then  $\lim_{n\to\infty} \frac{1}{n}\sum_{i=1}^{N} \mathcal{1} (X_{i} = k) \sim$ Beta$(\theta_k, 1- \theta_k)$.
 Intuitively, the r.v measuring the probability that we roll $k$ after $n$ rolls with $n$ extremely large should be beta distributed with shape parameter $\theta_k$, our prior belief on the probability that we roll $k$.
 
-\item Generalizing the argument from the part above, the random variable is again the measure of the probability that we select a ball of color $k$ after having added $n$ balls for $n$ large. Note that the effect of adding a new ball decreases as $n$ increases, so the above certainly appears to converge. The probability that we draw a color $k$ ball is therefore distributed $\text{Dirichlet}(a)$ where $a$ is the vector of $a_k$'s as $n \to \infty.$
+\item Generalizing the argument from the part above, the random variable is again the measure of the probability that we select a ball of color $k$ after having added $n$ balls for $n$ large. Note that the effect of adding a new ball decreases as $n$ increases, so the above certainly appears to converge. The probability that we draw a color $k$ ball is therefore distributed $\text{Beta}(a_k, \left(\sum_{k=1}^K a_k \right) - a_k)$. This follows directly from the argument in 3d. Secondly, this implies that the vector $\rho$ where we have each entry as $\rho_{k}$ be the limit of $\rho_{n,k}$ is distributed $\rho \sim \text{Dirichlet}(a)$ (marginal distribution are beta).
 
-For a formal proof, we want to show that the sequence $\rho_{k,n}$ converges to $\rho \sim \text{Dirichlet}(a_1,a_2,\cdots,a_k)$:
+More formally, one way to think about this problem is to break into parts. First, the $\alpha_k$ give us a prior belief $\theta_k$ on the balls within the bag. This is:
 \begin{align*}
-\lim_{n \to \infty} p(|\rho_{k,n} - \rho_k|) \geq \epsilon &= \lim_{n \to \infty} p\left(\frac{a_k + \sum_{k=1}}{n + \sum_{k=1}^K a_k} - \frac{a_k}{\sum_{k=1}^K a_k} \right)
+\theta_k &= \frac{a_k}{\sum_{k=1}^K a_k}
 \end{align*}
-
-Suppose we have $K$ distinct colors and an urn with $a_k$ balls of color $k$. At each time step, we choose a ball uniformly at random from the urn and then add into the urn an additional new ball of the same color as the chosen ball. (So if at the first time step we choose a ball of color 1, we'll end up with $a_1+1$ balls of color 1 and $a_k$ balls of color $k$ for all $k > 1$ at the start of the second time step.) Let $\rho_{k,n}$ be the fraction of all the balls that are of color $k$ at time $n$. What is the distribution of $\lim_{n \rightarrow \infty} \rho_k^n$? Prove your answer.
+Then we consider the process of drawing a ball and adding two of the same color as equivalent to sampling from categorical distributions with $\theta_t$ parameters, where the $t\theta_t$ change from draw to draw. Then the $p_{n,k}$ as $n \to \infty$, given that the number of balls we start with $\alpha$ is constant, should approximate $\lim_{n\to \infty} \frac{1}{n} \sum_{i=1}^{N} \mathcal{1}{X_i = k}$ (ie, we take the sample mean of the balls of color $k$ over the $n$ balls we draw for large $n$, since the original $a$ will contribute minimally to the ratio). From 3e above, we know that this r.v. is distributed $\text{Beta}(\alpha_, \left(\sum_{k=1}^K\theta_k\right) - a_k)$ (we can consider the pseudo counts of balls of color $k$ and balls of color not $k$). This immediately gives the result we were looking for, and noting that the $p_{k}$ are marginally beta distributed, we have that $p \sim \text{Dirichlet}(a)$.
 \end{enumerate}
 
 \section*{Physicochemical Properties of Protein Tertiary Structure}
@@ -488,7 +487,7 @@ QR Method & 5.04294    & 4.7229910  & 4.51325088 & 4.43143909 \\ \hline
 L-BFGS    & 5.04295911 & 4.72298385 & 4.51510011 & 4.43131079 \\ \hline
 \end{tabular}
 \end{table}
-Looking at Figure \ref{fig:rmse}, we see that the non-linear transformations do help reduce the RMSE. While the reduction is not by much (no more than 20\%), it's still significant, given that we have not added new data to our points. This occurs because our original representation of the features might not have been well suited for our predictions. Additionally, $\cos(\cdot)$ functions are particularly good at approximating arbitrary even functions (recall Fourier Transform), so projecting on that subspace of features makes sense from a linear algebra perspective.
+Looking at Figure \ref{fig:rmse} (which is found at the end of this PDF), we see that the non-linear transformations do help reduce the RMSE. While the reduction is not by much (no more than 20\%), it's still significant, given that we have not added new data to our points. This occurs because our original representation of the features might not have been well suited for our predictions. Additionally, $\cos(\cdot)$ functions are particularly good at approximating arbitrary even functions (recall Fourier Transform), so projecting on that subspace of features makes sense from a linear algebra perspective.
 
 For an intuitive example, we can consider the problem of predicting housing prices given the length and width of the land the house is on. It's likely difficult to estimate the price just as a linear combination of those two factors. However, if instead we had a feature which consisted of length $
 times$ width, our prediction would likely improve because the price is likely linearly correlated with the area.
