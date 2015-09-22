@@ -46,6 +46,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignore image files
+*.jpg
+
 # Distribution / packaging
 .Python
 env/

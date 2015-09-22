@@ -20,6 +20,7 @@
 \usepackage{amsfonts}
 \usepackage{listings}
 \usepackage{bm}
+\usepackage{graphicx}
 
 % Some useful macros.
 \newcommand{\given}{\,|\,}
@@ -248,7 +249,7 @@ p(X_n \given X_1, \cdots X_{n-1}, a) &= \frac{a_k + \sum_{i=1}^{n-1}\mathbb{1}\{
 More formally, we can integrate the values (for succinctness, we degine $c(a)$ as the normalizing constant of a Dirichlet distribution with shape $a$) and we image that $X)i \in \{0,1\}^K$ is one-hot encoded as we did in the previous part, with $X_{i,k}$ as the $k$-th element of $X_i$:
 \begin{align*}
 p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots, X_{n-1}, a)  d\theta \\
-&= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\thata} \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^{n-1}X_i)} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots X_{n-1}, a) d\theta \tag{multiply by $\frac{c(a')}{c(a')}$} \\
+&= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\theta} \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^{n-1}X_i)} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots X_{n-1}, a) d\theta \tag{multiply by $\frac{c(a')}{c(a')}$} \\
 &= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\theta} \text{Dirichlet}_{\theta}(a + \sum_{i=1}^n X_i) d\theta \tag{conjugacy results}\\
 &= \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^n X_i)} \tag{integral over entire space} \\
 &= \frac{\Gamma(n - 1 + \sum_{k=1}^{K}{a_k})\prod_{k=1}^K \Gamma(a_k + \sum_{i=1}^n X_{i,k})}{\Gamma(n + \sum_{k=1}^K a_k)\prod_{k=1}^K \Gamma(a_k + \sum_{i=1}^{n-1}X_{i,k})} \\
@@ -259,15 +260,15 @@ p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{
 \begin{align*}
 \frac{1}{n} \sum_{i=1}^n \mathbb{1} \{X_i = k\} &= \frac{1}{n}n\theta_k = \theta_k
 \end{align*}
-Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the overage number of times $X_i = k$ is we repeat the roll of the die $n$ times. Even if $\thata_k$ is not fixed, give our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\theta_k$ by the law of large numbers.
+Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the overage number of times $X_i = k$ is we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, give our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\theta_k$ by the law of large numbers.
 
-Intuitively, the r.v measuring the probability that we roll $k$ after $n$ rolls with $n$ extremely large should be beta distributed with shape parameter $\thata_k$, our prior belief on the probability that we roll $k$.
+Intuitively, the r.v measuring the probability that we roll $k$ after $n$ rolls with $n$ extremely large should be beta distributed with shape parameter $\theta_k$, our prior belief on the probability that we roll $k$.
 
 \item Generalizing the argument from the part above, the random variable is again the measure of the probability that we select a ball of color $k$ after having added $n$ balls for $n$ large. Note that the effect of adding a new ball decreases as $n$ increases, so the above certainly appears to converge. The probability that we draw a color $k$ ball is therefore distributed $\text{Dirichlet}(a)$ where $a$ is the vector of $a_k$'s as $n \to \infty.$
 
 For a formal proof, we want to show that the sequence $\rho_{k,n}$ converges to $\rho \sim \text{Dirichlet}(a_1,a_2,\cdots,a_k)$:
 \begin{align*}
-\lim_{n \to \infty} p(|\rho_{k,n} - \rho_k)|) \geq \epsilon) &= \lim_{n \to \infty} p\left(\frac{a_k + \sum_}{n + \sum_{k=1}^K a_k} - \frac{a_k}{\sum_{k=1}^K a_k} \right)
+\lim_{n \to \infty} p(|\rho_{k,n} - \rho_k|) \geq \epsilon &= \lim_{n \to \infty} p\left(\frac{a_k + \sum_{k=1}}{n + \sum_{k=1}^K a_k} - \frac{a_k}{\sum_{k=1}^K a_k} \right)
 \end{align*}
 
 Suppose we have $K$ distinct colors and an urn with $a_k$ balls of color $k$. At each time step, we choose a ball uniformly at random from the urn and then add into the urn an additional new ball of the same color as the chosen ball. (So if at the first time step we choose a ball of color 1, we'll end up with $a_1+1$ balls of color 1 and $a_k$ balls of color $k$ for all $k > 1$ at the start of the second time step.) Let $\rho_{k,n}$ be the fraction of all the balls that are of color $k$ at time $n$. What is the distribution of $\lim_{n \rightarrow \infty} \rho_k^n$? Prove your answer.
@@ -468,4 +469,23 @@ by the method L-BFGS for each value of $d$. Answer the following questions:
 \end{itemize}
 \end{problem}
 
+Note that we presented the requested figure now:
+\begin{figure}[h!]
+\centering{
+\includegraphics[scale=0.5]{RMSE_Time}
+\caption{RMSE vs Execution Time for multiple feature vectors transformations.}
+\label{fig:rmse}}
+\end{figure}
+\begin{table}[h!]
+\centering
+\caption{Table of RMSE for Method/d-Value Pairs}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+          & d=100      & d=200      & d=400      & d=600      \\ \hline
+QR Method & 5.04294    & 4.7229910  & 4.51325088 & 4.43143909 \\ \hline
+L-BFGS    & 5.04295911 & 4.72298385 & 4.51510011 & 4.43131079 \\ \hline
+\end{tabular}
+\end{table}
+\item Looking at Figure \ref{fig:rmse}, we see that the non-linear transformations do help reduce the RMSE. While the reduction is not by much (no more than 20\%), it's still significant, given that we have not added new data to our points. This occurs because our original representation of the features might not have been well suited for our predictions. Additionally, $\cos(\cdot)$ functions are particularly good at approximating arbitrary even functions (recall Fourirer Transfor)
 \end{document}
