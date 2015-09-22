@@ -258,10 +258,9 @@ p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{
 \end{align*}
 \item Following the hint, we first consider the scenario where $\theta$ is fixed. In this case, we have:
 \begin{align*}
-\frac{1}{n} \sum_{i=1}^n \mathbb{1} \{X_i = k\} &= \frac{1}{n}n\theta_k = \theta_k
+\frac{1}{n} \sum_{i=1}^n \mathbb{1} \{X_i = k\} =  \frac{1}{n}n\theta_k = \theta_k
 \end{align*}
-Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the overage number of times $X_i = k$ is we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, give our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\theta_k$ by the law of large numbers.
-
+Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the average number of times $X_i = k$ if we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, given our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\alpha = \theta_k$ and $\beta = 1 - \theta_K$ (ie, we'd expect the value to be $\thata_k$ and to lie in $[0,1]$, and to be a probability, which is exactly what the beta distribution is intended to match). As $n \to \infty$, each new draw affects the overall probability very little, and given that we know nothing else about our data other that our prior, then  $\lim_{n\to\infty} \frac{1}{n}\sum_{i=1}^{N} \mathcal{1} (X_ki = k) \sim$ Beta$(\theta_k, 1- \theta_k)$.
 Intuitively, the r.v measuring the probability that we roll $k$ after $n$ rolls with $n$ extremely large should be beta distributed with shape parameter $\theta_k$, our prior belief on the probability that we roll $k$.
 
 \item Generalizing the argument from the part above, the random variable is again the measure of the probability that we select a ball of color $k$ after having added $n$ balls for $n$ large. Note that the effect of adding a new ball decreases as $n$ increases, so the above certainly appears to converge. The probability that we draw a color $k$ ball is therefore distributed $\text{Dirichlet}(a)$ where $a$ is the vector of $a_k$'s as $n \to \infty.$
@@ -487,5 +486,10 @@ QR Method & 5.04294    & 4.7229910  & 4.51325088 & 4.43143909 \\ \hline
 L-BFGS    & 5.04295911 & 4.72298385 & 4.51510011 & 4.43131079 \\ \hline
 \end{tabular}
 \end{table}
-\item Looking at Figure \ref{fig:rmse}, we see that the non-linear transformations do help reduce the RMSE. While the reduction is not by much (no more than 20\%), it's still significant, given that we have not added new data to our points. This occurs because our original representation of the features might not have been well suited for our predictions. Additionally, $\cos(\cdot)$ functions are particularly good at approximating arbitrary even functions (recall Fourirer Transfor)
+Looking at Figure \ref{fig:rmse}, we see that the non-linear transformations do help reduce the RMSE. While the reduction is not by much (no more than 20\%), it's still significant, given that we have not added new data to our points. This occurs because our original representation of the features might not have been well suited for our predictions. Additionally, $\cos(\cdot)$ functions are particularly good at approximating arbitrary even functions (recall Fourier Transform), so projecting on that subspace of features makes sense from a linear algebra perspective.
+
+For an intutive example, we can consider the problem of predicting housing prices given the length and width of the land the house is on. It's likely difficult to estimate the price just as a linear combination of those two factors. However, if instead we had a feature which consisted of length $
+times$ width, our prediction would likely improve because the price is likely linearly correlated with the area.
+
+For the final question,
 \end{document}
