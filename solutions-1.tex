@@ -21,6 +21,7 @@
 \usepackage{listings}
 \usepackage{bm}
 \usepackage{graphicx}
+\usepackage{pdfpages}
 
 % Some useful macros.
 \newcommand{\given}{\,|\,}
@@ -193,7 +194,7 @@ Then note that $X'^TY' \in \mathbb{R}^m$ and is exactly equal to $X^TY \in \math
 
 Similarly, note that $X'^T X' \in \mathbb{R}^{m \times m}$ is equivalent to $X^TX + \lambda I_m$. Taking a look at each of the diagonal entries of $X'^TX'$, where we let $x'_i$ be the $i$-th column of $X'$ and $x_i$ the $i$-th column of $X$, we have:
 \begin{align*}
-(X'^TX')_{ii} &= x'_i^Tx'_i \\
+(X'^T X')_{ii} &= x'_i^Tx'_i \\
 &= x_i^Tx_i + \sqrt{\lambda}\sqrt{\lambda} \tag{first $n$ entries match, and others are killed except for the one with $\sqrt{\lambda}$} \\
 (X'^TX')_{i\neq j} &= x'_i^Tx'_i \\
 &= x_i^Tx_i \tag{first $n$ match, and the others are killed}
@@ -240,13 +241,13 @@ The above is simply another Dirichlet distribution, so we immediately have $\the
 \begin{align*}
 p(\theta \given X) &= \frac{\Gamma(\sum_{k=1}^K{a_k+x_k})}{\prod_{k=1}^K \Gamma(a_k + x_k)}\prod_{k=1}^K \theta_k^{a_k + x_k - 1}
 \end{align*}
-Intuitively, the above makes sense as the Dirichlet is a psedu-count and we have seen one more observation.
+Intuitively, the above makes sense as the Dirichlet is a pseudo-count and we have seen one more observation.
 \item Intuitively, we can arrive at this result if we think of the Dirichlet distribution as a pseudo count. Given $a$, and after seeing $X_1,X_2, \cdots, X_{n-1}$, the probability that $X_n = k$ is simply given by the total pseudo count of $k$ divided by the total pseudo-count.
 \begin{align*}
 p(X_n \given X_1, \cdots X_{n-1}, a) &= \frac{a_k + \sum_{i=1}^{n-1}\mathbb{1}\{X_i = k\}}{(n-1) + \sum_{k=1}^K a_K} \\
 &= \frac{a_{k,n}}{\sum_{k=1}^K a_{k,n}}
 \end{align*}
-More formally, we can integrate the values (for succinctness, we degine $c(a)$ as the normalizing constant of a Dirichlet distribution with shape $a$) and we image that $X)i \in \{0,1\}^K$ is one-hot encoded as we did in the previous part, with $X_{i,k}$ as the $k$-th element of $X_i$:
+More formally, we can integrate the values (for succinctness, we define $c(a)$ as the normalizing constant of a Dirichlet distribution with shape $a$) and we image that $X)i \in \{0,1\}^K$ is one-hot encoded as we did in the previous part, with $X_{i,k}$ as the $k$-th element of $X_i$:
 \begin{align*}
 p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots, X_{n-1}, a)  d\theta \\
 &= \frac{c(a + \sum_{i=1}^{n-1}X_i)}{c(a + \sum_{i=1}^n X_i)} \int_{\theta} \frac{c(a + \sum_{i=1}^n X_i)}{c(a + \sum_{i=1}^{n-1}X_i)} p(X_n \given  X_1 \cdots X_{n-1}, \theta)p(\theta \given X_1, \cdots X_{n-1}, a) d\theta \tag{multiply by $\frac{c(a')}{c(a')}$} \\
@@ -260,7 +261,7 @@ p(X_n \given X_1 \cdots X_{n-1},a) &= \int_{\theta} p(X_n \given  X_1 \cdots X_{
 \begin{align*}
 \frac{1}{n} \sum_{i=1}^n \mathbb{1} \{X_i = k\} =  \frac{1}{n}n\theta_k = \theta_k
 \end{align*}
-Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the average number of times $X_i = k$ if we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, given our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\alpha = \theta_k$ and $\beta = 1 - \theta_K$ (ie, we'd expect the value to be $\thata_k$ and to lie in $[0,1]$, and to be a probability, which is exactly what the beta distribution is intended to match). As $n \to \infty$, each new draw affects the overall probability very little, and given that we know nothing else about our data other that our prior, then  $\lim_{n\to\infty} \frac{1}{n}\sum_{i=1}^{N} \mathcal{1} (X_ki = k) \sim$ Beta$(\theta_k, 1- \theta_k)$.
+Therefore, the limit as $n \to \infty$ is simply $\theta_k$. In a sense, the random variable is simply measuring the average number of times $X_i = k$ if we repeat the roll of the die $n$ times. Even if $\theta_k$ is not fixed, given our prior of $\theta$, we would expect the random variable to converge to a beta distribution with shape parameter $\alpha = \theta_k$ and $\beta = 1 - \theta_K$ (ie, we'd expect the value to be $\theta_k$ and to lie in $[0,1]$, and to be a probability, which is exactly what the beta distribution is intended to match). As $n \to \infty$, each new draw affects the overall probability very little, and given that we know nothing else about our data other that our prior, then  $\lim_{n\to\infty} \frac{1}{n}\sum_{i=1}^{N} \mathcal{1} (X_ki = k) \sim$ Beta$(\theta_k, 1- \theta_k)$.
 Intuitively, the r.v measuring the probability that we roll $k$ after $n$ rolls with $n$ extremely large should be beta distributed with shape parameter $\theta_k$, our prior belief on the probability that we roll $k$.
 
 \item Generalizing the argument from the part above, the random variable is again the measure of the probability that we select a ball of color $k$ after having added $n$ balls for $n$ large. Note that the effect of adding a new ball decreases as $n$ increases, so the above certainly appears to converge. The probability that we draw a color $k$ ball is therefore distributed $\text{Dirichlet}(a)$ where $a$ is the vector of $a_k$'s as $n \to \infty.$
@@ -475,6 +476,7 @@ Note that we presented the requested figure now:
 \caption{RMSE vs Execution Time for multiple feature vectors transformations.}
 \label{fig:rmse}}
 \end{figure}
+
 \begin{table}[h!]
 \centering
 \caption{Table of RMSE for Method/d-Value Pairs}
@@ -488,8 +490,11 @@ L-BFGS    & 5.04295911 & 4.72298385 & 4.51510011 & 4.43131079 \\ \hline
 \end{table}
 Looking at Figure \ref{fig:rmse}, we see that the non-linear transformations do help reduce the RMSE. While the reduction is not by much (no more than 20\%), it's still significant, given that we have not added new data to our points. This occurs because our original representation of the features might not have been well suited for our predictions. Additionally, $\cos(\cdot)$ functions are particularly good at approximating arbitrary even functions (recall Fourier Transform), so projecting on that subspace of features makes sense from a linear algebra perspective.
 
-For an intutive example, we can consider the problem of predicting housing prices given the length and width of the land the house is on. It's likely difficult to estimate the price just as a linear combination of those two factors. However, if instead we had a feature which consisted of length $
+For an intuitive example, we can consider the problem of predicting housing prices given the length and width of the land the house is on. It's likely difficult to estimate the price just as a linear combination of those two factors. However, if instead we had a feature which consisted of length $
 times$ width, our prediction would likely improve because the price is likely linearly correlated with the area.
 
-For the final question,
+For the final question, it seems that QR is consistently faster than L-BGFS. The difference for smaller matrices isn't significant, but for larger matrices, we can see the time saved by QR is increasing. This is likely because of the simplicity with which the QR method can invert the upper triangular matrix, R. Inversion is typically the most expensive aspect of linear regression. Additionally, there's some ``simulation'' aspect to L-BGFS, which might cause a slowdown for more complex surfaces.
+
+Below is the code for this problem set.
+\includepdf[pages={1,2,3,4}]{HW1.pdf}
 \end{document}
