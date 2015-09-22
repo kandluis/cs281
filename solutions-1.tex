@@ -172,11 +172,11 @@ p(\beta \given Y,X) &\propto p(Y \given \beta,X) p(\beta \given X) \\
 We ignore the normalization constant and instead take the log to help maximize the function.
 \begin{align*}
 \log p(Y \given \beta, X)p(\beta, X) &= \log p(Y \given \beta, X) + \log p(\beta \given X) \\
-&= C_0 - \frac{1}{2\sigma^2}(Y - X\beta)^T(Y - X\beta) + C_2 + \frac{1}{2\tau^2}\beta^T\beta
+&= C_0 - \frac{1}{2\sigma^2}(Y - X\beta)^T(Y - X\beta) + C_2 - \frac{1}{2\tau^2}\beta^T\beta
 \end{align*}
 We collect constants into the $C_i$ because we'll be maximizing this function, which means terms not containing $\beta$ will disappear and constant scalar factors won't matter. We now do this, and set equal to $0$:
 \begin{align*}
-\frac{d}{d\beta} p(Y \given \beta,X)p(\beta \given X) &= -\frac{1}{\sigma^2}X^T(Y - X\beta) + \frac{1}{\tau^2}\beta = 0\\
+\frac{d}{d\beta} p(Y \given \beta,X)p(\beta \given X) &= \frac{1}{\sigma^2}X^T(Y - X\beta) - \frac{1}{\tau^2}\beta = 0\\
 &\implies \frac{1}{\sigma^2}(X^TX + \frac{\sigma^2}{\tau^2}I)\beta = \frac{1}{\sigma^2}X^TY \\
 &\implies \beta = (X^TX + \frac{\sigma^2}{\tau^2}I)^{-1}X^TY
 \end{align*}
@@ -358,6 +358,18 @@ training data using the QR decomposition (see Section 7.5.2 in Murphy's book).
 \end{itemize}
 \end{problem}
 
+\begin{itemize}
+\item The value of $\hat{\mathbf{w}}$ is:
+\begin{lstlisting}[language=Python]
+array([ 3.15915374,  2.45711946,  1.00708615, -5.70882509,  0.19052137,
+       -1.49631801, -0.25545196,  0.82089849, -0.61340907,  7.72464619])
+\end{lstlisting}
+\item The RMSE is:
+\begin{lstlisting}[language=Python]
+5.21279654
+\end{lstlisting}
+\end{itemize}
+
 \begin{problem}[14pts]\label{prob:numerical_linear_model}
 Write code that evaluates the log-posterior probability (up to an
 additive constant) of $\mathbf{w}$ according to the previous Bayesian linear model and the normalized training data.
@@ -386,6 +398,20 @@ log-posterior probability to transform the maximization problem into a minimizat
 \item Report the RMSE of the predictions made with $\hat{\mathbf{w}}$ in the normalized test set.
 \end{itemize}
 \end{problem}
+
+\begin{itemize}
+\item The value of $\hat{\mathbf{w}}$ obtained was:
+\begin{lstlisting}
+array([ 3.15550844,  2.45777256,  1.00690556, -5.7091806 ,  0.19258347,
+       -1.49543362, -0.2556786 ,  0.82088777, -0.61393548,  7.72467068])
+\end{lstlisting}
+This is essentially the same value as that calculated above. Interestingly enough, it only took $43$ iterations to achieve this value.
+\item We recalculate the RMSE, which is:
+\begin{lstlisting}
+5.21280442
+\end{lstlisting}
+\end{itemize}
+
 
 Linear regression can be extended to model non-linear relationships by
 replacing the original features $\mathbf{x}$ with some non-linear functions of

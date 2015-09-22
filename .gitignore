@@ -96,3 +96,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# iPython notebook
+code/assignment1/.ipynb_checkpoints/*
+*.dat
