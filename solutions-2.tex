@@ -1,0 +1,486 @@
+% No 'submit' option for the problems by themselves.
+%\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Luis Antonio Perez}
+\email{luisperez@college.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+Brian Arroyo
+}
+
+% You don't need to change these.
+\course{CS281-F13}
+\assignment{Assignment \#2}
+\duedate{23:59pm October 7, 2015}
+
+% Useful macros.
+\newcommand{\trans}{\mathsf{T}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\distNorm}{\mathcal{N}}
+\newcommand{\bzero}{\mathbf{0}}
+\newcommand{\ident}{\mathbb{I}}
+
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+
+\begin{document}
+
+
+\begin{problem}[10pts]
+One intuitive way to summarize a probability density is via the mode,
+as this is the ``most likely'' value in some sense.  A common example
+of this is using the maximum \textit{a posteriori} (MAP) estimate of a
+model's parameters.  In high dimensions, however, the mode becomes
+less and less representative of typical samples.  Consider variates
+from a~$D$-dimensional zero mean spherical Gaussian with unit
+variance:
+\begin{align*}
+  \bx &\sim \distNorm(\bzero_D, \ident_D),
+\end{align*}
+where~$\bzero_D$ indicates a column vector of~$D$ zeros and~$\ident_D$
+is a~${D\times D}$ identity matrix.
+\begin{enumerate}
+  \item Compute the distribution that this implies over the distance
+    of these points from the origin.  That is, compute the
+    distribution over~$\sqrt{\bx^\trans\bx}$, if~$\bx$ is a
+    realization from~$\distNorm(\bzero_D, \ident_D)$.  (Hint: Consider
+    transformations of a Gamma distribution.)
+  \item Make a plot that shows this probability density function for
+    several different values of~$D$, up to ~${D=100}$.
+
+  \item Make a plot of the cumulative distribution function (CDF) over
+    this distance distribution for~${D=100}$.  A closed-form solution
+    may be difficult to compute, so you can do this numerically.)
+
+  \item From examining the CDF we can think about where most of the
+    mass lives as a function of radius.  For example, most of the mass
+    for~${D=100}$ is within a thin spherical shell.  From eyeballing
+    the plot, what are the inner and outer radii for the shell that
+    contains 90\% of the mass in this case?
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+\item Let us consider drawing points $\bx \in \mathbb{R}^D$ where $\bx \sim \distNorm(\bzero_D, \ident_D)$. Note that by definition, we know that each $\bx_i \in \mathbb{R}$ coordinate of the vector is identically and independently distributed, drawn from the standard normal distribution:
+$$
+\bx_i \stackrel{i.i.d}{\sim} \distNorm(0,1)
+$$
+Then to calculate the $\sqrt{\bx^\trans\bx}$, we can use the following:
+$$
+\sqrt{\bx^\trans\bx} = \sqrt{\sum_{i=1}^D \bx_i^2}
+$$
+To derive the distribution for the above, we first focus on the deriving the distribution for $Y = Z^2$ where $Z \sim \distNorm(0,1)$. We focus on calculating the CDF. Note that the support of $Y$ is $[0,\infty)$, so
+$$
+P(Y < y) = 0
+$$
+In the other scenario, it becomes somewhat more complicated. We have:
+\begin{align*}
+F_Y(y) &= P( Y < y) \\
+&= P(Z^2 < y) \\
+&= P(|Z| < \sqrt{y}) \\
+&= P(-\sqrt{y} < Z < \sqrt{y}) \\
+&= P(Z < \sqrt{y}) - P(Z < -\sqrt{y}) \\
+&= P(Z < \sqrt{y} - (1 - P(Z < \sqrt{y}) \tag{Symmetry of Normal} \\
+&= 2P(Z < \sqrt{y}) - 1 \\
+&= 2\Phi(\sqrt{y}) \tag{CDF of standard normal} - 1
+\end{align*}
+Now that we have calculate the CDF in terms of the CDF for the standard normal, we can calculate the PDF by simply taking the derivative.
+\begin{align*}
+f_Y(y) &= \frac{d}{dy}F_Y(y) \\
+&= 2\frac{d}{dy} \Phi(\sqrt{y}) \tag{constants dropped} \\
+&= 2\phi(\sqrt{y}) \frac{d}{dy} \left[\sqrt{y}\right] \\
+&= \frac{1}{\sqrt{2\pi}}y^{-\frac{1}{2}}\exp \{-\frac{y}{2} \} \tag{definition of standard normal}
+\end{align*}
+We take note that the PDF of the above is simply the PDF of a $\chi^2$ r.v. with one degree of freedom. Then we have:
+$$
+\bx_i^2 \stackrel{i.i.d}{\sim} \chi^2(1)
+$$
+The next step is showing that the sum of $D$ i.i.d $\chi^2$ is a $\chi^2$ r.v. with $d$ degrees of freedom if each $\chi^2$ r.v. had $1$ degree of freedom. We can do this simply by consider the MGF of the sum. Let $X = \sum_{i=1}^D X_i$ where $X_i \stackrel{i.i.d}{\sim} \chi^2(1)$.
+\begin{align*}
+\text{MGF}_X(x) &= \prod_{i=1}^{D} \text{MGF}_{X_i}(x) \tag{i.i.d} \\
+&= \prod_{i=1}^D (1-2x)^{\frac{1}{2}} \\
+&= (1-2x)^{\frac{D}{2}}
+\end{align*}
+The above is just the MGF of a $\chi^2$ r.v. with $D$ degrees of freedom. Therefore, putting everything so far together:
+$$
+\sum_{i=1}^{D}{\bx_i^2} \sim \chi^2(D)
+$$
+As the name suggests, however, we have that the square root of a $\chi^2$ r.v. is simply a $\chi^2$ r.v. We can prove this, however, by using the change of variables formula for the PDFs. To simplify notation, we let $Y = \sum_{i=1}^{D} \bx_i$ and $Z = \sqrt{Y}$ where $Y \sim \chi^2(D)$ r.v. as shown above. Then:
+\begin{align*}
+f_Z(z) &= f_Y(z^2) |\frac{dz}{dy}|^{-1} \\
+&= \frac{1}{2^{\frac{D}{2}}\Gamma(\frac{D}{2})} z^{D - 2} \exp \{-\frac{z^2}{2} \} 2z \\
+&= \frac{1}{2^{\frac{D}{2} - 1}\Gamma(\frac{D}{2})}z^{D-1}\exp{-\frac{z^2}{2}}
+\end{align*}
+The above is immediately recognizable as the PDF of a $\chi$ r.v. with $D$ degrees of freedom. Therefore, $Z \sim \chi(D)$.
+\item Figure \ref{fig:chi_pdf} shows the plot of the PDF for different degrees.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw2_chi_pdf}
+\caption{Plot of the distribution of the distance of a standard multivariate normal from the origin}
+\label{fig:chi_pdf}
+\end{figure}
+\item The plot of the cumulative distribution function over the distance from the origin of a standard multivariate normal vector of size $D$ can be seen in Figure \ref{fig:chi_cdf}.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw2_chi_cdf}
+\caption{A cumulative distribution function of the above PDF for key degree values.}
+\label{fig:chi_cdf}
+\end{figure}
+
+\item From eyebaling the case where $D = 100$, it's pretty clear that the largest mass is centered around $x = 8$ and within the range $(8.7, 11.3)$.
+
+\end{enumerate}
+
+
+\begin{problem}[Bayesian Linear Regression, 30pts]
+Here are some one-dimensional data to regress:
+\begin{verbatim}
+x = [-1.87 -1.76 -1.67 -1.22 -0.07 0.11 0.67 1.60 2.22 2.51]'
+y = [0.06 1.67 0.54 -1.45 -0.18 -0.67 0.92 2.95 5.13 5.18]'
+\end{verbatim}
+Construct a Bayesian linear regression model using Gaussian observation noise with fixed variance $\sigma^2$, and a basis of your choosing (e.g., polynomial, sinusoids, radial basis functions).
+For the prior on the regression weights, use a normal distribution:
+$$p(\bw) = \distNorm(\bw | \bw_0, \mathbf V_0)$$
+
+
+\begin{enumerate}
+  \item Write down:
+  \begin{enumerate}
+    \item your basis
+    \item the posterior distribution on $\bw$ given the data: $p(\bw | \bx, \by, \bw_0, \mathbf V_0, \sigma^2)$.
+    \item the posterior predictive distribution $p(y^\star | x^\star, \bx, \by, \bw_0, \mathbf V_0, \sigma^2)$ of a new function value $y^\star = f(x^\star)$ obtained by integrating out $\bw$.
+  \item The marginal likelihood, $p(\by | \bx, \bw_0,\boldsymbol V_0, \sigma^2)$ obtained by integrating out the regression weights.
+  \end{enumerate}
+  \item Choose values of $\bw_0, \mathbf V_0$ and $\sigma^2$ that seem sensible for the regression weight prior and the noise.
+  Plot several random functions drawn from your prior.
+
+  \item Plot the data, as well as several typical posterior samples of the function given the data.
+
+  \item Plot the 95\% central credible interval region of the
+    predictive density as a function of~$x$. That is, produce a plot
+    that shows the ``tube'' containing most of the functions that are
+    consistent with the data under your model.
+
+  \item Try varying the basis functions used.  For example, you could change the
+    order of polynomial, or how many radial basis functions to put
+    down.  Produce a bar plot of the marginal likelihood for several of these hypotheses.
+    Which hypotheses are supported by the data?
+  \end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item Given the results we see in Figure \ref{fig:data_points}, we decided to utilize polynomials as our basis. The curve looks to be at least quadratic, or something of up to degree $4$. We obviously do not want to over-fit our data, so given the inputs, staying with basis $x^r$ for $0 \leq r \leq 4$ seems reasonable.
+
+Therefore, we choose the following basis function:
+$$
+\phi(x) = [1, x, x^2, x^3, x^4]
+$$
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw_2_data_points.png}
+\caption{Quick plot of data points on a 2D space.}
+\label{fig:data_points}
+\end{figure}
+
+\item From the above, note that $\phi(x_n) \in \mathbb{R}^5$, so we create our design matrix $\mathbf X \in \mathbb{R}^{10 \times 5}$ where each row is $\phi(x_n)$. Note that we first center the input data $x_n$ by subtracting the mean $\mu = \frac{1}{10}\sum_{i=1}^{10} x_i$. To simplify notation, we assume the data is centered. We also have our output $y \in \mathbb{R}^{10}$. Using a Bayesian linear regression model with observation noise $\epsilon \sim \distNorm(0, \sigma^2 I_{10})$, we have:
+\begin{align*}
+\by &= \mathbf X\bw + \epsilon
+\end{align*}
+with the following likelihood:
+$$
+p(\by \mid \mathbf X, \bw, \sigma^2) = \distNorm(\mathbf X\bw, \sigma^2\mathbf I_{10})
+$$
+With the above model, and with a prior $p(\bw) = \distNorm(\bw | \bw_0, \mathbf V_0)$, it's easy to calculate the posterior distribution. We follow Murphy 7.6.1 as reference. We have:
+\begin{align*}
+p(\bw \mid \mathbf X, \by, \bw_0, \mathbf V_0, \sigma^2) &\propto p(\by \mid \mathbf X, \bw, \sigma^2)p(\bw \mid \bw_0, \mathbf V_0) \tag{by Bayes' Rule} \\
+&= \distNorm(\by \mid \mathbf X\bw, \sigma^2 I_{10}) \distNorm(\bw | \bw_0, \mathbf V_0) \tag{according to our model} \\
+&=\mathcal{N}(\bw \mid \bw', \mathbf V') \tag{posterior of normal likelihood and normal prior is normal}
+\end{align*}
+where
+\begin{align*}
+\bw' &= \mathbf V' \mathbf V_0 \bw_0 + \frac{1}{\sigma^2}\mathbf V' \mathbf X^T \by\\
+\mathbf V' &= \sigma^2(\sigma^2 \mathbf V_0^{-1} + \mathbf X^T\mathbf X)^{-1}
+\end{align*}
+\item For the posterior predictive, we can again follow Murphy, 7.6.2.
+\begin{align*}
+p(y^* \mid x^*, \mathbf X, \by, \bw_0, \mathbf V_0, \sigma^2) &= \int_{\bw} p(y^* \mid x^*, \bw, \sigma^2)p(\bw \mid \mathbf X, \by, \bw_0, \mathbf V_0, \sigma^2) d\bw \tag{integrating out weights} \\
+&= \int_{\bw} \distNorm(y^* \mid \bw^T \phi(x^*), \sigma^2) \distNorm(\bw \mid \bw', \mathbf V') \tag{given our model} \\
+&= \distNorm(y^* \mid \bw'^T \phi(x^*), \sigma^2(x^*)) \tag{using conjugacy results}
+\end{align*}
+where
+$$
+\sigma^2(x^*) = \sigma^2 + \phi(x^*)^T \mathbf V' \phi(x^*)
+$$
+
+\item The marginal likelihood can be calculated by integrating out the model parameters.
+\begin{align*}
+p(\by \mid \mathbf X, \bw_0, \mathbf V_0, \sigma^2) &= \int_{\bw} p(\by \mid \mathbf X, \bw, \sigma^2)p(\bw \mid \bw_0, \mathbf V_0) \tag{integrate out weights} \\
+&= \int_{\bw} \distNorm(\by \mid \mathbf X \bw, \sigma^2 \mathbf I_{10}) \distNorm(\bw \mid \bw_0, \mathbf V_0) d\bw  \tag{model}\\
+&= \distNorm(\by \mid \mathbf X\bw_0, \sigma^2 \mathbf I_{10} + \mathbf X \mathbf V_0 \mathbf X^T) \tag{conjugacy results from Murphy 4.126}
+\end{align*}
+\end{enumerate}
+
+\item We chose the following $\bw_0$ and $\mathbf V_0$. Recall that we center the data, so it now looks like the plot in Figure \ref{fig:centered_data}.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw2_cented_data_points.png}
+\caption{Centered input data plotted.}
+\label{fig:centered_data}
+\end{figure}
+\begin{align*}
+\bw_0 &= [-0.5, 0.1, 0.1, 0, 0] \\
+\mathbf V_0 &= \mathbf 0.1 \times I_{5} \\
+\sigma^2 &= 0.5
+\end{align*}
+
+The above is simply from eye-balling the results and considering what could be happening with the data. We then draw several random samples  and plot the results of a range of $x$ values, along with the centered data points. See Figure \ref{fig:prior}.
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw2_random_prior.png}
+\caption{Centered input data along with random prior functions.}
+\label{fig:prior}
+\end{figure}
+
+\item After training our model on the data, we repeat the process above and sample our output, plotting the results as seen in Figure \ref{fig:posterior}.
+
+\item In the following figure, you can view the final results, along with the confidence intervals. See Figure \ref{fig:predictive}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw2_random_posterior.png}
+\caption{Centered input data along with trained posterior functions.}
+\label{fig:posterior}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{hw_2_intervals.png}
+\caption{Plot of the predictive function with confidence intervals at $95\%$.}
+\label{fig:predictive}
+\end{figure}
+
+\item We try the following basis:
+\begin{enumerate}
+\item $1, \sin(x), \sin(2x), \sin(3x), \sin(4x)$
+\item $1, \cos(x), \cos(2x),\cos(3x), \cos(4x)$
+\item $x^{-2}, x^{-1}, 1, x, x^2$
+\item $1, x^2, x^4, x^6, x^8$
+\item The basis we used above.
+\item $1, x^4$
+\item $x, x^2, x^4$
+\item $x^2, x^4$
+\end{enumerate}
+We now plot the marginal likelihood for each of the above basis function. For reference, please see Figure \ref{fig:bar_plot}. We can immediately notice that most of the proposed models aren't very good. The best model, in our scenario, is actually not the one we picked, but the one that is the same but drops the $1,x^3$ basis functions. This makes sense, as our data is normalized (so no need for the $1$), and is actually relatively ``even'', so it doesn't make sense to attempt to fit a model that allows for $x^3$. This is interesting, however, because the second model is essentially a subset of the one we used. In a sense, it's simpler but can deal with the same amount of data, and therefore is the preferred model.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.5]{model_comparison.png}
+\caption{Plot of Marginal Likelihood for Different Models}
+\label{fig:bar_plot}
+\end{figure}
+\end{enumerate}
+
+
+
+\begin{problem}[30pts, Hastie et al., Murphy]
+In this problem, we'll apply logistic regression to a data set of spam
+email.  These data consist of 4601 email messages, from which 57
+features have been extracted.  These are as follows:
+\begin{itemize}
+  \item $48$ features in $[0,100]$, giving the percentage of words in
+    a given message which match a given word on a list containing,
+    e.g., ``business'', ``free'', etc.
+  \item $6$ features in $[0,100]$, giving the percentage of characters
+    in the email that match characters on a list containing, e.g.,
+    ``\$'', ``\#'', etc.
+  \item Feature 55: The average length of an uninterrupted sequence of
+    capital letters.
+  \item Feature 56: The length of the longest uninterrupted sequence
+    of capital letters.
+  \item Feature 57: The sum of the lengths of uninterrupted sequences
+    of capital letters.
+\end{itemize}
+There are files \texttt{spam.train.dat} and \texttt{spam.test.dat}
+(available on the course website) in which each row is an email.
+There are 3000 training and 1601 test examples.  The final column in
+each file indicates whether the email was spam.
+
+\begin{enumerate}
+  \item Code up ~$\ell_2$-regularized logistic regression.
+  That is, code up a model of the form:
+  \begin{align}
+  p(\mathbf{w}) & = \mathcal{N}(0, \sigma^2 I) \\
+  p(y_i = 1 | \mathbf{x}, \mathbf{w}) & = \frac{1}{1 + \exp(-\mathbf{w}^T \mathbf{x})}
+  \end{align}
+
+  and use it to compute the MAP estimate of $\mathbf{w}$, given the training examples.
+  Compute the gradients of the posterior probability of the data with respect to $\mathbf{w}$, and check that they're correct numerically.
+  Show the code you used for computing the derivatives.
+
+  \item Use
+    10-fold cross-validation on the training set to determine an appropriate regularization
+    penalty $\sigma^2$.  Plot different values of $\log_e \sigma^2$ ranging from -8 to 8  against the cross-validation error and test error.  Which is the best?
+  \item There are different ways one might preprocess the data.  One
+    typical thing to do is to linearly ``standardize'' each input feature so
+    that it has mean zero and variance one.  Do this standardization
+    and evaluate the model again.  Report the discovered $\bw$, and the training and test error after performing cross-validation as in part 2.
+    \item It may also be the case that some dimensions are better represented a binary variables, or by taking the logarithm, than the given values.
+  Hypothesize whether any of the variables in this data sets might be better coded as binary (or using their log), and explain your reasoning.
+  Then do the transform and apply the same cross-validation as before.  Do your results improve?  Conjecture why or why not.
+\end{enumerate}
+\end{problem}
+
+
+\begin{enumerate}
+\item To simplify notation, we let
+$$
+s(z) = \frac{1}{1+ \exp(-z)}
+$$
+Then the MAP is given by Bayes' Rule:
+\begin{align*}
+p(\bw \mid \by, \bx) &\propto \prod_{i=1}^N p(y_i = 1 \mid \bx_i, \bw)^{y_i}p(y_i = 0 \mid \bx_i, \bw)^{1-y_i}p(\bw)
+\end{align*}
+We can then take the negative log in order to simplify the expression:
+\begin{align*}
+-\log p(\bw \mid \by, \bx) &\propto -\sum_{i=1}^N [y_i \log s(\bw^T\bx_i) + (1-y_i)\log (1 - s(\bw^T\bx_i))] + \frac{\bw^T\bw}{2\sigma^2} + C_0 \\
+&= -\sum_{i=1}^N \left[-y_i \log(1 + \exp(-\bw^T\bx_i)) + (1-y_i) [-\bw^T\bx_i- \log(1 + \exp(-\bw^T\bx_i))])\right] + \frac{\bw^T\bw}{2\sigma^2} + C_0
+\end{align*}
+Next, we can take the derivative of the above and set equal to $0$ to try and maximize the MAP. First, note the following property of the logistic function, as described by \href{https://en.wikipedia.org/wiki/Logistic_function#Derivative}{Wikipedia}.
+\begin{align*}
+\frac{d}{d\bw}s(\bw^T \bx_i) &= s(\bw^T\bx_i)(1 - s(\bw^T\bx_i)) \cdot \frac{d}{d\bw} \bw^T\bx_i \\
+& s(\bw^T\bx_i)(1 - s(\bw^T\bx_i)) \cdot \bx_i
+\end{align*}
+Then taking the derivative is simple:
+\begin{align*}
+-\frac{d}{d\bw} \log p(\bw \mid \by, \bx) &= -\sum_{i=1}^N \left[\frac{y_i}{s(\bw^T\bx_i)} - \frac{1-y_i}{s(\bw^T\bx_i)}\right]s(\bw^T\bx_i)(1 - s(\bw^T\bx_i))\bx_i + \frac{\bw}{\sigma^2} \\
+&= -\sum_{i=1}^N \left[y_i(1 - s(\bw^T\bx_i)) - (1-y_i)s(\bw^T\bx_i)\right]\bx_i + N \frac{\bw}{\sigma^2} \\
+&= -\sum_{i=1}^N \left[y_i -s(\bw^T\bx_i) \right]\bx_i + \frac{\bw}{\sigma^2} \\
+&= X^T(s(X\bw) - \by) +  \frac{\bw}{\sigma^2}
+\end{align*}
+We now have the gradient of the negative log of the posterior distribution. We can code this almost directly:
+\begin{lstlisting}[language=python]
+  # Read in the data
+  train = np.genfromtxt('spam.train.dat', delimiter=" ")
+  test = np.genfromtxt('spam.test.dat', delimiter=" ")
+  Xtest = test[:, :-1]
+  Ytest = test[:, -1]
+  Xtrain = train[:, :-1]
+  Ytrain = train[:, -1]
+  def logMAPGradient(X,y,w,s2):
+    '''
+    Gradient of the NLL.
+    '''
+    return X.T.dot(1.0 / (1.0 + np.exp(-X.dot(w))) - y) +  1/s2 * w
+
+  def negLogMAPGrad(w):
+    return logMAPGradient(Xtrain, Ytrain, w, 1)
+\end{lstlisting}
+
+Furthermore, we present the code used to verify the gradient was actually computed correctly:
+\begin{lstlisting}
+def verifyGradiant(x, epsilon = 0.0001):
+"""
+Uses finite differences to verify the gradiant of our log posterior.
+"""
+units = np.diag([epsilon for _ in x])
+grad = negLogMAPGrad(x,1)
+finiteDiff = [(minNegLogMAP(x + units[i]) - minNegLogMAP(x - units[i])) / (2*epsilon) for i in xrange(len(x))]
+return all([abs(g - f) < 0.01 for g,f in zip(grad, finiteDiff)])
+
+# Verify the result for ntrials
+def verifyGradiantM(ntrials):
+    xs = [np.random.rand(57) for _ in xrange(ntrials)]
+    return all(map(verifyGradiant, xs))
+\end{lstlisting}
+
+Additionally, after running through the optimization, we have the following weight vector:
+\begin{lstlisting}
+array([ -4.58812800e-01,  -2.52751337e-01,  -1.23080029e-01,
+         6.87370314e-01,   3.52099278e-01,   9.33280745e-01,
+         1.53333124e+00,   3.72498563e-01,   7.12374738e-01,
+        -9.60524776e-05,   4.39484919e-02,  -2.23625859e-01,
+        -2.13340362e-01,  -7.73511869e-02,   9.80237490e-01,
+         9.22860589e-01,   6.63606554e-01,  -1.93477426e-02,
+        -9.11835518e-02,   7.32204636e-01,   8.70741298e-02,
+         1.72604554e-01,   1.91020230e+00,   8.34190368e-01,
+        -2.24509783e+00,  -1.53037621e+00,  -3.01994613e+00,
+         2.86189725e-01,  -1.72224836e+00,  -6.73131851e-01,
+        -3.35645702e-01,   9.10491814e-02,  -1.34925092e+00,
+        -2.58521726e-01,  -1.43254560e+00,   3.17100043e-01,
+        -7.28897227e-01,  -6.81905216e-01,  -9.36076409e-01,
+        -6.90944629e-01,  -1.48918784e+00,  -2.17885249e+00,
+        -9.75466313e-01,  -1.48818801e+00,  -8.71513912e-01,
+        -1.87113778e+00,  -8.33763324e-01,  -1.54613759e+00,
+        -1.32822838e+00,  -8.63910591e-01,  -1.10833877e+00,
+         1.99164477e-01,   2.77705726e+00,   1.44956238e+00,
+        -1.53251521e-02,   9.84410091e-03,   1.78629738e-04])
+\end{lstlisting}
+
+\item It seems that the perfect $\sigma^2$, from looking at Figure \ref{fig:cross_validation}, is $\log_e \sigma^2 = 1 \implies \sigma^2 = e$. After that point, the system seems to be doing some over-fitting to the data. Additionally, this makes sense. With a variable prior, we're not very certain about how our data is generated or distributed. Therefore, the model can learn more quickly from the incoming data. If we had a prior with very small variance, it would require an enormous amount of data to change our belief.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.6]{hw2_cross_validation.png}
+\caption{10-Fold Cross Validation and Testing Data results from MAP estimate.}
+\label{fig:cross_validation}
+\end{figure}
+
+\item After standardizing the data, the new $\bw$ is given by, where we use $\sigma^2 = e$.
+
+\begin{lstlisting}
+array([  3.3239818 ,   3.7805773 ,   3.96723509,   3.24682572,
+         1.812309  ,   3.37176343,   2.69858099,   3.26723951,
+         3.21053188,   3.57863507,   2.93518846,   5.80321697,
+         3.20148729,   3.3682881 ,   3.0651955 ,   2.26639966,
+         3.18783952,   3.53772384,   0.33443072,   3.02108896,
+         0.12313008,   3.25544495,   2.88668557,   3.21139298,
+        -5.3504362 ,  -2.05567011,   0.32648644,   3.41915223,
+         3.73286432,   3.4745214 ,   3.45743104,   3.119373  ,
+         3.55698906,   3.12266529,   3.56520895,   3.4818673 ,
+         3.41311887,   2.34897263,   3.38181961,   3.17374505,
+         3.33515686,  -1.45265659,   3.2920016 ,   1.80916005,
+       -13.28127109,  -1.66904174,   3.29165059,   3.27698537,
+         3.15808291,   3.72040009,   3.29212317,   0.5787002 ,
+         2.74064018,   3.1665611 ,  -5.66067519,  -0.61890323,  -0.29541735])
+\end{lstlisting}
+
+We also see in Figure \ref{fig:cross_validation_normalized} that the normalized data has much better results, overall, than the non-normalized data.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.6]{hw2_cross_validation_normalized.png}
+\caption{10-Fold Cross Validation and Testing Data results from MAP estimate using normalized data}
+\label{fig:cross_validation_normalized}
+\end{figure}
+
+\item Looking through the variables, the following are possible changes we can make.
+\begin{itemize}
+\item The first 48 features appear to be fine. At first sight, it might make sense to take the log of the features so that smaller percentages can more easily be differentiated, but even here, we run into the issue of what happens to probabilities with $0$. To keep this simple, we just keep the features as they are.
+\item The next 6 features can be converted to binary. We're interested in knowing whether or not the characters are present, not what their percentage is. The average are very low for these features, yet the max and min vary widely (large variance). Therefore, it appears that if an email has these characters, it's very likely to have a large proportion of them. If any email does not have these characters, it's likely to not have any. Therefore, it makes sense to represent these variables as binary.
+\item The final features we keep the same -- after they're normalized, they should be on equal footing.
+\end{itemize}
+Once we do this, we now plot the results. See Figure \ref{fig:new_features} for reference.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[scale=0.4]{hw2_new_features.png}
+\caption{10-fold Cross Validation for the new feature set.}
+\label{fig:new_features}
+\end{figure}
+
+From the results, it appears that our changes to the data are actually not beneficial. One possible alternative would have been to add the features rather than replace them, but while this might be the case,
+\end{enumerate}
+
+For reference, the code is found below:
+\includepdf[pages=1-9]{Assignment_2_book.pdf}
+\end{document}

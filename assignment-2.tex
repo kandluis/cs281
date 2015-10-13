@@ -1,0 +1,155 @@
+% No 'submit' option for the problems by themselves.
+\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+%\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Your Name}
+\email{email@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  John Doe,
+  Jane Doe
+}
+
+% You don't need to change these.
+\course{CS281-F13}
+\assignment{Assignment \#2}
+\duedate{23:59pm October 7, 2015}
+
+% Useful macros.
+\newcommand{\trans}{\mathsf{T}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\distNorm}{\mathcal{N}}
+\newcommand{\bzero}{\mathbf{0}}
+\newcommand{\ident}{\mathbb{I}}
+
+\begin{document}
+
+
+\begin{problem}[10pts]
+One intuitive way to summarize a probability density is via the mode,
+as this is the ``most likely'' value in some sense.  A common example
+of this is using the maximum \textit{a posteriori} (MAP) estimate of a
+model's parameters.  In high dimensions, however, the mode becomes
+less and less representative of typical samples.  Consider variates
+from a~$D$-dimensional zero mean spherical Gaussian with unit
+variance:
+\begin{align*}
+  \bx &\sim \distNorm(\bzero_D, \ident_D),
+\end{align*}
+where~$\bzero_D$ indicates a column vector of~$D$ zeros and~$\ident_D$
+is a~${D\times D}$ identity matrix.
+\begin{enumerate}
+  \item Compute the distribution that this implies over the distance
+    of these points from the origin.  That is, compute the
+    distribution over~$\sqrt{\bx^\trans\bx}$, if~$\bx$ is a
+    realization from~$\distNorm(\bzero_D, \ident_D)$.  (Hint: Consider
+    transformations of a Gamma distribution.)
+  \item Make a plot that shows this probability density function for
+    several different values of~$D$, up to ~${D=100}$.
+
+  \item Make a plot of the cumulative distribution function (CDF) over
+    this distance distribution for~${D=100}$.  A closed-form solution
+    may be difficult to compute, so you can do this numerically.)
+
+  \item From examining the CDF we can think about where most of the
+    mass lives as a function of radius.  For example, most of the mass
+    for~${D=100}$ is within a thin spherical shell.  From eyeballing
+    the plot, what are the inner and outer radii for the shell that
+    contains 90\% of the mass in this case?
+\end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Bayesian Linear Regression, 30pts]
+Here are some one-dimensional data to regress:
+\begin{verbatim}
+x = [-1.87 -1.76 -1.67 -1.22 -0.07 0.11 0.67 1.60 2.22 2.51]'
+y = [0.06 1.67 0.54 -1.45 -0.18 -0.67 0.92 2.95 5.13 5.18]'
+\end{verbatim}
+Construct a Bayesian linear regression model using Gaussian observation noise with fixed variance $\sigma^2$, and a basis of your choosing (e.g., polynomial, sinusoids, radial basis functions).
+For the prior on the regression weights, use a normal distribution:
+$$p(\bw) = \distNorm(\bw | \bw_0, \mathbf V_0)$$
+
+
+\begin{enumerate}
+  \item Write down:
+  \begin{enumerate}
+  	\item your basis
+  	\item the posterior distribution on $\bw$ given the data: $p(\bw | \bx, \by, \bw_0, \mathbf V_0, \sigma^2)$.
+  	\item the posterior predictive distribution $p(y^\star | x^\star, \bx, \by, \bw_0, \mathbf V_0, \sigma^2)$ of a new function value $y^\star = f(x^\star)$ obtained by integrating out $\bw$.
+	\item The marginal likelihood, $p(\by | \bx, \bw_0,\boldsymbol V_0, \sigma^2)$ obtained by integrating out the regression weights.
+  \end{enumerate}
+  \item Choose values of $\bw_0, \mathbf V_0$ and $\sigma^2$ that seem sensible for the regression weight prior and the noise.
+  Plot several random functions drawn from your prior.
+
+  \item Plot the data, as well as several typical posterior samples of the function given the data.
+    
+  \item Plot the 95\% central credible interval region of the
+    predictive density as a function of~$x$. That is, produce a plot
+    that shows the ``tube'' containing most of the functions that are
+    consistent with the data under your model.
+
+  \item Try varying the basis functions used.  For example, you could change the
+    order of polynomial, or how many radial basis functions to put
+    down.  Produce a bar plot of the marginal likelihood for several of these hypotheses.
+    Which hypotheses are supported by the data?
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[30pts, Hastie et al., Murphy]
+In this problem, we'll apply logistic regression to a data set of spam
+email.  These data consist of 4601 email messages, from which 57
+features have been extracted.  These are as follows:
+\begin{itemize}
+  \item $48$ features in $[0,100]$, giving the percentage of words in
+    a given message which match a given word on a list containing,
+    e.g., ``business'', ``free'', etc.
+  \item $6$ features in $[0,100]$, giving the percentage of characters
+    in the email that match characters on a list containing, e.g.,
+    ``\$'', ``\#'', etc.
+  \item Feature 55: The average length of an uninterrupted sequence of
+    capital letters.
+  \item Feature 56: The length of the longest uninterrupted sequence
+    of capital letters.
+  \item Feature 57: The sum of the lengths of uninterrupted sequences
+    of capital letters.
+\end{itemize}
+There are files \texttt{spam.train.dat} and \texttt{spam.test.dat}
+(available on the course website) in which each row is an email.
+There are 3000 training and 1601 test examples.  The final column in
+each file indicates whether the email was spam.
+
+\begin{enumerate}
+  \item Code up ~$\ell_2$-regularized logistic regression.
+  That is, code up a model of the form:
+  \begin{align}
+  p(\mathbf{w}) & = \mathcal{N}(0, \sigma^2 I) \\
+  p(y_i = 1 | \mathbf{x}, \mathbf{w}) & = \frac{1}{1 + \exp(-\mathbf{w}^T \mathbf{x})}
+  \end{align}
+
+  and use it to compute the MAP estimate of $\mathbf{w}$, given the training examples.
+  Compute the gradients of the posterior probability of the data with respect to $\mathbf{w}$, and check that they're correct numerically.
+  Show the code you used for computing the derivatives. 
+  
+  \item Use
+    10-fold cross-validation on the training set to determine an appropriate regularization
+    penalty $\sigma^2$.  Plot different values of $\log_e \sigma^2$ ranging from -8 to 8  against the cross-validation error and test error.  Which is the best?
+  \item There are different ways one might preprocess the data.  One
+    typical thing to do is to linearly ``standardize'' each input feature so
+    that it has mean zero and variance one.  Do this standardization
+    and evaluate the model again.  Report the discovered $\bw$, and the training and test error after performing cross-validation as in part 2.
+    \item It may also be the case that some dimensions are better represented a binary variables, or by taking the logarithm, than the given values.
+  Hypothesize whether any of the variables in this data sets might be better coded as binary (or using their log), and explain your reasoning.
+  Then do the transform and apply the same cross-validation as before.  Do your results improve?  Conjecture why or why not.
+\end{enumerate}
+
+\end{problem}
+
+
+\end{document}

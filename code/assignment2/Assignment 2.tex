@@ -1,0 +1,870 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass{article}
+
+    
+    
+    \usepackage{graphicx} % Used to insert images
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{color} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    
+
+    
+    
+    \definecolor{orange}{cmyk}{0,0.4,0.8,0.2}
+    \definecolor{darkorange}{rgb}{.71,0.21,0.01}
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{myteal}{rgb}{.26, .44, .56}
+    \definecolor{gray}{gray}{0.45}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{mediumgray}{gray}{.8}
+    \definecolor{inputbackground}{rgb}{.95, .95, .85}
+    \definecolor{outputbackground}{rgb}{.95, .95, .95}
+    \definecolor{traceback}{rgb}{1, .95, .95}
+    % ansi colors
+    \definecolor{red}{rgb}{.6,0,0}
+    \definecolor{green}{rgb}{0,.65,0}
+    \definecolor{brown}{rgb}{0.6,0.6,0}
+    \definecolor{blue}{rgb}{0,.145,.698}
+    \definecolor{purple}{rgb}{.698,.145,.698}
+    \definecolor{cyan}{rgb}{0,.698,.698}
+    \definecolor{lightgray}{gray}{0.5}
+    
+    % bright ansi colors
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+    
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Assignment 2}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=blue,
+      linkcolor=darkorange,
+      citecolor=darkgreen,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{stats}
+         \PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{optimize}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{from} \PY{n+nn}{numpy.random} \PY{k+kn}{import} \PY{n}{multivariate\PYZus{}normal} \PY{k}{as} \PY{n}{Normal}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Probability Densitiy Function}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Distance from Origin}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Probability Density.}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}2}]:} <matplotlib.text.Text at 0x7f99e837bb90>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{dfs} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)} \PY{o}{+} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{70}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{)} \PY{o}{+} \PY{p}{[}\PY{l+m+mi}{100}\PY{p}{]}
+        \PY{k}{for} \PY{n}{df} \PY{o+ow}{in} \PY{n}{dfs}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{chi}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mf}{0.01}\PY{p}{,} \PY{n}{df}\PY{p}{)}\PY{p}{,} \PY{n}{stats}\PY{o}{.}\PY{n}{chi}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mf}{0.99}\PY{p}{,} \PY{n}{df}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{stats}\PY{o}{.}\PY{n}{chi}\PY{o}{.}\PY{n}{pdf}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{df}\PY{p}{)}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{D = \PYZob{}\PYZcb{}}\PY{l+s}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{best}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{frameon}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{hw2\PYZus{}chi\PYZus{}pdf}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Cumulative Distribution Function}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Upper Bound on Distance From Origin}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Probability.}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{for} \PY{n}{df} \PY{o+ow}{in} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{stats}\PY{o}{.}\PY{n}{chi}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{df}\PY{p}{)}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{D = \PYZob{}\PYZcb{}}\PY{l+s}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{df}\PY{p}{)}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{best}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{frameon}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{fig}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{hw2\PYZus{}chi\PYZus{}cdf}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c}{\PYZsh{} Problem 2}
+        \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Data Points}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{X values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Y values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{1.87}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.76}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.67}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.22}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.07}\PY{p}{,} \PY{l+m+mf}{0.11}\PY{p}{,} \PY{l+m+mf}{0.67}\PY{p}{,} \PY{l+m+mf}{1.60}\PY{p}{,} \PY{l+m+mf}{2.22}\PY{p}{,} \PY{l+m+mf}{2.51}\PY{p}{]}
+        \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{0.06}\PY{p}{,} \PY{l+m+mf}{1.67}\PY{p}{,} \PY{l+m+mf}{0.54}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.45}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.18}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.67}\PY{p}{,} \PY{l+m+mf}{0.92}\PY{p}{,} \PY{l+m+mf}{2.95}\PY{p}{,} \PY{l+m+mf}{5.13}\PY{p}{,} \PY{l+m+mf}{5.18}\PY{p}{]}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} <matplotlib.collections.PathCollection at 0x7f99e8105750>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c}{\PYZsh{} We center the data and plot the points again.}
+        \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Centered Data Points}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{X values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Y values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{xbar} \PY{o}{=} \PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xbar}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}8}]:} <matplotlib.collections.PathCollection at 0x7f99e80a3ad0>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c}{\PYZsh{} Now we\PYZsq{}ll be plotting several random functions drawn from my prior.}
+        \PY{n}{lb}\PY{p}{,} \PY{n}{ub} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{xaxis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{lb}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{n}{ub}\PY{o}{+}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{k}{def} \PY{n+nf}{samplePriorWeights}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{V0}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{    w0 is the mean and V0 the covariance.}
+         \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{k}{return} \PY{n}{Normal}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{V0}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{k}{def} \PY{n+nf}{designMatrix}\PY{p}{(}\PY{n}{points}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{point}\PY{p}{,} \PY{n}{point}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{point}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{point}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{]} \PY{k}{for} \PY{n}{point} \PY{o+ow}{in} \PY{n}{points}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c}{\PYZsh{} Function to plot prior}
+         \PY{n}{w0} \PY{o}{=} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0} \PY{p}{]}
+         \PY{n}{V0} \PY{o}{=} \PY{l+m+mf}{0.1} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+         \PY{n}{sigma2} \PY{o}{=} \PY{l+m+mf}{0.5}
+         \PY{k}{def} \PY{n+nf}{plotPrior}\PY{p}{(}\PY{n}{xs}\PY{p}{)}\PY{p}{:}
+             \PY{n}{mat} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{xs}\PY{p}{)}
+             \PY{n}{w} \PY{o}{=} \PY{n}{samplePriorWeights}\PY{p}{(}\PY{n}{w0}\PY{p}{,} \PY{n}{V0}\PY{p}{)}
+             \PY{c}{\PYZsh{}print w}
+             \PY{n}{epsilon} \PY{o}{=} \PY{n}{Normal}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{xs}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{sigma2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{xs}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+             \PY{c}{\PYZsh{}print epsilon}
+             \PY{k}{return} \PY{n}{mat}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)} \PY{o}{+} \PY{n}{epsilon}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Random Prior Samples}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{X values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Y values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{colors} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{rainbow}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+         \PY{k}{for} \PY{n}{color} \PY{o+ow}{in} \PY{n}{colors}\PY{p}{:}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xaxis}\PY{p}{,}\PY{n}{plotPrior}\PY{p}{(}\PY{n}{xaxis}\PY{p}{)}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{n}{color}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{xbar} \PY{o}{=} \PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xbar}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{k}{def} \PY{n+nf}{plotPosterior}\PY{p}{(}\PY{n}{train}\PY{p}{,} \PY{n}{ytrain}\PY{p}{,} \PY{n}{xs}\PY{p}{,} \PY{n}{s2}\PY{p}{,} \PY{n}{V0}\PY{p}{,} \PY{n}{w0}\PY{p}{)}\PY{p}{:}
+             \PY{n}{X} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{train}\PY{p}{)}
+             \PY{n}{Xplot} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{xs}\PY{p}{)}
+             \PY{n}{Vnew} \PY{o}{=} \PY{n}{s2}\PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{s2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{V0}\PY{p}{)} \PY{o}{+} \PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}
+             \PY{c}{\PYZsh{} print Vnew.shape}
+             \PY{c}{\PYZsh{} print X.shape}
+             \PY{n}{wnew} \PY{o}{=} \PY{n}{Vnew}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{V0}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w0}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{/} \PY{n}{s2}\PY{p}{)} \PY{o}{*} \PY{n}{Vnew}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{ytrain}\PY{p}{)}
+             \PY{n}{w} \PY{o}{=} \PY{n}{Normal}\PY{p}{(}\PY{n}{wnew}\PY{p}{,} \PY{n}{Vnew}\PY{p}{)}
+             \PY{k}{return} \PY{n}{Xplot}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Posterior Samples}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{X values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Y values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{colors} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{rainbow}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+         \PY{k}{for} \PY{n}{color} \PY{o+ow}{in} \PY{n}{colors}\PY{p}{:}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xaxis}\PY{p}{,} \PY{n}{plotPosterior}\PY{p}{(}\PY{n}{xbar}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{xaxis}\PY{p}{,} \PY{n}{sigma2}\PY{p}{,} \PY{n}{V0}\PY{p}{,} \PY{n}{w0}\PY{p}{)}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{n}{color}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{xbar} \PY{o}{=} \PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xbar}\PY{p}{,}\PY{n}{y}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{k}{def} \PY{n+nf}{plotPredictive}\PY{p}{(}\PY{n}{train}\PY{p}{,} \PY{n}{ytrain}\PY{p}{,} \PY{n}{xstar}\PY{p}{,} \PY{n}{s2}\PY{p}{,} \PY{n}{V0}\PY{p}{,} \PY{n}{w0}\PY{p}{)}\PY{p}{:}
+             \PY{n}{X} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{train}\PY{p}{)}
+             \PY{n}{xstarphi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{p}{[}\PY{n}{xstar}\PY{p}{]}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{Vnew} \PY{o}{=} \PY{n}{s2}\PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{s2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{V0}\PY{p}{)} \PY{o}{+} \PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}
+             \PY{n}{wnew} \PY{o}{=} \PY{n}{Vnew}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{V0}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w0}\PY{p}{)} \PY{o}{+} \PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{/} \PY{n}{s2}\PY{p}{)} \PY{o}{*} \PY{n}{Vnew}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{ytrain}\PY{p}{)}
+             \PY{n}{mean} \PY{o}{=} \PY{n}{xstarphi}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{wnew}\PY{p}{)}
+             \PY{n}{cov} \PY{o}{=} \PY{n}{s2} \PY{o}{+} \PY{n}{xstarphi}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Vnew}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{xstarphi}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             
+             \PY{c}{\PYZsh{} Calculate PDF.}
+             \PY{n}{low} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mf}{0.025}\PY{p}{,} \PY{n}{loc} \PY{o}{=} \PY{n}{mean}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{n}{cov}\PY{p}{)}
+             \PY{n}{high} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mf}{0.975}\PY{p}{,} \PY{n}{loc}\PY{o}{=} \PY{n}{mean}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{n}{cov}\PY{p}{)}
+             \PY{k}{return} \PY{p}{(}\PY{n}{low}\PY{p}{,} \PY{n}{mean}\PY{p}{,} \PY{n}{high}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Predictive Samples and 95}\PY{l+s}{\PYZpc{}}\PY{l+s}{ Confidence Interval}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{X values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Y values}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{alls} \PY{o}{=} \PY{p}{[}\PY{n}{plotPredictive}\PY{p}{(}\PY{n}{xbar}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{xstar}\PY{p}{,} \PY{n}{sigma2}\PY{p}{,} \PY{n}{V0}\PY{p}{,} \PY{n}{w0}\PY{p}{)} \PY{k}{for} \PY{n}{xstar} \PY{o+ow}{in} \PY{n}{xaxis}\PY{p}{]}
+         \PY{n}{low}\PY{p}{,} \PY{n}{middle}\PY{p}{,} \PY{n}{high} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{alls}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xaxis}\PY{p}{,} \PY{n}{low}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{red}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xaxis}\PY{p}{,} \PY{n}{middle}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xaxis}\PY{p}{,} \PY{n}{high}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{red}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}20}]:} <matplotlib.collections.PathCollection at 0x7f99d26d24d0>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{xbar} \PY{o}{=} \PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{xbar}\PY{p}{,}\PY{n}{y}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{green}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}319}]:} \PY{k}{def} \PY{n+nf}{marginalLikeliHood}\PY{p}{(}\PY{n}{ytest}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{w0}\PY{p}{,} \PY{n}{V0}\PY{p}{,} \PY{n}{s2}\PY{p}{)}\PY{p}{:}
+              \PY{n}{mean} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w0}\PY{p}{)}
+              \PY{n}{cov} \PY{o}{=} \PY{n}{s2} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}  \PY{o}{+} \PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{V0}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+              \PY{k}{return} \PY{n}{stats}\PY{o}{.}\PY{n}{multivariate\PYZus{}normal}\PY{o}{.}\PY{n}{pdf}\PY{p}{(}\PY{n}{ytest}\PY{p}{,} \PY{n}{mean}\PY{o}{=}\PY{n}{mean}\PY{p}{,} \PY{n}{cov}\PY{o}{=}\PY{n}{cov}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}341}]:} \PY{n}{designMatrices} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{l+m+mi}{4}\PY{o}{*}\PY{n}{p}\PY{p}{)}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mf}{1.0} \PY{o}{/} \PY{p}{(}\PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{o}{/}\PY{n}{p}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{6}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{8}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{p}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+          \PY{n}{designMatrices}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{p}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{4}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{xbar}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}344}]:} \PY{c}{\PYZsh{} Plot the above}
+          \PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
+          \PY{n}{ps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{marginalLikeliHood}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{w0}\PY{p}{,} \PY{n}{V0}\PY{p}{,} \PY{n}{sigma2}\PY{p}{)} \PY{k}{for} \PY{n}{m} \PY{o+ow}{in} \PY{n}{designMatrices}\PY{p}{]}\PY{p}{)}
+          \PY{n}{ax}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{ps} \PY{o}{/} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{ps}\PY{p}{)} \PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}344}]:} <Container object of 8 artists>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}345}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Model Comparison}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Normalized Probability}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Model}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticks}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xticklabels}\PY{p}{(} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Sine}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Cosine}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Inverse}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Poly 1}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Poly 2}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Poly 3}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Poly 4}\PY{l+s}{\PYZsq{}}\PY{p}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{Poly 5}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}371}]:} \PY{c}{\PYZsh{} Read in the data}
+          \PY{n}{train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{genfromtxt}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{spam.train.dat}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{delimiter}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{genfromtxt}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{spam.test.dat}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{delimiter}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{Xtest} \PY{o}{=} \PY{n}{test}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+          \PY{n}{Ytest} \PY{o}{=} \PY{n}{test}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+          \PY{n}{Xtrain} \PY{o}{=} \PY{n}{train}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+          \PY{n}{Ytrain} \PY{o}{=} \PY{n}{train}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}280}]:} \PY{c}{\PYZsh{} Problem 3}
+          \PY{k}{def} \PY{n+nf}{negativeLogMap}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{w}\PY{p}{,}\PY{n}{s2}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Using Bayes Rule, calculate a MAP estimate.}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{n}{denom} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{logaddexp}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{)}
+              \PY{k}{return} \PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{o}{*}\PY{n}{denom} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{y}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)} \PY{o}{+} \PY{n}{denom}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{n}{w}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{s2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}281}]:} \PY{k}{def} \PY{n+nf}{logMAPGradient}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{n}{w}\PY{p}{,}\PY{n}{s2}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Gradient of the NLL.}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{k}{return} \PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{/} \PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{p}{)} \PY{o}{+}  \PY{n}{w} \PY{o}{/} \PY{n}{s2}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}282}]:} \PY{k}{def} \PY{n+nf}{minNegLogMAP}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{negativeLogMap}\PY{p}{(}\PY{n}{Xtrain}\PY{p}{,} \PY{n}{Ytrain}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{res} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{minimize}\PY{p}{(}\PY{n}{minNegLogMAP}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Xtrain}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{CG}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{wPred} \PY{o}{=} \PY{n}{res}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}283}]:} \PY{k}{def} \PY{n+nf}{negLogMAPGrad}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{sigma2}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{logMAPGradient}\PY{p}{(}\PY{n}{Xtrain}\PY{p}{,} \PY{n}{Ytrain}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{sigma2}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}269}]:} \PY{n}{res2} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{root}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{negLogMAPGrad}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{57}\PY{p}{)}\PY{p}{)}
+          \PY{n}{wGradPred} \PY{o}{=} \PY{n}{res2}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}238}]:} \PY{n}{wGradPred}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}238}]:} array([  1.84208015e-07,  -3.05912545e-07,   4.17827134e-07,
+                   4.04982554e-07,   6.50426977e-07,   2.97057812e-07,
+                   5.65705267e-07,   3.57786901e-07,   3.72966145e-07,
+                   3.92136580e-07,   2.22415084e-07,  -1.13013472e-07,
+                   1.85309744e-07,   1.42145275e-07,   2.66990381e-07,
+                   9.95597124e-07,   5.24629346e-07,   4.40472991e-07,
+                   1.60777366e-06,   4.28388021e-07,   1.87427724e-06,
+                   4.65372868e-07,   5.99015172e-07,   4.52477723e-07,
+                  -2.41873822e-06,  -1.26165129e-06,  -3.81241829e-06,
+                  -5.13742422e-07,  -4.87328085e-07,  -4.66524227e-07,
+                  -2.99094517e-07,  -2.12830769e-07,  -3.85757405e-07,
+                  -2.11866738e-07,  -4.59441127e-07,  -3.20890963e-07,
+                  -4.49439620e-07,  -5.10721426e-08,  -2.88639125e-07,
+                  -1.54803028e-07,  -2.12594415e-07,  -6.76247808e-07,
+                  -1.83258491e-07,  -4.04808828e-07,  -9.58185197e-07,
+                  -7.43167965e-07,  -2.34532643e-08,  -1.33182350e-07,
+                  -9.40865917e-08,  -1.93186535e-07,  -4.76576907e-08,
+                   7.96518577e-07,   4.09108052e-07,   1.37507262e-07,
+                   2.25107930e-05,   2.41517796e-04,   1.02066789e-03])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}291}]:} \PY{k}{def} \PY{n+nf}{verifyGradiant}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{epsilon} \PY{o}{=} \PY{l+m+mf}{0.0001}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{    Uses finite differences to verify the gradiant of our log posterior.}
+          \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+              \PY{n}{units} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{p}{[}\PY{n}{epsilon} \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n}{x}\PY{p}{]}\PY{p}{)}
+              \PY{n}{grad} \PY{o}{=} \PY{n}{negLogMAPGrad}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+              \PY{n}{finiteDiff} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{n}{minNegLogMAP}\PY{p}{(}\PY{n}{x} \PY{o}{+} \PY{n}{units}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{minNegLogMAP}\PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{units}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{epsilon}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{xrange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+              \PY{k}{return} \PY{n+nb}{all}\PY{p}{(}\PY{p}{[}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{g} \PY{o}{\PYZhy{}} \PY{n}{f}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.01} \PY{k}{for} \PY{n}{g}\PY{p}{,}\PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{grad}\PY{p}{,} \PY{n}{finiteDiff}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}292}]:} \PY{c}{\PYZsh{} Verify the result for ntrials}
+          \PY{k}{def} \PY{n+nf}{verifyGradiantM}\PY{p}{(}\PY{n}{ntrials}\PY{p}{)}\PY{p}{:}
+              \PY{n}{xs} \PY{o}{=} \PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{57}\PY{p}{)} \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{xrange}\PY{p}{(}\PY{n}{ntrials}\PY{p}{)}\PY{p}{]}
+              \PY{k}{return} \PY{n+nb}{all}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n}{verifyGradiant}\PY{p}{,} \PY{n}{xs}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}293}]:} \PY{k}{print} \PY{n}{verifyGradiantM}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+False
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}294}]:} \PY{k}{def} \PY{n+nf}{RMSE}\PY{p}{(}\PY{n}{X}\PY{p}{,}\PY{n}{Y}\PY{p}{,} \PY{n}{w}\PY{p}{)}\PY{p}{:}
+              \PY{k+kn}{import} \PY{n+nn}{math}
+              \PY{k}{return} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{Y} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{l+m+mf}{1.0} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          
+          \PY{k}{def} \PY{n+nf}{kCrossValidation}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{n}{sigma2}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{Xtrain}\PY{p}{,} \PY{n}{ydata}\PY{o}{=}\PY{n}{Ytrain}\PY{p}{,} \PY{n}{testdata}\PY{o}{=}\PY{n}{Xtest}\PY{p}{,} \PY{n}{ytestdata}\PY{o}{=}\PY{n}{Ytest}\PY{p}{)}\PY{p}{:}
+              \PY{c}{\PYZsh{} Split original data into k section}
+              \PY{n}{splits} \PY{o}{=} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Xtrain}\PY{p}{)} \PY{o}{*}\PY{n}{i} \PY{o}{/} \PY{n}{k} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Xtrain}\PY{p}{)}\PY{p}{]}
+              \PY{k}{print} \PY{n}{splits}
+              
+              \PY{n}{results} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{testResults} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{test} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+                  \PY{n}{ytest} \PY{o}{=} \PY{n}{ydata}\PY{p}{[}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+                  \PY{n}{train} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n+nb}{range}\PY{p}{(}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{n+nb}{range}\PY{p}{(}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+                  \PY{n}{ytrain} \PY{o}{=} \PY{n}{ydata}\PY{p}{[}\PY{n+nb}{range}\PY{p}{(}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)} \PY{o}{+} \PY{n+nb}{range}\PY{p}{(}\PY{n}{splits}\PY{p}{[}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+                  \PY{n}{opt} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{root}\PY{p}{(}\PY{k}{lambda} \PY{n}{x} \PY{p}{:} \PY{n}{logMAPGradient}\PY{p}{(}\PY{n}{train}\PY{p}{,}\PY{n}{ytrain}\PY{p}{,}\PY{n}{x}\PY{p}{,}\PY{n}{sigma2}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{57}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{wPredicted} \PY{o}{=} \PY{n}{opt}\PY{o}{.}\PY{n}{x}
+                  \PY{n}{results}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{RMSE}\PY{p}{(}\PY{n}{test}\PY{p}{,} \PY{n}{ytest}\PY{p}{,} \PY{n}{wPredicted}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{testResults}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{RMSE}\PY{p}{(}\PY{n}{testdata}\PY{p}{,} \PY{n}{ytestdata}\PY{p}{,} \PY{n}{wPredicted}\PY{p}{)}\PY{p}{)}
+              \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{results}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{testResults}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}295}]:} \PY{n}{logsigmas} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}
+          \PY{n}{results} \PY{o}{=} \PY{p}{[}\PY{n}{kCrossValidation}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{s}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{logsigmas}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}303}]:} \PY{k}{print} \PY{n}{results}
+          \PY{n}{resultsCross}\PY{p}{,} \PY{n}{resultsTest} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{results}\PY{p}{)}
+          \PY{n}{tplot} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{logsigmas}\PY{p}{,} \PY{n}{resultsTest}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{red}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{cplot} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{logsigmas}\PY{p}{,} \PY{n}{resultsCross}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{green}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{(}\PY{n}{tplot}\PY{p}{,} \PY{n}{cplot}\PY{p}{)}\PY{p}{,}
+                     \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Test RMSE}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{10\PYZhy{}fold Cross Validation RMSE}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{scatterpoints}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                     \PY{n}{loc}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{lower left}\PY{l+s}{\PYZsq{}}\PY{p}{,}
+                     \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{log(sigma\PYZca{}2)}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Root Mean Square Error}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[(0.42988064794329095, 0.42702964826920242), (0.39903489018491339, 0.39485359170268886), (0.36476697494759003, 0.3590933056575446), (0.33195738145393172, 0.32559816393190244), (0.3040903350606789, 0.29889028753046698), (0.28284370650712004, 0.28017394146316593), (0.26874064259272712, 0.26826900132836218), (0.26082770904443203, 0.2614316279525129), (0.25712354566033213, 0.25787185204932445), (0.25587891836652793, 0.25634039361499406), (0.25596794326005851, 0.2560312818878886), (0.25651922726898491, 0.25597677038841055), (0.25697832582888391, 0.25588688246819569), (0.25744531020011502, 0.25597611355393302), (0.25773243960063463, 0.25616613387000886), (0.25793847610773424, 0.2563603762371981), (0.25813492153915324, 0.25651051606402137)]
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}303}]:} <matplotlib.text.Text at 0x7f99e9308650>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}304}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}298}]:} \PY{c}{\PYZsh{} We now perform some standardization on the data.}
+          \PY{k}{def} \PY{n+nf}{normalize\PYZus{}features}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{:}
+              \PY{n}{mean\PYZus{}X\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+              \PY{n}{std\PYZus{}X\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+              \PY{n}{std\PYZus{}X\PYZus{}train}\PY{p}{[} \PY{n}{std\PYZus{}X\PYZus{}train} \PY{o}{==} \PY{l+m+mi}{0} \PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+              \PY{n}{X\PYZus{}train\PYZus{}normalized} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}train} \PY{o}{\PYZhy{}} \PY{n}{mean\PYZus{}X\PYZus{}train}\PY{p}{)} \PY{o}{/} \PY{n}{std\PYZus{}X\PYZus{}train}
+              \PY{n}{X\PYZus{}test\PYZus{}normalized} \PY{o}{=} \PY{p}{(}\PY{n}{X\PYZus{}test} \PY{o}{\PYZhy{}} \PY{n}{mean\PYZus{}X\PYZus{}train}\PY{p}{)} \PY{o}{/} \PY{n}{std\PYZus{}X\PYZus{}train}
+              
+              \PY{k}{return} \PY{n}{X\PYZus{}train\PYZus{}normalized}\PY{p}{,} \PY{n}{X\PYZus{}test\PYZus{}normalized}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}305}]:} \PY{n}{normXtrain}\PY{p}{,} \PY{n}{normYtrain} \PY{o}{=} \PY{n}{normalize\PYZus{}features}\PY{p}{(}\PY{n}{Xtrain}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{Ytrain}\PY{p}{)}
+          \PY{n}{normXtest}\PY{p}{,} \PY{n}{normYtest} \PY{o}{=} \PY{n}{normalize\PYZus{}features}\PY{p}{(}\PY{n}{Xtest}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{Ytest}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}312}]:} \PY{n}{logsigmas} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}
+          \PY{n}{results2} \PY{o}{=} \PY{p}{[}\PY{n}{kCrossValidation}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{s}\PY{p}{)}\PY{p}{,} \PY{n}{normXtrain}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{normYtrain}\PY{p}{,} \PY{n}{normXtest}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{normYtest}\PY{p}{)} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{logsigmas}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}313}]:} \PY{k}{print} \PY{n}{results2}
+          \PY{n}{resultsCross}\PY{p}{,} \PY{n}{resultsTest} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{results2}\PY{p}{)}
+          \PY{n}{tplot} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{logsigmas}\PY{p}{,} \PY{n}{resultsTest}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{red}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{cplot} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{logsigmas}\PY{p}{,} \PY{n}{resultsCross}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{green}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{(}\PY{n}{tplot}\PY{p}{,} \PY{n}{cplot}\PY{p}{)}\PY{p}{,}
+                     \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Test RMSE for Normalized Data}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{10\PYZhy{}fold Cross Validation RMSE for Normalized Data}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{scatterpoints}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                     \PY{n}{loc}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{lower left}\PY{l+s}{\PYZsq{}}\PY{p}{,}
+                     \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{log(sigma\PYZca{}2)}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Root Mean Square Error}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[(0.18157300962484479, 0.182819300899488), (0.17592907408096675, 0.17773147536257672), (0.17561907741104593, 0.17736306672233398), (0.17561675802808993, 0.17735942576862632), (0.17561675799042892, 0.17735942569202703), (0.17561675799042892, 0.17735942569202703), (0.17561675799042892, 0.17735942569202703), (0.17561675799042892, 0.17735942569202703), (0.17589285423105258, 0.17752437166209128), (0.17840243915907006, 0.17846008058962637), (0.17561499739147518, 0.17736320554130716), (0.17563383360432921, 0.17737256909649007), (0.1756334970870323, 0.17737843773116532), (0.17563529363966413, 0.17739160202926002), (0.17561459748521646, 0.17737586048520049), (0.17566815767993754, 0.17742838467015348), (0.17568142963501993, 0.17744409985126636)]
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}313}]:} <matplotlib.text.Text at 0x7f99e86d3dd0>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}314}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}317}]:} \PY{k}{def} \PY{n+nf}{negLogMAPGrad}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{sigma2}\PY{p}{)}\PY{p}{:}
+              \PY{k}{return} \PY{n}{logMAPGradient}\PY{p}{(}\PY{n}{normXtrain}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{normYtrain}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{w}\PY{p}{,} \PY{n}{sigma2}\PY{p}{)}
+          
+          \PY{n}{res3} \PY{o}{=} \PY{n}{optimize}\PY{o}{.}\PY{n}{root}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{negLogMAPGrad}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{l+m+mi}{57}\PY{p}{)}\PY{p}{)}
+          \PY{n}{wGradPred} \PY{o}{=} \PY{n}{res3}\PY{o}{.}\PY{n}{x}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}318}]:} \PY{n}{wGradPred}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}318}]:} array([  3.3239818 ,   3.7805773 ,   3.96723509,   3.24682572,
+                   1.812309  ,   3.37176343,   2.69858099,   3.26723951,
+                   3.21053188,   3.57863507,   2.93518846,   5.80321697,
+                   3.20148729,   3.3682881 ,   3.0651955 ,   2.26639966,
+                   3.18783952,   3.53772384,   0.33443072,   3.02108896,
+                   0.12313008,   3.25544495,   2.88668557,   3.21139298,
+                  -5.3504362 ,  -2.05567011,   0.32648644,   3.41915223,
+                   3.73286432,   3.4745214 ,   3.45743104,   3.119373  ,
+                   3.55698906,   3.12266529,   3.56520895,   3.4818673 ,
+                   3.41311887,   2.34897263,   3.38181961,   3.17374505,
+                   3.33515686,  -1.45265659,   3.2920016 ,   1.80916005,
+                 -13.28127109,  -1.66904174,   3.29165059,   3.27698537,
+                   3.15808291,   3.72040009,   3.29212317,   0.5787002 ,
+                   2.74064018,   3.1665611 ,  -5.66067519,  -0.61890323,  -0.29541735])
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}357}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{Xtrain}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+              \PY{k}{print} \PY{n}{Xtrain}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{Xtrain}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+4.34 0.0834651727889
+14.28 1.5602771744
+4.54 0.240965132622
+42.73 1.80279276227
+9.09 0.451633559722
+3.44 0.0618669617667
+7.27 0.157046604167
+11.11 0.166051257233
+5.26 0.0783172257333
+18.18 0.489108013156
+2.06 0.0370296441667
+9.67 0.752641730833
+2.94 0.0705337975
+10.0 0.111589678889
+4.41 0.0695421006222
+20.0 0.712749705556
+7.14 0.188993064167
+7.69 0.281013398933
+18.75 3.13527580582
+6.32 0.169593815289
+11.11 1.40176137146
+17.1 0.940210426667
+4.76 0.124112466656
+12.5 0.181356745556
+20.83 2.78818950116
+16.66 0.862432956933
+33.33 11.5294699747
+9.09 0.3067355431
+14.28 0.390630881956
+5.88 0.207423745556
+12.5 0.1728945879
+4.76 0.0987427327889
+18.18 0.348104303456
+4.76 0.0990575386222
+20.0 0.319134094656
+7.69 0.1580419216
+6.89 0.173081322656
+8.33 0.0596935997222
+9.75 0.168894287289
+4.76 0.1088402599
+7.14 0.145509982222
+14.28 0.594633412933
+3.57 0.0529594244333
+20.0 0.505215981289
+21.42 1.09504480746
+16.7 0.718548041233
+2.17 0.00758992333333
+5.0 0.0518996837333
+4.385 0.0652787094093
+4.271 0.050525267296
+2.777 0.0104009737546
+32.478 0.715710916618
+6.003 0.0657003054132
+19.829 0.243112039733
+1102.5 1250.74145264
+2204.0 16440.1782982
+9090.0 270349.271173
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}372}]:} \PY{k}{def} \PY{n+nf}{transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{:}
+              \PY{k}{def} \PY{n+nf}{binary}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{:}
+                  \PY{k}{return} \PY{l+m+mi}{0} \PY{k}{if} \PY{n}{x} \PY{o}{==} \PY{l+m+mi}{0} \PY{k}{else} \PY{l+m+mi}{1}
+              \PY{n}{newX} \PY{o}{=} \PY{n}{X}
+              \PY{n}{vecbinary} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{vectorize}\PY{p}{(}\PY{n}{binary}\PY{p}{)}
+              \PY{n}{newX}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{48}\PY{p}{:}\PY{l+m+mi}{52}\PY{p}{]} \PY{o}{=} \PY{n}{vecbinary}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{48}\PY{p}{:}\PY{l+m+mi}{52}\PY{p}{]}\PY{p}{)}
+              \PY{k}{return} \PY{n}{newX}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}373}]:} \PY{n}{newnormXtrain}\PY{p}{,} \PY{n}{newnormYtrain} \PY{o}{=} \PY{n}{normalize\PYZus{}features}\PY{p}{(}\PY{n}{transform}\PY{p}{(}\PY{n}{Xtrain}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{Ytrain}\PY{p}{)}
+          \PY{n}{newnormXtest}\PY{p}{,} \PY{n}{newnormYtest} \PY{o}{=} \PY{n}{normalize\PYZus{}features}\PY{p}{(}\PY{n}{transform}\PY{p}{(}\PY{n}{Xtest}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{p}{,} \PY{n}{Ytest}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}375}]:} \PY{n}{logsigmas} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}
+          \PY{n}{results3} \PY{o}{=} \PY{p}{[}\PY{n}{kCrossValidation}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{s}\PY{p}{)}\PY{p}{,} \PY{n}{newnormXtrain}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{newnormYtrain}\PY{p}{,} \PY{n}{newnormXtest}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{newnormYtest}\PY{p}{)} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{logsigmas}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+[0, 300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700, 3000]
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}376}]:} \PY{k}{print} \PY{n}{results3}
+          \PY{n}{resultsCross}\PY{p}{,} \PY{n}{resultsTest} \PY{o}{=} \PY{n+nb}{zip}\PY{p}{(}\PY{o}{*}\PY{n}{results3}\PY{p}{)}
+          \PY{n}{tplot} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{logsigmas}\PY{p}{,} \PY{n}{resultsTest}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{red}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{cplot} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{logsigmas}\PY{p}{,} \PY{n}{resultsCross}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{green}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{(}\PY{n}{tplot}\PY{p}{,} \PY{n}{cplot}\PY{p}{)}\PY{p}{,}
+                     \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{Test RMSE for Normalized Data}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{10\PYZhy{}fold Cross Validation RMSE for Normalized Data}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{scatterpoints}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                     \PY{n}{loc}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{lower left}\PY{l+s}{\PYZsq{}}\PY{p}{,}
+                     \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{log(sigma\PYZca{}2)}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Root Mean Square Error}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[(0.18651052232593085, 0.18483014094664468), (0.18098988295441615, 0.17930605224146728), (0.18067603673932392, 0.17893114394623441), (0.18067353693764504, 0.17892752415429475), (0.18067353689641594, 0.17892752407853307), (0.18067353689641594, 0.17892752407853307), (0.18067353689641594, 0.17892752407853307), (0.18067353689641594, 0.17892752407853307), (0.1809251404017409, 0.17892888504753701), (0.18400286286866507, 0.18015614165276689), (0.18067208981993044, 0.17893148181124116), (0.18069460121907113, 0.17895124298453952), (0.18069133989996297, 0.17895241355016561), (0.18069115874743996, 0.1789511443015126), (0.18070665923902843, 0.17895189494095046), (0.18076397066463695, 0.17896000358540104), (0.18092194403195205, 0.17926259089030944)]
+    \end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}376}]:} <matplotlib.text.Text at 0x7f99ca3ae350>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}377}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

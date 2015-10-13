@@ -48,6 +48,7 @@ __pycache__/
 
 # Ignore image files
 *.jpg
+*.png
 
 # Distribution / packaging
 .Python
