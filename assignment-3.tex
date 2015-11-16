@@ -1,0 +1,280 @@
+% No 'submit' option for the problems by themselves.
+\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+%\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Your Name}
+\email{email@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  John Doe,
+  Fred Doe
+}
+
+% You don't need to change these.
+\course{CS281-F15}
+\assignment{Assignment \#3}
+\duedate{11:59pm October 28, 2015}
+
+\usepackage{url, enumitem}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{bm}
+
+% Some useful macros.
+\newcommand{\given}{\,|\,}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\text{var}}
+\newcommand{\cov}{\text{cov}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ep}{\varepsilon}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{problem}[An orthogonal view of PCA, 20pts]
+In lecture we showed that PCA maximizes the variance explained by the top $r$ principal components for every integer $r$. In this problem you will prove an equivalent characterization of PCA as an optimal low-rank approximation of the data. One reason we might seek such a representation is if we have a very high-dimensional data set to which we'd like to apply an expensive learning procedure. In this case, a lower-dimensional approximation of our data \--- if it's sufficiently good \--- might allow us to do our learning much faster by allowing us to operate in the lower-dimensional space.
+
+Let's begin. Suppose we are given a data matrix $X \in \R^{n \times m}$ that is centered, i.e., the mean of every column is 0. Given some set of orthonormal vectors $\{ \pi_1, \ldots, \pi_r\} \subset \R^m$, let $\Pi \in \R^{m \times r}$ be the matrix whose columns are the $\pi_i$. We seek to represent observations as linear combinations of the vectors $\pi_d$. This won't be possible exactly because $r < m$, so instead we ask which set of vectors will give us the best approximation with respect to the $L^2$ norm.
+
+\begin{enumerate}[label=(\alph*)]
+\item
+Show that if $x$ is an $m$-dimensional row vector then $x \Pi \Pi^T = \sum_{d=1}^r \langle x, \pi_d \rangle \pi_d^T$, so that $\Pi \Pi^T$ projects onto the span of the vectors $\pi_d^T$.
+\item
+Argue that the rank of $X \Pi \Pi^T$ is at most $r$.
+
+\item
+Suppose that $r=1$ so that $\Pi$ contains just one column vector $\pi_1$, and consider the matrix $X \Pi\Pi^T = X \pi_1 \pi_1^T$. Prove that the reconstruction error
+\[
+\| X \pi_1\pi_1^T - X \|_2^2
+\]
+is minimized if and only if
+\[
+\frac{1}{n} \sum_{i=1}^n (x_i \cdot \pi_1)^2 = \frac{1}{n} \| X \pi_1 \|_2^2
+\]
+is maximized, where $x_i$ is a row-vector containing the $i$-th row of $X$ and $\| \cdot \|_2$ is the vector/matrix 2-norm.
+
+\item
+Argue that the previous part implies that the reconstruction error is minimized if and only if the variance of the data in the $\pi_1$ direction is maximized. That is, if $X^*$ denotes a random observation from $X$ then an optimal $\pi_1$ maximizes $\var(X^* \cdot \pi_1)$. Conclude that when $r=1$ an optimal choice for $\pi_1$ is the top principal component of $X$.
+
+\item
+What if $r > 1$? Given a vector $x \in \R^m$, use the fact that $\Pi \Pi^T$ is a projection (part a), as well as the previous part, to show similarly to part c that the reconstruction error
+\[
+\| X \Pi \Pi^T - X \|_2^2
+\]
+is minimized if and only if the sum of the variances along the directions $\pi_d$,
+\[
+\sum_{d=1}^r \var(X^* \cdot \pi_d)
+\]
+is maximized. Conclude that in general the top $r$ principal components give us an optimal rank-$d$ approximation of the data matrix $X$.
+\end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Modeling users and jokes with a latent linear model, 25pts]
+In this problem, we'll use a latent linear model to jointly model the ratings
+users assign to jokes. The data set we'll use is a modified and preprocessed
+variant of the Jester data set (version 2) from
+\url{http://eigentaste.berkeley.edu/dataset/}. The data we provide you with are user
+ratings of 150 jokes. There are over 1.7M ratings with values 1, 2, 3, 4 and 5,
+from about sixty thousand users. {\bf The data we give you is a modified version of the original Jester data set,
+please use the files we provide in canvas and not the original ones}. The texts of the jokes are also available.
+Warning: most of the jokes are bad, tasteless, or both. At best, they were
+funny to late-night TV hosts in 1999-2000. Note also that some of the jokes do
+not have any ratings and so can be ignored.
+
+\begin{enumerate}[label=(\alph*)]
+\item
+Let~${r_{i,j}\in\{1,2,3,4,5\}}$ be the rating of user $i$ on joke $j$.  A latent linear model introduces a vector ${u_i\in\R^K}$ for each user and a vector~${v_j\in\R^K}$ for each joke.  Then, each rating is modeled as a noisy version of the appropriate inner product. Specifically,
+\[
+r_{i,j} \sim \mathcal{N}(u_i^T v_j, \sigma^2).
+\]
+so that the log-likelihood is
+\[
+\log P(R) = \sum_{i,j} \left( -\frac{1}{2\sigma^2} \left( r_{i,j} - u_i^T v_j \right)^2 - \log \sigma - \frac{1}{2} \log(2\pi) \right)
+\]
+where the sum runs over all $i,j$ for which a rating exists.
+
+What are the gradients of this log-likelihood with respect to $u_i$ and $v_j$?
+
+\item
+Randomly choose 100K ratings to hold out as a validation set. Now set $K = 2$,
+$\sigma^2=1.0$ and initialize the components of $u_i$ and $v_j$ by sampling from
+a Gaussian distribution with zero mean and standard deviation $0.01$.  After
+this, adjust the vectors $u_i$ and $v_j$ on your training set using stochastic
+gradient descent without minibatches: iterate over the training ratings
+updating $u_i$ and $v_j$ for each $r_{ij}$ that is available. Use $\lambda =
+0.05$ as the learning rate and iterate 10 times (epochs) over the training
+data. Note that the maximum likelihood estimate of $\sigma^2$ is just the mean
+squared error of your predictions on the training set. Report your MLE of
+$\sigma^2$.
+
+\item Evaluate different choices of $K$ on the validation set. Evaluate $K = 1,
+\ldots, 10$ and produce a plot that shows the root-mean-squared error on both
+the training set and the validation set for each trial and for each $K$. What
+seems like a good value for~$K$?
+
+ \item We might imagine that some jokes are just better or worse than others.
+We might also imagine that some users tend to have higher or lower means in
+their ratings. In this case, we can introduce biases into the model so that
+$r_{ij} \approx u_i^\text{T} v_j + a_i + b_j + g$, where $a_i$, $b_j$ and $g$ are user,
+joke and global biases, respectively.  Change the model to incorporate these
+biases and fit it again with $K=2$, learning these new biases as well. Write
+down the likelihood that you are optimizing. One side-effect is that you should
+be able to rank the jokes from best to worst. What are the best and worst jokes
+and their respective biases?  What is the value of the global bias?
+
+ \item Sometimes we have users or jokes that only have a few ratings. We don't
+want to overfit with these and so we might want to put priors on them. What are
+reasonable priors for the latent features and the biases? Draw a directed
+graphical model that shows all of these variables and their relationships.
+Note that you are not required to code this new model up, just discuss
+resonable priors and write the graphical model.
+
+
+\end{enumerate}
+\end{problem}
+
+\section*{Ordinal Regression}
+
+We now address the problem of predicting joke ratings given the text of the
+joke. The previous models assumed that the ratings where continuous real
+numbers, while they are actually integers from 1 to 5. To take this into
+account, we will use an ordinal regression model.
+Let the rating values
+be $r = 1,\ldots,R$. In the ordinal regression model the real line is
+partitioned into $R$ contiguous intervals with boundaries
+\begin{align}
+-\infty = b_1 < b_2 < \ldots < b_{R+1} = +\infty\,,
+\end{align}
+such that the interval $[b_r,b_{r+1})$ corresponds to the $r$-th rating value.
+We will assume that $b_2 = -4$, $b_1 = -2$, $b_3 = 0$, $b_4 = 2$ and $b_5 = 4$.
+Instead of directly modeling the ratings, we will be modeling them in terms of a
+hidden variable $f$. We have that the rating $r$ is observed
+if $f$ falls in the interval for that rating. The conditional probability of
+$r$ given $f$ is then
+\begin{align}
+p(r|f) =
+\left\{
+    \begin{array}{ll}
+        1  & \mbox{if }\quad  b_r \leq f < b_{r+1} \\
+        0 & \mbox{if } \quad \mbox{otherwise}
+    \end{array}
+\right.
+= \Theta(f - b_r) - \Theta(f-b_{r+1})\,,
+\end{align}
+where $\Theta(x)$ is the Heaviside step function, that is, $\Theta(x)=1$ if
+$x>0$ and $\Theta(x)=0$ otherwise. Uncertainty about the exact value of $f$ can
+be modeled by adding additive Gaussian noise to $f$. Let $\sigma^2$ be the variance
+of this noise. Then $p(f|h) = \mathcal{N}(f|h,\sigma^2)$, where $h$ is a new latent
+variable that is the noise free version of $f$.
+
+Given some features $\mathbf{x}$ for a particular joke, we can then combine the
+previous likelihood with a linear model to make predictions for the possible
+rating values for the joke. In particular, we can assume that the noise-free
+rating value $h$ is a linear function of $\mathbf{x}$, that is
+$h(\mathbf{x})=\mathbf{w}^\text{T} \mathbf{x}$, where $\mathbf{w}$ is a vector
+of regression coefficients. We will assume that the prior for $\mathbf{w}$ is
+$p(\mathbf{w})=\mathcal{N}(\bm 0, \mathbf{I})$.
+
+The problem now is what feature representation to use for the jokes. We propose
+here that you compute binary features that indicate the presence or absence of
+the 150 most common words across all the jokes plus a bias term that is always
+equal to one. The file \texttt{jester\_items.clean.dat} in canvas has the joke texts with
+punctuation and case removed. To turn the texts into the proposed binary features you can use the
+python script \texttt{generate\_binary\_features.py}, which is also available at canvas.
+
+\subsection*{Stochastic optimization with Adam}
+
+Stochastic optimization of cost functions for models with many parameters can
+be difficult because each parameter may require a different learning
+rate. Adam,
+(\url{http://arxiv.org/pdf/1412.6980v8.pdf})
+is a method that can be used to avoid this problem. Adam computes individual
+adaptive learning rates for different parameters from estimates of first and
+second moments of the gradients. Algorithm 1, shows the pseudo-code (extracted from the above
+reference). You are encouraged to look at the pdf
+for more details.
+
+\subsection*{Sparse matrices}
+
+A collection of ratings given by a set of users on a set of items can be
+efficiently manipulated by storing them in a sparse matrix format. The non-zero
+entries in the matrix would contain the observed rating values, while the zero
+entries encode missing ratings. In the package \texttt{spcipy.sparse} you
+have available the following sparse matrix types:
+
+{\footnotesize
+\begin{verbatim}
+bsr_matrix  Block Sparse Row matrix
+coo_matrix  A sparse matrix in COOrdinate format.
+csc_matrix  Compressed Sparse Column matrix
+csr_matrix  Compressed Sparse Row matrix
+dia_matrix  Sparse matrix with DIAgonal storage
+dok_matrix  Dictionary Of Keys based sparse matrix.
+lil_matrix  Row-based linked list sparse matrix
+\end{verbatim}
+}
+
+Each sparse matrix type presents different computational advantages for
+accessing and manipulating the data depending on whether the operations are
+performed by rows or by columns or in an arbitrary way. If you encode the
+ratings in a matrix with users as rows and jokes as columns, the
+\texttt{csc\_matrix} type can be useful to quickly identify the ratings that
+are available for any particular joke. The \texttt{lil\_matrix} type is useful
+if we want to incrementally construct a sparse matrix by adding new blocks of
+non-zero entries.
+
+\begin{center}
+\includegraphics[scale=0.9]{adam_pseudo_code.pdf}
+\end{center}
+
+\begin{problem}[Ordinal linear regression 25pts] You are required to
+\begin{enumerate}
+\vspace{-0.1cm}
+\item Explain what is the form for $p(r|h)$ in the ordinal regression model.
+
+\vspace{-0.1cm}
+\item Explain what is the mean of the predictive distribution in the ordinal regression model.
+
+\vspace{-0.1cm}
+\item Code a function that splits the ratings for each joke into a training set
+with 95\% of the ratings and a test set with the remaining 5\%.  After this,
+each joke should have 95\% of its ratings in the training set and 5\% of them
+in the test set. For this, it can be useful to work with sparse matrices of dimension $n\times
+m$ where $n$ is the number of users and $m$ is the number of jokes and the
+non-zero entries in the matrix are the observed rating values.
+
+\vspace{-0.1cm}
+\item Code a function that computes the log posterior distribution of the ordinal
+regression model up to a normalization constant. Code a function that computes
+the gradients of the previous function with respect to $\mathbf{w}$ and
+$\sigma^2$. You are encouraged to use automatic differentiation tools such as autograd
+(\url{https://github.com/HIPS/autograd}).
+
+\vspace{-0.1cm}
+\item Code a function that finds the MAP solution for $\mathbf{w}$ and
+$\sigma^2$ in the ordinal regression model given the available training data using mini-batch stochastic
+gradient descent. Use minibatches of size 100 and Adam with its default
+parameter values for 100 epochs (iterations over the training data). Report the
+average test RMSE.
+
+\vspace{-0.1cm}
+\item Modify the previous model to have a Gaussian likelihood, that is, $p(r|h)=\mathcal{N}(r|h,\sigma^2)$.
+Report the resulting average test RMSE of the new model. Does performance
+increase or decrease? Why?
+\vspace{-0.1cm}
+\item How does the performance of the models analyzed in this problem compare to
+the performance of the model from problem 2? Which model performs best? Why?
+\end{enumerate}
+\end{problem}
+
+\end{document}

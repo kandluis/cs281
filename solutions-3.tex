@@ -1,0 +1,528 @@
+% No 'submit' option for the problems by themselves.
+\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+%\documentclass[submit]{harvardml}
+
+% Put in your full name and email address.
+\name{Luis A. Perez}
+\email{luisperez@college.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+Brian Arroyo
+}
+
+% You don't need to change these.
+\course{CS281-F15}
+\assignment{Assignment \#3}
+\duedate{11:59pm October 28, 2015}
+
+\usepackage{url, enumitem}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{bm}
+
+% Some useful macros.
+\newcommand{\given}{\,|\,}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\text{var}}
+\newcommand{\cov}{\text{cov}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ep}{\varepsilon}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{problem}[An orthogonal view of PCA, 20pts]
+In lecture we showed that PCA maximizes the variance explained by the top $r$ principal components for every integer $r$. In this problem you will prove an equivalent characterization of PCA as an optimal low-rank approximation of the data. One reason we might seek such a representation is if we have a very high-dimensional data set to which we'd like to apply an expensive learning procedure. In this case, a lower-dimensional approximation of our data \--- if it's sufficiently good \--- might allow us to do our learning much faster by allowing us to operate in the lower-dimensional space.
+
+Let's begin. Suppose we are given a data matrix $X \in \R^{n \times m}$ that is centered, i.e., the mean of every column is 0. Given some set of orthonormal vectors $\{ \pi_1, \ldots, \pi_r\} \subset \R^m$, let $\Pi \in \R^{m \times r}$ be the matrix whose columns are the $\pi_i$. We seek to represent observations as linear combinations of the vectors $\pi_d$. This won't be possible exactly because $r < m$, so instead we ask which set of vectors will give us the best approximation with respect to the $L^2$ norm.
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+\item We show that if $x \in \mathbb{R}^m$ with $\Pi \in \mathbb{R}^{m \times r}$ consisting of $r$ columns $\{\pi_1, \cdots, \pi_r\}$, then $x \Pi \Pi^T = \sum_{d=1}^r \langle x, \pi_d \rangle \pi_d^T$. The last formula we can interpret as the projection of $x$ onto the space span of the columns of $\Pi$.
+To show this is relatively straight forward. First, we focus on representing $x\Pi$. Note that, by the definition of matrix multiplication, the result is $x\Pi \in \mathbb{R}^r$ (as a row-vector) where each entry consists of the dot product between $x$ and the each column of $\Pi$.
+\begin{align*}
+(x\Pi)_d &= \langle x, \pi_d \rangle \tag{for $d \in \{1,\cdots,r\}$}
+\end{align*}
+Now that we have the above row vector, we interpret the multiplication of $(x\Pi)$ with $\Pi^T$ differently. Another way to think of matrix multiplication of a row vector with a matrix is as as each entry of the row vector scaling the respective row in the matrix, and then taking the sum over all values. This is intuitively similar to how you might think of $Ax$ as the linear combination $x_1\mu_1 + \cdots + x_n\mu_n$ where $\mu_i$ is the $i$-th column of $A$. Similarly, of we take transposes, $xA$ is equivalent to $x_1\gamma_1 + \cdots + x_n\gamma_n$ where $\gamma_i$ is the $i$-th row of $A$. Therefore, we have:
+\begin{align*}
+(x\Pi)\Pi^T &= \sum_{d=1}^{r} (x\Pi)_d \text{row}((\Pi^T),d) \\
+&= \sum_{d=1}^r \langle x, \pi_d \rangle \pi_d
+\end{align*}
+
+
+\item Let us think of $X\Pi\Pi^T$ as a linear transformation $T: \mathbb{R}^m \to \mathbb{R}^n$. Then we can interpret each matrix as a linear transformation too. We have $T_X: \mathbb{R}^m \to \mathbb{R}^n$, $T_{\Pi}: \mathbb{R}^r \to \mathbb{R}^{m}$, and the dual transformation $T_{\Pi^T}: \mathbb{R}^m \to \mathbb{R}^r$. Then note that $T$ is simply the composition of linear transformation:
+\begin{align*}
+T = T_X \circ T_{\Pi} \circ T_{\Pi^T}
+\end{align*}
+Therefore, $T$ takes as input a vector of dimension $m$, which is then transformed to a vector of dimension $r$ by $T_{\Pi^T}$. This $r$-dimensional vector is then transformed back into an $m$ dimensional vector by $T_{\Pi}$, and finally, the $m$ dimensional vector is transformed into an $n$ dimensional vector by $T_X$.\\
+
+From the above, it is clear that the maximum rank of this linear transformation is $r$ because the input must pass through an $r$-dimensional space.
+\item
+We can show that minimizing the reconstruction error is equivalent to maximizing the given equation through the following line of reasoning, where each $x_i$ is a row vector extracted from $X$:
+\begin{align*}
+\| X\pi_1\pi_1^T - X \|_2^2 &= \sum_{i=1}^{n} \|x_i\pi_1\pi_1^T - x_i \|_2^2 \\
+&= \sum_{i=1}^n \|x_i \|_2^2 - (x_i\pi_1)^2 \\
+&= \sum_{i=1}^n \| x_i \|_2^2 - \sum_{i=1}^n (x_i \pi_1)^2
+\end{align*}
+The above follows from the fact that $\pi_1^T$ is perpendicular to $(x_i\pi_1\pi_1^T - x_i)$, as shown below:
+\begin{align*}
+\pi_1^T(x_i \pi_1 \pi_1^T - x_i) &= \pi_1^T(x_i \pi_1 \pi_1^T)^T - \pi_1^T x_i^T \\
+&= \pi_1^T\pi_1\pi_1^Tx_1^T - \pi_1^Tx_i^T \\
+&= \pi_1^T x_1^T - \pi_1^T x_i^T \tag{$\pi_1^T\pi_1 = 0$} \\
+&= 0
+\end{align*}
+Therefore, by the Pythagoream theorem, the length of one left of a right triangle $( \|x_i\pi_1\pi_1^T - x_i \|_2^2 )$, is given by the difference in squared length between the hypotenuse $\| x_i\|_2^2$ and the other leg (the projection of $x_i$ onto the space spanned by $\pi_1^T$, given by $(x_i \pi_1)^2$ since $\pi_1^T$ is unit length). We now split the sum and collect the first term into a constant:
+\begin{align*}
+\| X\pi_1\pi_1^T - X \|_2^2  = C - \sum_{i=1}^n (\pi_1 \cdot x_i)^2
+\end{align*}
+So the above defines a function of $\pi_1$ where we've incorporated constant terms into $C$. We can immediately see that minimizing the above is equivalent to maximizing the second term (times a constant factor). In our case, we take the constant factor to be $\frac{1}{n}$, which gives us:
+\begin{align*}
+\left( \frac{1}{n} \right)\cdot \left(\sum_{i=1}^n (\pi_1 \cdot x_i)^2 \right) = \frac{1}{n} \sum_{i=1}^n (\pi_1 \cdot x_i )^2 = \frac{1}{n} \| X\pi_1 \|_2^2
+\end{align*}
+
+\item
+We let $X^*$ denote a random observation from $X$. Now we calculate the variance of $X\pi_1$, which is the variance of the data in the $\pi_1$ direction.
+\begin{align*}
+\text{Var}(X^*\pi_1) &= \sum_{i=1}^n \text{Var}(x_i^* \cdot \pi_1) \tag{assuming $x_i$ are independent samples} \\
+&= \sum_{i=1}^n \left(\frac{1}{n} (x_i^* \cdot \pi_1)^2\right) \tag{definition of sample variance, using fact that our data is centered with $\mu = 0$} \\
+&= \frac{1}{n} \sum_{i=1}^n (x_i^* \cdot \pi_1)^2 \\
+&= \frac{1}{n} \|X\pi_1 \|_2^2
+\end{align*}
+Therefore, by the part above, the reconstruction error is minimized if and only if the variance of the data in the $\pi_1$ direction is maximized. Therefore, when $r = 1$, as is the case in the part above, we see that to minimize the error we need to maximize the term:
+$$
+\|X\pi_i \|_2^2
+$$
+The above quantity, given that we constrain ourselves to $|\pi_1| = 1$, is maximized when $\pi_1$ is the eigenvector of $X$ with the largest absolute eigenvalue, or the top principal component of $X$.
+
+\item We can walk through a similar sequence of steps as before, just now done in the more general case. We reference results form above.
+\begin{align*}
+\| X \Pi \Pi^T - X \|_2^2 &= \sum_{i=1}^n \|x_i\Pi\Pi^T - x_i \|_2^2 \\
+&= \sum_{i=1}^n \|\sum_{d=1}^r (x_i\pi_d)\pi_d^T - x_i\|_2^2  \tag{using results from (a)}\\
+&= \sum_{i=1}^n \|x_i \|_2^2 - \|\sum_{d=1}^r (x_i \pi_d)\pi_d^T \|_2^2
+\end{align*}
+For the last line, we use a similar argument to that before. From $(a)$, we know that the vector $x_i\Pi\Pi^T$ is the projection of $x_i$ onto the space spanned by $\pi_d^T$ for $d \in \{1,\cdots,r\}$. Therefore, note that the vector $(\sum_{d=1}^r (x_i\pi_d)\pi_d^T - x_i)$ is orthogonal to the space spanned by $\pi_d$, as we now show:
+\begin{align*}
+\pi_d^T\left(\sum_{d'=1}^r (x_i\pi_{d'})\pi_{d'}^T - x_i \right)^T &= \pi_d^T\left(\sum_{d'=1}^r (x_i\pi_{d'})\pi_{d'}^T\right)^T - \pi_dx_i \\
+&= \pi_d^T \left((x_i\pi_{d'})\pi_{d'}^T \right)^T - \pi_dx_i \tag{For $d \neq d'$, $\pi_d^T\pi_{d'} = 0$} \\
+&= 0 \tag{similar to the part above}
+\end{align*}
+Therefore, by the Pythagorean theorem, the squared length of the leg orthogonal to the space spanned by the columns of $\Pi$ is equal to the squared length of the hypotenuse minus the squared length of the projection onto $\Pi$. Continuing with the calculation:
+\begin{align*}
+\| X \Pi \Pi^T - X \|_2^2 &=  \sum_{i=1}^n \|x_i \|_2^2 - \sum_{i=1}^n \|\sum_{d=1}^r (x_i \pi_d)\pi_d^T \|_2^2\\
+&= C -\sum_{i=1}^n \sum_{d=1}^r (x_i \pi_d)^2 \tag{the $\pi_d$ are orthogonal and unit length} \\
+&= C - \sum_{d=1}^r \sum_{i=1}^n (x_i \pi_d)^2
+\end{align*}
+Therefore, we note that the reconstruction error is minimized if and only if
+$$
+\sum_{d=1}^r \sum_{i=1}^n (x_i \pi_d)^2
+$$
+is maximized, or scalar multiple of it. Therefore, minimizing the reconstruction error is equivalent to maximizing:
+$$
+\frac{1}{n}\sum_{d=1}^r \sum_{i=1}^n (x_i \pi_d)^2 = \sum_{d=1}^r \frac{1}{n} \sum_{i=1}^n (x_i \pi_d)^2 = \sum_{d=1}^r \text{Var}(X^*\pi_d)
+$$
+The last equality is simply following the definition of the sample variance.
+\end{enumerate}
+
+
+
+
+\begin{problem}[Modeling users and jokes with a latent linear model, 25pts]
+In this problem, we'll use a latent linear model to jointly model the ratings
+users assign to jokes. The data set we'll use is a modified and preprocessed
+variant of the Jester data set (version 2) from
+\url{http://eigentaste.berkeley.edu/dataset/}. The data we provide you with are user
+ratings of 150 jokes. There are over 1.7M ratings with values 1, 2, 3, 4 and 5,
+from about sixty thousand users. {\bf The data we give you is a modified version of the original Jester data set,
+please use the files we provide in canvas and not the original ones}. The texts of the jokes are also available.
+Warning: most of the jokes are bad, tasteless, or both. At best, they were
+funny to late-night TV hosts in 1999-2000. Note also that some of the jokes do
+not have any ratings and so can be ignored.
+\end{problem}
+
+\begin{enumerate}[label=(\alph*)]
+\item We can very directly figure out the gradient using matrix algebra. The gradient with respect to $u_i$:
+$$
+\frac{d}{d u_i} [ \log P(R)] = \sum_{j} \frac{v_j}{\sigma^2}(r_{ij} - u_i^Tv_j)
+$$
+Note that we drop all terms that do not include $u_i$, and are therefore only left with one summation over $j$ (where $j$ is a valid index). We do a similar thing for the derivative with respect to $v_j$:
+$$
+\frac{d}{d v_j} [ \log P(R)] = \sum_{i} \frac{u_i}{\sigma^2}(r_{ij} - u_i^Tv_j)
+$$
+Note that the above just follows basic matrix calculus! Additionally, to improve code efficiency, we can actually rewrite the above in terms of matrix products as follows:
+\begin{align*}
+\frac{d}{d U} [\log P(R)] &= \frac{1}{\sigma^2}[R - UV^T]V \\
+\frac{d}{d V} [\log P(R)] &= \frac{1}{\sigma^2}[R - UV^T]U
+\end{align*}
+where we have $U \in \mathbb{R}^{N\times K}$ and $V \in \mathbb{R}^{M \times K}$ be matrices where the $i$-th row corresponds to the $i$-th user/joke respectively. Furthermore, we define the matrix $R \in \mathbb{R}^{N \times M}$ such that $R_{i,j}$ is the rating assigned by user $i$ to joke $k$. The above simplifies the coding aspect significantly.\\
+
+Actually, it turns out we're doing stochastic gradient descent anyway, so the above simplifications are completely useless. Additionally, we have some extremely sparse matrices, and therefore, it turns out to be harder to code than we expect.
+
+\item
+The pseudocode for the gradient descent algorithm is presented below.
+
+\begin{verbatim}
+def stochasticDescent(T,K, sigma2, learnRate=0.05):
+    # Going to try this gradient descent again
+    U, V = initialValues(K)
+    for epoch in range(T):
+        for row in np.array(train):
+            i = row[0] - 1
+            j = row[1] - 1
+            rating = int(row[2])
+            # irand = np.random.random_integers(0, numUsers - 1)
+            # jrand = np.random.random_integers(0, numJokes - 1)
+            UOld = np.copy(U)
+            VOld = np.copy(V)
+            U[i,:] = UOld[i,:] + learnRate / sigma2 * (rating - UOld[i,:].dot(VOld[j,:].T)) * VOld[j,:]
+            V[j,:] = VOld[j,:] + learnRate / sigma2 * (rating - UOld[i,:].dot(VOld[j,:].T)) * UOld[i,:]
+            # print U,V
+        print "Epoch {} Finished!".format(epoch)
+    return U,V
+\end{verbatim}
+
+We note that the MLE of $\sigma^2$ is given by our MSE, which we've calculated to be:
+$$
+\sigma^2 = \text{RMSE}^2 = (1.0605933728143706)^2 = 1.12485830246
+$$
+
+Note, however, that as we can see in Figure \ref{fig:rmse}, RMSE on our test data set is slightly worse. However, this is to be expected.
+
+\item
+We now evaluate for different choices of $K$, ranging from $1$ to $5$ (due to computation limitations of our hardware we were unable to evaluate for larger values of $K$, ). The plot is shown in Figure \ref{fig:rmse}, which shows the RMSE on both the training set and the test set for different values of $K$. The best value of $K$ appears to be $K=2$, where the RMSE for the test data is minimized. While larger values of $K$ appear to improve the results in the training set, we appear to be over-fitting as our RMSE for our testing set goes up ever so slightly. This trend appears to continue. The results make sense if we imagine that a larger value of $K$ allows us to include more latent variables for each user and joke. However, just as when we have too many features for a particular data set, it can lead to over-fitting. It is surprising, however, that our entire data set is optimally compressed into just two dimensions for the users and joke!
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{rmse_figure.png}
+\caption{Green triangles measures test data RMSE, with red dots as training data RMSE. Due to hardware constraints, only run from $K=1,..,5$, as suggested and approved on Piazza.}
+\label{fig:rmse}
+\end{figure}
+
+ \item From the above, we can actually generalize our model to the following:
+ $$
+r_{ij} = \mathcal{N}(u_i^Tv_j + a_i + b_j + g, \sigma^2)
+ $$
+ Here, we take into account the fact that users preference, joke preference, and a global bias factor. We note that the log likelihood is given by:
+ $$
+\log P(R) = \sum_{i,j} \left(-\frac{1}{2\sigma^2} (r_{ij} - (u_i^Tv_j + a_i + b_j + g))^2 - \log \sigma - \frac{1}{2} \log (2 \pi) \right)
+ $$
+ We can immediately see that the gradient is now given by:
+ \begin{align*}
+\frac{d}{du_i}[\log P(R)] &= \frac{1}{\sigma^2} \sum_j (r_{ij} - (u_i^Tv_j + a_i + b_j + g))v_j \\
+\frac{d}{dv_j}[\log P(R)] &= \frac{1}{\sigma^2} \sum_i (r_{ij} - (u_i^Tv_j + a_i + b_j + g))u_i\\
+\frac{d}{da_i}[\log P(R)] &= \frac{1}{\sigma^2} \sum_j (r_{ij} - (u_i^Tv_j + a_i + b_j + g))\\
+\frac{d}{db_j}[\log P(R)] &= \frac{1}{\sigma^2} \sum_i (r_{ij} - (u_i^Tv_j + a_i + b_j + g))\\
+\frac{d}{dg}[\log P(R)] &= \frac{1}{\sigma^2} \sum_{i,j} (r_{ij} - (u_i^Tv_j + a_i + b_j + g))
+ \end{align*}
+ We re-run our code from below with this new model to learn the new biases. We achieve a RMSE on the training/test sets of:
+ \begin{align*}
+\text{RMSE}_{\text{TRAIN}} &= 0.96700845685836978 \\
+ \text{RMSE}_{\text{TRAIN}} &= 1.0617056375912579
+\end{align*}
+with a global bias
+$$
+g = 3.32293717
+$$
+Furthermore, we can rank the jokes using the joke bias, $b_j$. The top 5 jokes and the bottom 5 jokes are shown below, with their respective biases. Note that a lower bias implies a worse joke! We present the results in (JokeID, Bias) format.
+\begin{verbatim}
+(44, -1.1853655),
+(141, -1.07480545),
+(124, -1.02470262),
+(75, -0.90325422),
+(16, -0.85890571),
+...
+(68, 0.64360235),
+(126, 0.65123413),
+(49, 0.65127363),
+(36, 0.66615427),
+(114, 0.72703972)
+\end{verbatim}
+We calculated the above with the following code, noting that we have to add $1$ to each ID due to indexing:
+\begin{verbatim}
+sorted(enumerate(B), key=lambda x: x[1])
+\end{verbatim}
+
+We now present the texts corresponding to the top and bottom jokes:\\
+114:
+sherlock holmes and dr watson go on a camping trip set up their tent and fall asleep some hours later holmes wakes his faithful friend watson look up at the sky and tell me what you see watson replies i see millions of stars  what does that tell you watson ponders for a minute astronomically speaking it tells me that there are millions of galaxies and potentially billions of planets astrologically it tells me that saturn is in leo timewise it appears to be approximately a quarter past three theologically its evident the lord is all powerful and we are small and insignificant meteorologically it seems we will have a beautiful day tomorrow what does it tell you holmes is silent for a moment then speaks watson you idiot someone has stolen our tent\\
+
+44:
+a horse walks into a bar the bartender asks  so why the long face
+
+ \item
+ We can see the graphical model we propose in Figure \ref{fig:graphical_model}.
+
+ \begin{figure}[h!]
+\centering
+\includegraphics[scale=0.1, angle=90]{graphical_model.jpg}
+\caption{Graphical model representation for proposed interactions between latent variables.}
+\label{fig:graphical_model}
+ \end{figure}
+The graphical model above is one that assumes no information about our data set. For the users and the jokes, $u_i, v_j$, we simply sample them from a normal distribution with $0$ mean and some $\sigma^2$ which can be optimized. The reason for this is that we want to increase entropy for the users and jokes, as we don't know much about them. On the other hand, a good suggestion for the priors on the biases is as follows:
+\begin{align*}
+a_i \sim \mathcal{N}(mu_i, \sigma_i^2)
+b_i \sim \mathcal{N}(mu_j, \sigma_j^2)
+g \sim \mathcal{N}{0, \sigma^2}
+\end{align*}
+Again, this approach here would be to increase entropy. However, we would want to make sure that we don't simply have a distribution over all possible values. One way to do this, especially for user and joke biases, would be to restrict them to be in the range $[0,5]$ (or, mostly in the range). Therefore, we would pick values of $\mu_i = \mu_j = \frac{5}{2}$ and $\sigma_i = \sigma_j  = \frac{5}{6}$, so that we have the majority of the distribution lie in the range $[0,5]$. However, we can also attempt to sample from a Uniform distribution on $[0,5]$. This might be particularly effective with the global bias. In general, it would be good to assume that the global bias would provide less information for us, therefore we can just have $g \sim \mathcal{N}(0,1)$ (a maximal entropy model)
+\end{enumerate}
+
+\section*{Ordinal Regression}
+
+\begin{problem}[Ordinal linear regression 25pts] You are required to
+code up multiple models of ordinal regression.
+\end{problem}
+
+\begin{enumerate}
+\vspace{-0.1cm}
+\item
+The form of $p(r |h)$ in the ordinal regression model is given below:
+\begin{align*}
+p(r|h) &= \int_f p(r | f,h)p(f | h) df \\
+&= \int_f p(r | f)p(f |h) df \tag{f includes information from h}
+\end{align*}
+We can break up the above integral over $f$ into $R$ intervals, as given in the problem statement. Then because
+$p(r|f)$ is $0$ for values outside the interval $(b_r, b_{r+1})$, the above integral simplifies to
+\begin{align*}
+p(r| h) &= \int_{b_r}^{b_{r+1}} p(f|h) df \\
+&= \int_{b_r}^{b_{r+1}} \frac{1}{\sigma\sqrt{2\pi}} \exp\{-\frac{1}{2\sigma^2}(f - h)^2 \} df
+\end{align*}
+which can be computed as:
+$$
+\Phi(\frac{b_{r+1} - h}{\sigma}) - \Phi(\frac{b_r - h}{\sigma})
+$$
+where $\Phi$ is the CDF of the standard normal. We can go ahead and plug in $h(\mathbf{x}) = \mathbf{w}^T\mathbf{x}$ and get:
+$$
+\Phi(\frac{b_{r+1} - \mathbf{w}^T\mathbf{x}}{\sigma}) - \Phi(\frac{b_r - \mathbf{w}^T\mathbf{x}}{\sigma})
+$$
+
+\vspace{-0.1cm}
+\item We simply take the expected value of the predictive distributions, given as $R \sim p(r \mid h)$. Note that we define the function $f$ as follows:
+$$
+f(r) = \frac{b_r - \mathbf{w}^t\mathbf{x}}{\sigma}
+$$
+Then if we take the expected value by definition:
+\begin{align*}
+E_p(R) &= \sum_{r=1}^5 r \phi(f(r+1)) - \phi(f(r))
+\end{align*}
+The above series looks telescoping, however, this is not the case due to the constant factor $r$ that we must add when calculating the expected value. We can, however, simplify a bit further:
+\begin{align*}
+\sum_{r=1}^5 r \phi(f(r+1)) - \phi(f(r)) &= \phi(f(2)) - \phi(f(1)) + 2\phi(f(3)) - 2\phi(f(2)) \\
++ 3\phi(f(4)) - 3\phi(f(3)) + 4\phi(f(5)) - 4\phi(f(4)) \\
++ 5\phi(f(6)) - 5\phi(f(5)) \\
+&= 5\phi(f(6)) - \sum_{r=1}^5 \phi(f(r)) \\
+&= \sum_{r=1}^5 \phi(f(6)) - \phi(f(r))
+\end{align*}
+The above is the simplified version of the mean.
+\vspace{-0.1cm}
+\item The code for the function is included below. We do not take advantage of sparse matrices, given that the below runs quickly enough.
+\begin{verbatim}
+def splitData(R, trainPercent=0.95):
+    # R is an NxM matrix where r_ij is the rating assigned by user i to jokes.
+    # Here, we split the data into matrices of size ratings x 2, where the two columns are JokeID and Rating
+    N,M = R.shape
+    totalRatings = np.count_nonzero(R)
+    testMat = np.zeros((totalRatings,2))
+    trainMat = np.zeros((totalRatings, 2))
+    trainN, testN = 0,0
+    print N,M
+    for j in range(M):
+        tratings = float(np.count_nonzero(R[:,j]))
+        inTraining = 0
+        for i in range(N):
+            if R[i,j] > 0:
+                if inTraining <= (tratings * trainPercent):
+                    inTraining += 1
+                    trainMat[trainN, :] = np.array([j, R[i,j]])
+                    trainN += 1
+                else:
+                    testMat[testN, :] = np.array([j, R[i,j]])
+                    testN += 1
+    # Note that the results are zero indexed! We've mofidied the joke ids so now they are 0-indexed!!!!!
+    return trainMat, testMat
+\end{verbatim}
+Note that we save the results of the split into a text file so we only have to do it once. With the above, we have our data split into training and testing sets so that one contains $95\%$ of the ratings per joke and other contains $5\%$ of the ratings per joke. Note that we drop the zero entries from the test and training data later on, using the code presented below:
+\begin{verbatim}
+# drop all 0s from the data
+def dropZeroRows(a):
+    mask = np.all(np.isnan(a) | np.equal(a, 0), axis=1)
+    return a[~mask]
+trainE, testE = dropZeroRows(train), dropZeroRows(test)
+trainE, testE = trainE.astype(int), testE.astype(int)
+\end{verbatim}
+We have our split data into trainE and testE data sets.
+
+\vspace{-0.1cm}
+\item
+The code for the function computing the log posterior distribution of the ordinal regression model is presented below. Note that we don't bother scaling the log posterior, since we will end up maximizing it anyway.
+\begin{verbatim}
+from autograd.scipy.stats import norm
+import sys
+def log_lik(weights, x_i, br1, br2):
+    # br1 and br2 is a vector of respecive rankings.
+    # We add the np.sum to vectorize the below into batches. Note that x_i can now be a matrix
+    # print weights.shape, x_i.shape, br1.shape, br2.shape
+    cdf = lambda y: norm.cdf( (y - np.dot(weights[:-1], np.transpose(x_i)))/weights[-1])
+    return np.log(cdf(br2) - cdf(br1))
+
+def log_prior(w):
+    return np.sum(norm.logpdf(w))
+
+def scaled_posterior(weights, x_i, br1, br2):
+    # Same parameters as log_lik.
+    # Note that we add up all the results to be able to batch process the final posterior probability
+    return np.sum(log_lik(weights, x_i, br1, br2) + log_prior(weights[:-1]))
+\end{verbatim}
+Note that the code above is vectorized so we can have $x_i \in \mathbb{R}^{b \times d}$, where $b = 100$ is the size of our batches and $d = 151$ is the size of our feature vector for each joke! \\
+
+Now we present the code, using autograd, for a function that calculates the derivative with respect to $w$ and $\sigma$ (note that $\sigma$ gets appended to the input vector of our log likelihood).
+\begin{verbatim}
+posteriorGradient = grad(scaled_posterior, argnum=0)
+\end{verbatim}
+
+\vspace{-0.1cm}
+\item The code for the functions is below. We take advantage of batched SGD (really, Adam) to calculate the results. Note that we assume that $\sigma \sim \mathcal{N}(0,1)$, as this is not specified in the spec.
+\begin{verbatim}
+b = [-sys.maxint/10, -4, -2, 2, 4, sys.maxint/10]
+def ratingToLowerBound(r):
+    # Takes in a rating and returns br1, the lower bound in our intervals
+    # Note that ratings are 1 indexed
+    return b[r-1]
+
+def ratingToUpperBound(r):
+    return b[r]
+
+lowVect = np.vectorize(ratingToLowerBound)
+highVect= np.vectorize(ratingToUpperBound)
+
+def stochasticGradientDescent(T, data, batchSize):
+    (n, m) = data.shape
+    #print (n,m)
+    w0 = N(mean=np.zeros(X.shape[1] + 1),cov=np.identity(X.shape[1] + 1))
+    #print w0.shape
+    # Precomput br1 and br2 values
+    br1all = lowVect(data[:, 1])
+    br2all = highVect(data[:, 1])
+    for epoch in range(T):
+        # Iterate over the data size with epochs
+        for i in xrange(0, len(data), batchSize):
+            batchJokeIDs = data[i:min(len(data),i+batchSize), 0]
+            ratings = data[i:min(len(data),i+batchSize), 1]
+            xi = X[batchJokeIDs, :]
+            br1 = br1all[i:min(len(data),i+batchSize)]
+            br2 = br2all[i:min(len(data),i+batchSize)]
+            w0 = adam(lambda w: posteriorGradient(w0, xi, br1, br2), w0)
+            if i % batchSize == 0:
+                print "A total of {} points have been completed.".format(i)
+        print "Finished epoch {}".format(epoch)
+
+    return w0
+\end{verbatim}
+
+We also achieve a $w$ and $\sigma$ specified by:
+\begin{verbatim}
+w =   [  4.22455732e-02,   4.22473088e-02,   5.37630673e-06,
+         4.22455732e-02,   5.37596623e-06,   4.22473088e-02,
+         4.22455732e-02,   4.22473088e-02,   4.22473221e-02,
+         4.22473222e-02,   4.22455732e-02,  -2.54292998e-06,
+         4.22455696e-02,   4.22455732e-02,   5.37532906e-06,
+         5.37634719e-06,  -5.21942825e-06,  -5.21937071e-06,
+        -5.21942778e-06,   4.22455732e-02,   5.37634719e-06,
+         5.37634675e-06,   5.37634719e-06,   4.22455696e-02,
+         4.22473086e-02,   5.21942780e-06,   5.37533456e-06,
+         4.22455732e-02,   5.37533405e-06,  -2.78179336e-06,
+         4.22455732e-02,  -5.21942878e-06,   5.21229106e-06,
+        -5.21943212e-06,  -2.78179336e-06,   4.22473222e-02,
+         4.22455732e-02,   4.22455696e-02,   5.21229121e-06,
+        -2.78179361e-06,   4.22455732e-02,  -2.40925210e-06,
+        -5.21942778e-06,   5.37630675e-06,  -5.21942825e-06,
+         4.22455696e-02,   4.22455696e-02,  -2.78179294e-06,
+         4.22455696e-02,  -5.21942748e-06,   5.21229106e-06,
+         5.37533445e-06,  -2.78179294e-06,  -5.21942748e-06,
+         4.22455696e-02,   5.21229209e-06,  -5.21942878e-06,
+         5.37533405e-06,  -2.78397019e-06,  -5.21942778e-06,
+        -5.21942825e-06,   5.37533445e-06,  -5.21942748e-06,
+        -5.21942778e-06,   4.22455732e-02,   4.22473086e-02,
+        -5.21942748e-06,  -5.21942878e-06,  -5.21942778e-06,
+         5.21942778e-06,   5.37533456e-06,   5.21220933e-06,
+        -5.21943212e-06,  -2.78396471e-06,   5.21303725e-06,
+         5.21229121e-06,   5.37532905e-06,  -2.40932524e-06,
+         4.22455732e-02,  -5.21942778e-06,   4.22455696e-02,
+         5.21942778e-06,   5.37532905e-06,  -5.21943155e-06,
+         4.22455696e-02,   4.22455696e-02,  -5.21942778e-06,
+         5.21229106e-06,   5.21942778e-06,   5.21942778e-06,
+         5.21942778e-06,  -5.21942878e-06,   5.21942780e-06,
+        -5.21942748e-06,   5.21942778e-06,   5.21942780e-06,
+        -5.21942878e-06,   5.21229121e-06,  -5.21942878e-06,
+         4.22455696e-02,   5.21942778e-06,   5.21942778e-06,
+         5.21229209e-06,  -5.21942778e-06,   4.22455696e-02,
+         5.21942778e-06,   5.37532905e-06,  -5.21942748e-06,
+        -5.21942878e-06,   5.21229112e-06,   5.21942778e-06,
+        -5.21942778e-06,   5.21229106e-06,   4.22455696e-02,
+         5.21942778e-06,  -5.21942778e-06,   5.21942778e-06,
+        -5.21943210e-06,  -5.21942878e-06,   4.22455696e-02,
+        -5.21936489e-06,   5.21942778e-06,  -5.21942778e-06,
+         5.21229121e-06,  -5.21942778e-06,   5.21942780e-06,
+        -5.21942878e-06,   4.22455696e-02,  -5.21942778e-06,
+        -5.21942878e-06,   5.21942778e-06,   4.22455696e-02,
+         5.21942778e-06,   5.37532905e-06,   5.21942778e-06,
+         5.37533445e-06,  -5.21942778e-06,  -5.21942778e-06,
+         5.21942778e-06,   5.37532905e-06,   5.37532905e-06,
+         5.21942778e-06,   5.21942780e-06,   5.21942780e-06,
+         4.22455696e-02,   5.21942778e-06,   5.37532905e-06,
+        -5.21936392e-06,   5.21942778e-06,   5.21942778e-06,
+         4.22473088e-02]
+
+  sigma = 3.91020096
+\end{verbatim}
+Achieving a value of:
+$$
+\sigma^2 = 15.2896715476
+$$
+This is a little lower than the values posted on Piazza, which might have to do with the fact that we needed to terminate the execution at $50$ epochs rather than $100$ as specified in the spec due to hardware limitations despite our vectorized code.\\
+
+Furthermore, we achieve the following RMSEs:
+\begin{align*}
+\text{RMSE}_{\text{TRAIN}} &= 1.3110850591009688 \\
+\text{RMSE}_{\text{TEST}} &= 1.336989899211366
+\end{align*}
+
+\vspace{-0.1cm}
+\item We modify the code straight forwardly, by making a new log posterior functions using the following code:
+\begin{verbatim}
+def log_lik_normal(weights, x_i, r, sigma2):
+    # we calculat the log likeligood given
+    return norm.logpdf(r, np.dot(weights[:-1], np.transpose(x_i)), sigma2 * np.identity(len(x_i)))
+
+def normal_posterior(weights, x_i, br1, br2):
+    # Same parameters as log_lik.
+    # Note that we add up all the results to be able to batch process the final posterior probability
+    return np.sum(log_lik_normal(weights, x_i, r, sigma2) + log_prior(weights[:-1]))
+\end{verbatim}
+We can then reuse autograd to create the gradient function, which we can utilize as follows:
+\begin{verbatim}
+posteriorGradient = grad(normal_posterior, argnum=0)
+\end{verbatim}
+with the above, we achieve the following RMSE:
+\begin{align*}
+\text{RMSE}_{\text{TRAIN}} &= 1.3511244948390003 \\
+\text{RMSE}_{\text{TEST}} &= 1.3869377502999347
+\end{align*}
+The performance seems to decrease. The explanation for this is that we're no longer categorizing the data points into discrete intervals. Now the ratings that we predict can take on any value from $-\infty$ to $\infty$. While this model is much simpler to handle, both computationally and analytically, it nonetheless seems to capture less of the data. The discretization allowed by the categorical model is definitely helpful, as it allows us to take extreme predictions and bucketize them into a fixed range. While it might appear that a gaussian likelihood would give us  more room to learn, due to the maximal entropy nature of the normal distribution, it is actually completely opposite. Without incorporating the information we know about our model (ie, that we have one 5 discrete possible ratings), we're throwing out vital parameters that allow for better predictions.
+
+\vspace{-0.1cm}
+\item It appears that the model in \#2 performs significantly better. Despite the added complexity of the models above, they don't seem to handle the data well. The reason for this has to do with the fact that, despite the added complexity of the model from \#3, it does not take into account user/joke interactions. It's unreasonable to expect a joke to have an absolute level funniness, despite their feature vectors, while it's entirely reasonable to notice that the users will affect how funny a joke is.\\
+
+More intuitively, in this model, we're attempting to find the rank of a joke, given no information about the user. We always predict the same rank for the same joke, of which there are only $150$. Every user, though, could rate that joke differently. Using the terminology from problem 2, not only could we have a global bias, but can also find ourselves with a user bias. These user biases, given that we take RMSE, cannot possible cancel with each other, and therefore, would only add to the error we are achieving. \\
+
+In general, it is simple better to take into account the interactions between the users and the jokes when evaluating the results. Furthermore, it might be of interest to combine both of the previous models to see if it would improve performance.
+\end{enumerate}
+
+\end{document}

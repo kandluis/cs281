@@ -1,0 +1,174 @@
+% No 'submit' option for the problems by themselves.
+\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+%\documentclass[submit]{harvardml}
+
+\usepackage{url}
+
+% Put in your full name and email address.
+\name{Your Name}
+\email{email@fas.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  John Doe,
+  Fred Doe
+}
+
+% You don't need to change these.
+\course{CS281-F13}
+\assignment{Assignment \#4}
+\duedate{23:59pm November 13, 2015}
+
+% Useful macros
+\newcommand{\bw}{\boldsymbol{w}}
+\newcommand{\distNorm}{\mathcal{N}}
+\newcommand{\given}{\,|\,}
+\newcommand{\ident}{\mathbb{I}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bz}{\boldsymbol{z}}
+\newcommand{\balpha}{\boldsymbol{\alpha}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+% Some useful macros.
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\text{var}}
+\newcommand{\cov}{\text{cov}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ep}{\varepsilon}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\begin{problem}[10 pts]
+  For a target density~$p(x)$ and proposal
+  density~$q(x'\gets x)$, the Metropolis--Hastings transition
+  operator is given by
+  \begin{align*}
+    T(x'\gets x) &= q(x'\gets x)\,\min\left\{1,
+    \frac{\tilde p(x')\,q(x\gets x')}{\tilde p(x)\,q(x'\gets x)}
+    \right\}
+  \end{align*}
+  where $\tilde p(x)$ is the unnormalized target density.
+
+  Show that this transition operator satisfies detailed balance.
+\end{problem}
+
+\newpage
+
+\section*{Modeling users and jokes with a Bayesian latent bilinear model}
+
+The next two questions will develop Bayesian inference methods for the simplest version of the latent bilinear model you used to model jokes ratings in HW3.
+
+
+The data set we'll use is the same as in HW3, a modified and preprocessed variant of the Jester data set.
+However, to make things easier (and to make being Bayesian more worthwhile) {\bf we'll only use the first 100,000 joke ratings} for your training set.  The second 100,000 ratings will form your test set.
+
+\subsection*{The model}
+
+The model is the same as in HW3, but with Gaussian priors on the latent parameter matrices $U$ and $V$.
+
+Let~${r_{i,j}\in\{1,2,3,4,5\}}$ be the rating of user $i$ on joke $j$.  A latent linear model introduces a vector ${u_i\in\R^K}$ for each user and a vector~${v_j\in\R^K}$ for each joke.  Then, each rating is modeled as a noisy version of the appropriate inner product. Specifically,
+\[
+r_{i,j} \sim \mathcal{N}(u_i^T v_j, \sigma_\epsilon^2).
+\]
+Fix $\sigma_\epsilon^2$ to be 1.0, and $K = 2$.
+
+We put independent Gaussian priors on each element of $U$ and $V$:
+\[U_{i,k} \sim \mathcal{N}(0, \sigma_U^2=5)\]
+\[V_{i,k} \sim \mathcal{N}(0, \sigma_V^2=5)\]
+
+\begin{problem}[Gibbs sampling, 30pts]
+
+.
+
+\begin{enumerate}
+
+\item Write down the Gibbs update equations for U and V.  That is to say, write their conditional distibutions, conditioned on all the other variables as well as the training data:
+%
+$$p(U | V, R )$$
+$$p(V | U, R )$$
+
+Because the model is bi-linear, these updates should have fairly simple forms.
+
+\item Write a Gibbs sampler for $U$ and $V$ that updates $U$ and $V$ in turn.
+
+\item Run the Gibbs sampler for 100 steps (i.e. update both $U$ and $V$ 100 times).
+Plot the training and test-set log-likelihood as a function of the number of steps through your training set.
+That is, use all previous samples of $U, V$ to evaluate the predictive probability of all ratings.
+
+\item One reason to be Bayesian is that you don't have to worry about overfitting.
+Run the your Gibbs sampler for $K = 1$ to $K = 10$, and plot the training and test-set log-likelihood for each value of $K$.  How do the shapes of these curve differ from the curves you saw when doing maximum likelihood estimation in HW3?
+
+
+\end{enumerate}
+\end{problem}
+
+
+
+\begin{problem}[Stochastic Variational Inference, 30pts]
+
+Now we'll repeat the same experiments, but using stochastic variational inference instead.
+
+Recall that variational inference optimizes a lower bound on the log marginal likelihood (integrating out parameters $\theta$), like so:
+\begin{align}
+\log p(x) & = \log \int p(x, \theta) d\theta = \log \int p(x|\theta) p(\theta) d\theta \\
+& = \log \int \frac{q_\phi(\theta)}{q_\phi(\theta)} p(x|\theta) p(\theta) d\theta
+  = \log \mathbb{E}_{q_\phi} \frac{1}{q(\theta)} p(x|\theta) p(\theta) d\theta \\
+& \geq \mathbb{E}_{q_\phi} \log \left[ \frac{1}{q_\phi(\theta)} p(x|\theta) p(\theta) \right]
+ = \underbrace{-\mathbb{E}_{q_\phi} \log q_\phi(\theta)}_{\textnormal{entropy}}  + \underbrace{\mathbb{E}_{q_\phi} \log p(\theta)}_{\textnormal{prior}} + \underbrace{\mathbb{E}_{q_\phi} \log p(x|\theta)}_{\textnormal{likelihood}}
+= \mathcal{L}(\phi)
+\end{align}
+%
+In this case, $\theta = U,V$ and $x = R$:
+%
+\begin{align}
+\mathcal{L}(\phi) = -\mathbb{E}_{q_\phi} \log q_\phi(U, V) + \mathbb{E}_{q_\phi} \log p(U, V) + \sum_{n=1}^N \mathbb{E}_{q_\phi} \log p(r_n | U, V)
+\end{align}
+%
+The nice part about writing the lower bound as a set of expectations is that if we can sample from $q_\phi(\theta)$, then we can estimate the bound (and its gradient) by simple Monte Carlo.
+That is, we can sample from $q(\theta)$, and estimate the bound or its gradients by evaluating at the samples and averaging them.
+
+This is a very general formula that works for many different priors, likelihoods and variational approximations.
+In this case, we'll keep things simple and choose $q(U,V)$ to be a Gaussian factorized over every single entry of each matrix (the same form as the prior).
+Thus our variational parameters will consist of a mean and variance for each entry in U and V.
+% $\phi^{(\mu U)}_{ik}$, $\phi^{(\sigma^2 U)}_{ik}$, $\phi^{(\mu V)}_{jk}$, and $\phi^{(\sigma^2 V)}_{jk}$.
+
+To make our method scalable, we have to update the variational parameters without passing over the whole dataset each time.
+We can do this by taking Monte Carlo estimates over ratings.
+However, we to need scale our estimates so that their expectations are the same as if we did the sum exactly.
+
+
+\begin{enumerate}
+
+\item
+Write an unbiased Monte Carlo estimate of the lower bound, depending only on one rating at a time.
+Write the entropy and prior terms exactly, without using Monte Carlo.  Hint: You can combine them into a KL divergence between two Gaussians.
+
+\item Write the gradient of your estimate of the lower bound w.r.t. the variational parameters.
+
+Hint: To capture all the ways in which the gradient depends on the parameters, if your gradient has an expectation of the form $\mathbb{E}_{X \sim \mathcal{N}(\mu, \sigma)}[f(X)]$, re-write it in terms of $\mathbb{E}_{Z \sim \mathcal{N}(0, 1)}[f(Z \sigma + \mu)]$.
+
+\item For $K = 2$, optimize the variational parameters for 10 epochs over the first 100,000 datapoints.  Use whichever optimization method you prefer.
+
+Plot the training and test-set log-likelihood as a function of the number of epochs, as well as the marginal likelihood lower bound.
+That is to say: at the end of each epoch, evaluate the log of the average predictive probability of all ratings in the training and test sets using 100 samples from q(U,V).
+The lower bound is the sum of entropy, prior and likelihood terms, while the training-set and test-set likelihoods only use the likelihood term.
+
+\item Fit your variational model for $K = 1$ to $K = 10$, and plot the training-set log-likelihood, test-set log-likelihood, and lower bound for each value of $K$.
+How do the shapes of these curves differ?
+
+\item What are the pros and cons of Gibbs sampling versus stochastic variational inference?
+
+\end{enumerate}
+\end{problem}
+
+
+
+\end{document}

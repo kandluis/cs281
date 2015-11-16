@@ -1,0 +1,465 @@
+% No 'submit' option for the problems by themselves.
+\documentclass{harvardml}
+% Use the 'submit' option when you submit your solutions.
+%\documentclass[submit]{harvardml}
+
+\usepackage{url}
+
+% Put in your full name and email address.
+\name{Luis Antonio Perez}
+\email{luisperez@college.harvard.edu}
+
+% List any people you worked with.
+\collaborators{%
+  Alex Wang,
+  Frederick Widjaja,
+  Brian Arroyo,
+  Robert Chen
+}
+
+% You don't need to change these.
+\course{CS281-F13}
+\assignment{Assignment \#4}
+\duedate{23:59pm November 13, 2015}
+
+% Useful macros
+\newcommand{\bw}{\boldsymbol{w}}
+\newcommand{\distNorm}{\mathcal{N}}
+\newcommand{\given}{\,|\,}
+\newcommand{\ident}{\mathbb{I}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bz}{\boldsymbol{z}}
+\newcommand{\balpha}{\boldsymbol{\alpha}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+
+% Some useful macros.
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\text{var}}
+\newcommand{\cov}{\text{cov}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\ep}{\varepsilon}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\begin{problem}[10 pts]
+  For a target density~$p(x)$ and proposal
+  density~$q(x'\gets x)$, the Metropolis--Hastings transition
+  operator is given by
+  \begin{align*}
+    T(x'\gets x) &= q(x'\gets x)\,\min\left\{1,
+    \frac{\tilde p(x')\,q(x\gets x')}{\tilde p(x)\,q(x'\gets x)}
+    \right\}
+  \end{align*}
+  where $\tilde p(x)$ is the unnormalized target density.
+
+  Show that this transition operator satisfies detailed balance.
+\end{problem}
+
+Detailed balance is satisfied if the following equations is satisfied:
+$$
+T(x' \gets x)p(x) = T(x \gets x')p(x')
+$$
+Therefore, we simply need to show this holds in the Metropolis-Hastings algorithm. In the case where we remain in the state $x'$ (ie, either we reject or we accept but choose to transition to the same state), detailed balance is satisfied trivially because $x' = x$:
+$$
+T(x' \gets x)p(x) = T(x \gets x')p(x')
+$$
+In the case where $x' \neq x$ (ie, we transition to a new state), we must have proposed the new state with proposal density $q(x' \gets x)$, and then accepted it with probability $\min\left\{1,
+    \frac{\tilde p(x')\,q(x\gets x')}{\tilde p(x)\,q(x'\gets x)}
+    \right\}$.
+Using the transition operator, this gives us:
+\begin{align*}
+T(x' \gets x)p(x) &= q(x'\gets x)\,\min\left\{1,
+    \frac{\tilde p(x')\,q(x\gets x')}{\tilde p(x)\,q(x'\gets x)}
+    \right\} p(x) \\
+    &= q(x'\gets x)\,\min\left\{1,
+    \frac{p(x')\,q(x\gets x')}{p(x)\,q(x'\gets x)}
+    \right\} p(x) \tag{normalizing constants cancel} \\
+    &= \min \left\{ q(x' \gets x)p(x), p(x')q(x \gets x') \right\} \tag{Just factoring some results.} \\
+    &= q(x \gets x') \min \left\{\frac{q(x' \gets x)p(x)}{q(x \gets x')p(x')}, 1 \right\} p(x') \tag{factoring} \\
+    &= T(x \gets x')p(x')
+\end{align*}
+Therefore, detailed balance is satisfied.
+
+
+\newpage
+
+\section*{Modeling users and jokes with a Bayesian latent bilinear model}
+
+The next two questions will develop Bayesian inference methods for the simplest version of the latent bilinear model you used to model jokes ratings in HW3.
+
+
+The data set we'll use is the same as in HW3, a modified and preprocessed variant of the Jester data set.
+However, to make things easier (and to make being Bayesian more worthwhile) {\bf we'll only use the first 100,000 joke ratings} for your training set.  The second 100,000 ratings will form your test set.
+
+\subsection*{The model}
+
+The model is the same as in HW3, but with Gaussian priors on the latent parameter matrices $U$ and $V$.
+
+Let~${r_{i,j}\in\{1,2,3,4,5\}}$ be the rating of user $i$ on joke $j$.  A latent linear model introduces a vector ${u_i\in\R^K}$ for each user and a vector~${v_j\in\R^K}$ for each joke.  Then, each rating is modeled as a noisy version of the appropriate inner product. Specifically,
+\[
+r_{i,j} \sim \mathcal{N}(u_i^T v_j, \sigma_\epsilon^2).
+\]
+Fix $\sigma_\epsilon^2$ to be 1.0, and $K = 2$.
+
+We put independent Gaussian priors on each element of $U$ and $V$:
+\[U_{i,k} \sim \mathcal{N}(0, \sigma_U^2=5)\]
+\[V_{i,k} \sim \mathcal{N}(0, \sigma_V^2=5)\]
+
+\begin{problem}[Gibbs sampling, 30pts]
+
+.
+
+\begin{enumerate}
+
+\item Write down the Gibbs update equations for U and V.  That is to say, write their conditional distibutions, conditioned on all the other variables as well as the training data:
+%
+$$p(U | V, R )$$
+$$p(V | U, R )$$
+
+Because the model is bi-linear, these updates should have fairly simple forms.
+
+\item Write a Gibbs sampler for $U$ and $V$ that updates $U$ and $V$ in turn.
+
+\item Run the Gibbs sampler for 100 steps (i.e. update both $U$ and $V$ 100 times).
+Plot the training and test-set log-likelihood as a function of the number of steps through your training set.
+That is, use all previous samples of $U, V$ to evaluate the predictive probability of all ratings.
+
+\item One reason to be Bayesian is that you don't have to worry about overfitting.
+Run the your Gibbs sampler for $K = 1$ to $K = 10$, and plot the training and test-set log-likelihood for each value of $K$.  How do the shapes of these curve differ from the curves you saw when doing maximum likelihood estimation in HW3?
+
+
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+
+\item We first take the approach of drawing out the graphical model, as seen in Figure \ref{fig:graphical_model}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.05]{bayes_graphical_model.jpg}
+\caption{Graphical Model for Bayesian Latent Bilinear Model}
+\label{fig:graphical_model}
+\end{figure}
+Directly from the graphical model, we can immeidately derive the joint distribution, where $U \in \mathbb{R}^{N \times K}$, $V \in \mathbb{R}^{M \times K}$ and $R \in \mathbb{R}^{N \times M}$ where we have independence assumptions:
+\begin{align*}
+p(U, V, R \mid \sigma_U^2, \sigma_V^2, \sigma_{\epsilon}^2) &= \prod_{r_{i,j} \neq 0} p(R_{i,j} = r_{i,j}, U_i = u_i, V_j = v_j \mid \sigma_U^2, \sigma_V^2, \sigma_{\epsilon}^2) \\
+&= \prod_{r_{i,j} \neq 0} p(R_{i,j} = r_{i,j} \mid U_i = u_i, V_j = v_j, \sigma_{\epsilon}^2)p(U_i = u_i \mid \sigma_U^2)p(V_j = v_j \mid \sigma_V^2) \\
+&= \prod_{r_{i,j} \neq 0} \left[ p(R_{i,j} = r_{i,j} \mid U_i = u_i, V_j = v_j, \sigma_{\epsilon}^2) \prod_{k=1}^K p(U_{i,k} = u_{i,k} \mid \sigma_U^2)p(V_{j,k} = v_{j,k} \mid \sigma_V^2)\right]
+\end{align*}
+
+From the above, we can write down the conditional distribution. For simplicity, we write the conditional distribution of each $U_{i,k}$ and $V_{j,k}$ for $1 \leq i \leq N$ and $1 \leq j \leq M$ and $1 \leq k \leq K$, by plugging in the information we already know. Instead of sampling the entire matrix, we focus on sampling each element of the matrices:
+\begin{align*}
+p(U_{i,k} = u_{i,k} \mid V, R) &\propto p(U_{i,k} = u_{i,k} \mid \sigma_U^2) \prod_{r_{i,j} \neq 0} p(R_{i,j} = r_{i,j} \mid U_{i} = u_i, V_j = v_j, \sigma_{\epsilon}^2) \\
+&\propto \N(0,\sigma_U^2) \prod_{r_{i,j} \neq 0} \N(u_i^Tv_j, \sigma_{\epsilon}^2) \\
+p(V_{j,k} = v_{j,k} \mid V, R) &\propto p(V_{j,k} = v_{j,k} \mid \sigma_V^2) \prod_{r_{i,j} \neq 0} p(R_{i,j} = r_{i,j} \mid U_{i} = u_i, V_j = v_j, \sigma_{\epsilon}^2) \\
+&\propto \N(0,\sigma_V^2) \prod_{r_{i,j} \neq 0} \N(u_i^Tv_j, \sigma_{\epsilon}^2)
+\end{align*}
+
+We can then use the results from Murphy Ch. 4 to simplify further by noting that the product of normal PDFs is also normal, as given by the following. Note that we plug in $\sigma_{\epsilon}^2 = 1.0$ and $\sigma_{U_i}^2 = \sigma_{V_j}^2 = 5$
+\begin{align*}
+p(U_{i,k} = u_{i,k} \mid V,R) \propto \N(\mu_{U_i}, \sigma_{U_i}^2) \\
+p(V_{j,k} = v_{j,k} \mid U,R) \propto \N(\mu_{V_j}, \sigma_{V_j}^2)
+\end{align*}
+where we define the mean and variance as:
+\begin{align*}
+\sigma_{U_i}^2 &= \frac{5}{1 + 5 \sum_{j} \mathbb{1}[r_{i,j} \neq 0]}\\
+\sigma_{V_j}^2 &=\frac{5}{1 + 5 \sum_{i} \mathbb{1}[r_{i,j} \neq 0]}\\
+\mu_{U_i} &= \sigma_{U_i}^2 u_i^T \left (\sum_{j}v_j \right) \\
+\mu_{V_j} &= \sigma_{V_j}^2 \left(\sum_i{u_i}\right)^T v_j
+\end{align*}
+We can then directly sample $K$ times from the above in order to generate each $U_i, V_j$, continuing the process for all $i,j$ until we create the entire $U,V$ matrices. \\
+
+However, even the above method proves rather inefficient. A better method is to combine the results we have into something similar to a Gaussian linear system, as described in Chapter 4 of Murphy. We can do this by looking at each user $U_i$ and at each joke $V_j$:
+\begin{align*}
+P(U_i \mid R(i,j), V(i)) &\propto P(R \mid U_i, V(i))P(U_i) \\
+&\propto \N(V(i)U_i^T, \sigma_{\epsilon}^2 I)\N(\mu,\Sigma) \\
+P(V_j \mid R(i,j), U(j)) &\propto P(R(i,j) \mid U(j), V_j)P(V_j) \\
+&\propto \N(U(j)V_j^T, \sigma_{\epsilon}^2 I)\N(\nu,T) \\\end{align*}
+where the $I$ is the identity matrix of dimensions $l \times l$ where $l$ is the number of user/joke ratings for either the $i$-th user or the $j$-th joke (we fix each in turn). Furthermore, we define $R(i,j)$ as the vector in $\mathbb{R}^l$ which extracts the $l$ ratings by user $i$ or on joke $j$. Similarly, $V(i)$ and $U(j)$ are functions which extract the jokes corresponding to user $i$ from $V$ or the users who rated joke $j$ from $U$. \\
+
+We can actually use the above, combined with the results from Murphy, because we now have that:
+\begin{align*}
+P(U_i \mid R(i,j), V(i)) = \N(\mu', \Sigma') \\
+P(V_j \mid R(i,j), U(j)) = \N(\nu', T')
+\end{align*}
+where the new parameters are given by:
+\begin{align*}
+\Sigma'^{-1} &= \Sigma^{-1} + \frac{1}{\sigma_{\epsilon}^2}V(i)^TV(i) \\
+T'^{-1} &= T^{-1} + \frac{1}{\sigma_{\epsilon}^2}U(j)^TU(j) \\
+\mu' &= \Sigma'\left[\frac{1}{\sigma_{\epsilon}^2}V(i)^TR(i,j) +  \Sigma^{-1}\mu \right] \\
+\nu' &= T'\left[\frac{1}{\sigma_{\epsilon}^2}U(j)^TR(i,j) +  T^{-1}\nu \right]
+\end{align*}
+Note that $\sigma_{\epsilon^2} = 1.0$ for our purpose, so it drops from the above equations.
+
+The above results agree with our previous calculations but make the coding aspect much simpler. These are the results with which we now proceed. \\
+
+We therefore just need to keep tract of the mean and variance of some multivariate normals.
+
+
+\item The code for the Gibbs sampler can be found in the attached PDFs exported from iPython.
+
+\item
+After obtaining the above results, we use the $Us$ and $Vs$ variables to calculate the log likelihood of the data for each epoch, averaging over each sample. Figure \ref{fig:log_likelihood} show this relationship.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.2]{hw4_MSE_k_2.png}
+\includegraphics[scale=0.15]{hw4_rmse_k_2.png}
+\caption{MSE and RMSE plots on training and test data for $K=2$ over $100$ epochs.}
+\label{fig:log_likelihood}
+\end{figure}
+
+
+It looks as if the results for the training set are improving, which is as expected. However, the results on the testing set improve at first, quite rapidly and significantly, but soon after begin to deteriorate. It might be possible that this is due to over-fitting, or it could be indicative of some bug in the code.
+
+\item
+The plots for the log-likelihood are shown in Figure \ref{fig:k_values}, and we see the multiple plots over epochs in Figure \ref{fig:mse_K_values} of the MSE on both the training and testing data.We see that the training test increases slightly, but not by much. In comparison to the previous model, where an optimal values of $K$ was found to be $2$, with Bayesian parameters the optimal value of $K$ is less clear. Why the log likelihood increases in the training set for larger $K$, the test set does \textit{NOT} over-fit, as was the case last time. In the testing set, we still achieve relatively similar values of the log-likelihood for different dimensions of $K$. With a bayesian approach, we avoid the issues of overfitting on our training data.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{hw4_k_values.png}
+\caption{Unnormalized Log Likelihood of Test and Training Data for varying values of $K$.}
+\label{fig:k_values}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{hw4_MSE_all.png}
+\caption{MSE of Test and Training Data for varying values of $K$.}
+\label{fig:mse_K_values}
+\end{figure}
+\end{enumerate}
+\pagebreak
+
+
+
+\begin{problem}[Stochastic Variational Inference, 30pts]
+
+Now we'll repeat the same experiments, but using stochastic variational inference instead.
+
+Recall that variational inference optimizes a lower bound on the log marginal likelihood (integrating out parameters $\theta$), like so:
+\begin{align}
+\log p(x) & = \log \int p(x, \theta) d\theta = \log \int p(x|\theta) p(\theta) d\theta \\
+& = \log \int \frac{q_\phi(\theta)}{q_\phi(\theta)} p(x|\theta) p(\theta) d\theta
+  = \log \mathbb{E}_{q_\phi} \frac{1}{q(\theta)} p(x|\theta) p(\theta) d\theta \\
+& \geq \mathbb{E}_{q_\phi} \log \left[ \frac{1}{q_\phi(\theta)} p(x|\theta) p(\theta) \right]
+ = \underbrace{-\mathbb{E}_{q_\phi} \log q_\phi(\theta)}_{\textnormal{entropy}}  + \underbrace{\mathbb{E}_{q_\phi} \log p(\theta)}_{\textnormal{prior}} + \underbrace{\mathbb{E}_{q_\phi} \log p(x|\theta)}_{\textnormal{likelihood}}
+= \mathcal{L}(\phi)
+\end{align}
+%
+In this case, $\theta = U,V$ and $x = R$:
+%
+\begin{align}
+\mathcal{L}(\phi) = -\mathbb{E}_{q_\phi} \log q_\phi(U, V) + \mathbb{E}_{q_\phi} \log p(U, V) + \sum_{n=1}^N \mathbb{E}_{q_\phi} \log p(r_n | U, V)
+\end{align}
+%
+The nice part about writing the lower bound as a set of expectations is that if we can sample from $q_\phi(\theta)$, then we can estimate the bound (and its gradient) by simple Monte Carlo.
+That is, we can sample from $q(\theta)$, and estimate the bound or its gradients by evaluating at the samples and averaging them.
+
+This is a very general formula that works for many different priors, likelihoods and variational approximations.
+In this case, we'll keep things simple and choose $q(U,V)$ to be a Gaussian factorized over every single entry of each matrix (the same form as the prior).
+Thus our variational parameters will consist of a mean and variance for each entry in U and V.
+% $\phi^{(\mu U)}_{ik}$, $\phi^{(\sigma^2 U)}_{ik}$, $\phi^{(\mu V)}_{jk}$, and $\phi^{(\sigma^2 V)}_{jk}$.
+
+To make our method scalable, we have to update the variational parameters without passing over the whole dataset each time.
+We can do this by taking Monte Carlo estimates over ratings.
+However, we to need scale our estimates so that their expectations are the same as if we did the sum exactly.
+
+
+\begin{enumerate}
+
+\item
+Write an unbiased Monte Carlo estimate of the lower bound, depending only on one rating at a time.
+Write the entropy and prior terms exactly, without using Monte Carlo.  Hint: You can combine them into a KL divergence between two Gaussians.
+
+\item Write the gradient of your estimate of the lower bound w.r.t. the variational parameters.
+
+Hint: To capture all the ways in which the gradient depends on the parameters, if your gradient has an expectation of the form $\mathbb{E}_{X \sim \mathcal{N}(\mu, \sigma)}[f(X)]$, re-write it in terms of $\mathbb{E}_{Z \sim \mathcal{N}(0, 1)}[f(Z \sigma + \mu)]$.
+
+\item For $K = 2$, optimize the variational parameters for 10 epochs over the first 100,000 datapoints.  Use whichever optimization method you prefer.
+
+Plot the training and test-set log-likelihood as a function of the number of epochs, as well as the marginal likelihood lower bound.
+That is to say: at the end of each epoch, evaluate the log of the average predictive probability of all ratings in the training and test sets using 100 samples from q(U,V).
+The lower bound is the sum of entropy, prior and likelihood terms, while the training-set and test-set likelihoods only use the likelihood term.
+
+\item Fit your variational model for $K = 1$ to $K = 10$, and plot the training-set log-likelihood, test-set log-likelihood, and lower bound for each value of $K$.
+How do the shapes of these curves differ?
+
+\item What are the pros and cons of Gibbs sampling versus stochastic variational inference?
+
+\end{enumerate}
+\end{problem}
+
+\begin{enumerate}
+
+\item We can directly write the lower bound for this model. First, let $U^q_{ik} \stackrel{i.i.d}{\sim} \N(\mu_{ik}$, $\sigma_{ik}^2), V^q_{jk} \stackrel{i.i.d}{\sim} \N(\nu_{ik}, \tau_{jk}^2)$with PDFs defined by $q_{ik}$ and $q_{jk}$ respectively.\\
+
+Similarly, $U^p_{ik} \stackrel{i.i.d}{\sim} \N(0, \sigma_U^2)$, and $V^p_{jk} \stackrel{i.i.d}{\sim} \N(0, \sigma_V^2)$ with PDFs given by $p_{ik}$ and $p_{jk}$ respectively. \\
+
+The above are both defined for all values of $i,j,k$. Note that these are the distributions of the entries in the matrices $U^q, V^q, U^p, V^p$ where $X^p$ is the prior matrix and $X^q$ is the updated matrix. We use the above to simplify the lower bound, which we can directly write as follows, given the information from the problem:
+\begin{align*}
+\log p(R) \geq - \E_q[\log q(U,V) ] + \E_q [\log p(R \mid U,V)] + \E_q[\log p(U,V)] \\
+\end{align*}
+Note that for the above, we can follow the hint and compute a closed form for the entropy and prior term. We show the derivation steps now:
+\begin{align*}
+\E_q[\log p(U,V)] - \E_q[\log q(U,V)] &= \E_q\left [ \log \frac{p(U,V)}{q(U,V)} \right] \\
+&= -\E_q\left[\log \frac{q(U,V)}{p(U,V)} \right]\\
+&= -KL(q \mid\mid p)
+\end{align*}
+Note, however, that instead of looking at this as the KL-divergence, we can continue the simplification using $q_{ik}, q_{jk}, p_{ik}, p_{jk}$ by independence. This is because, by independence of the entries in the matrix:
+\begin{align*}
+q(U,V) &= \prod_{i=1}^N\prod_{k=1}^K q_{ik}(U_{ik}) \prod_{j=1}^M\prod_{k=1}^K q_{jk}(V_{jk}) \\
+p(U,V) &=  \prod_{i=1}^N\prod_{k=1}^K p_{ik}(U_{ik}) \prod_{j=1}^M\prod_{k=1}^K p_{jk}(V_{jk})
+\end{align*}
+Therefore, plugging these formulas into the above and distributing (we drop the negative to save space) the log over the products:
+\begin{align*}
+\E_q\left[\log \frac{q(U,V)}{p(U,V)}\right] &= \E_q\left[\log\frac{q(U)}{p(U)} + \log \frac{q(V)}{p(V)} \right]  \\
+&= \E_q \left[\sum_{i=1}^N \sum_{k=1}^K \log \frac{q_{ik}(U_{ik})}{p_{ik}(U_{ik})} + \sum_{j=1}^M \sum_{k=1}^K \log \frac{q_{jk}(V_{ik})}{p_{jk}(V_{ik})}\right] \tag{using properties of the log to split products into sums} \\
+&= \E_q \left[\sum_{i=1}^N \sum_{k=1}^K \log \frac{q_{ik}(U_{ik})}{p_{ik}(U_{ik})}\right] + \E_q \left[ \sum_{j=1}^M \sum_{k=1}^K \log \frac{q_{jk}(V_{ik})}{p_{jk}(V_{ik})}\right] \\
+&=  \sum_{i=1}^N \sum_{k=1}^K \E_q  \left[ \log \frac{q_{ik}(U_{ik})}{p_{ik}(U_{ik})}\right] + \sum_{j=1}^M \sum_{k=1}^K \E_q \left[ \log \frac{q_{jk}(V_{ik})}{p_{jk}(V_{ik})}\right] \tag{linearity of expectation} \\
+&= \sum_{i=1}^N \sum_{k=1}^K KL(q_{ik} \mid \mid p_{ik}) + \sum_{j=1}^M \sum_{k=1}^K KL(q_{jk} \mid \mid p_{jk})
+\end{align*}
+Note that in the second to last line we used the fact the expected value over a separable joint distribution of a function that depends on a subset of variables is the same as the expected value over the joint distribution of just those variables. More precisely, we used the following fact, where $\mathcal{X}$ is the random space over our joint variables, and we use the syntax $\mathcal{X} - x_i$ to remove the values over which the $x_i$ coordinate can vary from the possibilities.
+\begin{align*}
+\E_{f_{x_1 \cdots, x_n}}[g(x_i)] &= \int_{\mathcal{X}} g(x_i) f_{x_1, \cdots, x_n}(x_1 \cdots x_n) dx_1 \cdots dx_n \\
+&= \int_{\mathcal{X}} g(x_i) f_{x_i}(x_i) f_{x_1 \cdots x_{i-1}, x_{i+1}, x_n}(x_{1} \cdots x_{i-1}, x_{i+1}, \cdots x_n) dx_1 \cdots dx_n \tag{separable pdf} \\
+&= \int_{x_i} g(x_i) f_{x_i}(x_i) dx_i \int_{\mathcal{X} - x_i}  f_{x_1 \cdots x_{i-1}, x_{i+1}, x_n}(x_{1} \cdots x_{i-1}, x_{i+1}, \cdots x_n) dx_1 \cdots dx_{i-1}, dx_{i+1}, \cdots, dx_n \\
+&= \int_{x_i} g(x_i) f_{x_i}(x_i) dx_i \tag{integral of PDF is 1}\\
+&= \E_{f_{x_i}}[g(x_i)]
+\end{align*}
+The above proves the results for the second-to-last step in the simplification of the lower bounds.\\
+Now, we recall that $q_{ik}$ and $p_{ik}$ are the PDFs of $\N(\mu_{ik}, \sigma_{ik}^2)$ and $\N(0, \sigma_U^2)$, respectively, therefore $KL(q_{ik} \mid \mid p_{ik})$ is just the KL-divergence between two univariate Gaussian normals. We can calculate this directly as follows, where we do it in the general cases for $X \sim \N(\mu_X, \sigma_X^2)$ and $Y \sim \N(\mu_Y, \sigma_Y^2)$ with PDFs $f_X$ and $f_Y$, respectively:
+\begin{align*}
+KL(f_X \mid \mid f_Y) &= \E_{f_X}\left[\log \frac{f_X(x)}{f_Y(y)} \right] \\
+&=\E_{f_X}\left[\log f_X(x)\right] - \E_{f_X} \left[ \log f_Y(y) \right] \\
+&= \int_{-\infty}^{\infty} f_X(x) \log f_X(x) dx - \int_{-\infty}^{\infty} f_X(x) \log f_{Y}(x) dx
+\end{align*}
+We tackle each integral separately, beginning with the first:
+\begin{align*}
+ \int_{-\infty}^{\infty} f_X(x) \log f_X(x) dx &= -\frac{1}{2} \log[2\pi\sigma_X^2] - \frac{1}{2\sigma_X^2} \int_{-\infty}^{\infty} (x - \mu_X )^2 f_X(x) dx \tag{using properties of log to simplify normal PDF} \\
+ &= -\frac{1}{2} \log[2\pi\sigma_X^2] - \frac{1}{2\sigma_X^2} \left[ \int_{-\infty}^{\infty} x^2 f_X(x) dx - 2\mu_X \int_{-\infty}^{\infty} xf_X(x) dx + \mu_X^2 \int_{-\infty}^{\infty} f_X(x) dx \right] \\
+ &= -\frac{1}{2} \log[2\pi\sigma_X^2] - \frac{1}{2\sigma_X^2} \left[ \E_{f_X}[X^2] - 2\mu_X \E_{f_X}[X] + \mu_X^2 \right] \\
+ &= -\frac{1}{2} \log[2\pi\sigma_X^2] - \frac{1}{2\sigma_X^2} \left[ \sigma_X^2 + \mu_X^2 - 2\mu_X^2 + \mu_X^2 \right] \\
+ &= -\frac{1}{2}[\log (2\pi\sigma_X^2) + 1]
+\end{align*}
+Now for the second integral:
+\begin{align*}
+\int_{-\infty}^{\infty} f_X(x) \log f_Y(x) dx &= -\frac{1}{2} \log[2\pi\sigma_Y^2] - \frac{1}{2\sigma_Y^2} \int_{-\infty}^{\infty} (x - \mu_Y)^2 f_X(x) dx \\
+ &= -\frac{1}{2} \log[2\pi\sigma_Y^2] - \frac{1}{2\sigma_Y^2} \left[ \int_{-\infty}^{\infty} x^2 f_X(x) dx - 2\mu_Y \int_{-\infty}^{\infty} xf_X(x) dx + \mu_Y^2 \int_{-\infty}^{\infty} f_X(x) dx \right] \\
+ &= -\frac{1}{2} \log[2\pi\sigma_Y^2] - \frac{1}{2\sigma_Y^2} \left[ \E_{f_X}[X^2] - 2\mu_Y \E_{f_X}[X] + \mu_Y^2 \right] \\
+ &= -\frac{1}{2} \log[2\pi\sigma_Y^2] - \frac{1}{2\sigma_Y^2} \left[ \sigma_X^2 + \mu_X^2 - 2\mu_X\mu_Y + \mu_X^2 \right] \\
+ &= -\frac{1}{2} \left[\log (2\pi\sigma_Y^2) + \frac{\sigma_X^2 + (\mu_X - \mu_Y)^2 }{\sigma_Y^2} \right]
+\end{align*}
+Now taking the results and putting everything together, we have the following results:
+\begin{align*}
+KL(f_X \mid \mid f_Y) &=\frac{1}{2} \left[\log (2\pi\sigma_Y^2) + \frac{\sigma_X^2 + (\mu_X - \mu_Y)^2 }{\sigma_Y^2} \right]  -\frac{1}{2}[\log (2\pi\sigma_X^2) + 1] \\
+&= \log \frac{\sigma_Y}{\sigma_X} + \frac{\sigma_X^2 + (\mu_X - \mu_Y)^2}{2\sigma_Y^2} - \frac{1}{2}
+\end{align*}
+The above is the general KL-Divergence for two univariate normal.s. Using the above formula plus all of our other work, we can now return to our original question of writing the lower bound in terms of the simples solutions. We define $\mathcal{L}$ to be our lower bound in terms of our parameters, and therefore we have:
+\begin{align*}
+\mathcal{L}(\{\mu_{ik}\}, \{\sigma_{ik} \}, \{\nu_{jk}\}, \{\tau_{jk} \}) &= - \E_q[\log q(U,V) ] + \E_q [\log p(R \mid U,V)] + \E_q[\log p(U,V)] \\
+&= \E_q [\log p(R \mid U,V)] - KL(q \mid \mid p) \\
+&= \E_q [\log p(R \mid U,V)] - \sum_{i=1}^N \sum_{k=1}^K KL(q_{ik} \mid \mid p_{ik}) - \sum_{j=1}^M \sum_{k=1}^K KL(q_{jk} \mid \mid p_{jk}) \\
+&= \E_q [\log p(R \mid U,V)] - \sum_{i=1}^N \sum_{k=1}^K \left[\log \frac{\sigma_U}{\sigma_{ik}} + \frac{\sigma_{ik}^2 + \mu_{ik}^2}{2\sigma_U^2} - \frac{1}{2} \right] - \sum_{j=1}^M \sum_{k=1}^K \left[\log \frac{\sigma_V}{\tau_{jk}} + \frac{\tau_{jk}^2 + \nu_{jk}^2}{2\sigma_V^2} - \frac{1}{2} \right] \\
+&= \E_q [\log p(R \mid U,V)] -\sum_{i=1}^N \sum_{k=1}^K \left[  \frac{\sigma_{ik}^2 + \mu_{ik}^2}{2\sigma_U^2} - \log \sigma_{ik}  \right] - \sum_{j=1}^M \sum_{k=1}^K \left[ \frac{\tau_{jk}^2 + \nu_{jk}^2}{2\sigma_V^2} - \log \tau_{jk} \right] \\
+&~~~~~~~~~~~~~~~ + NK[1  -\log \sigma_U - \log \sigma_V]
+\end{align*}
+Now we focus on writing the unbiased Monte Carlo estimator of the lower bound. Note that the MC aspect comes into play only with the likelihood term (though it's actually easy to compute in this case). Therefore, we focus on how we would estimate that value. What we can do is we can select a single rating, which we label as $\tilde{r}_{ij}$, and then take the sample mean from the distributions $q_{ik}, q_{jk}$ by sampling $\bar{u}_i$ and $\bar{v}_j$ $S$ times (we sample each component, and for notations sake, we label this distribution as $q_{ij}$). We also denote $D$ as the size of our data, or in other words, the number of ratings we're training on. Therefore, the unbiased MC estimator is:
+\begin{align*}
+\E_q [\log p(R \mid U,V)] &= D \E_{q_{ij}} [\log p(\bar{r}_{ij} \mid u_i,v_j)] \\
+&= \frac{D}{S} \sum_{s=1}^S \log p(\bar{r}_{ij} \mid \bar{u}^s_i, \bar{v}^s_j)
+\end{align*}
+Putting everything together, we now have the following lowerbound MC estimate:
+\begin{align*}
+\mathcal{L}(\{\mu_{ik}\}, \{\sigma_{ik} \}, \{\nu_{jk}\}, \{\tau_{jk} \}) &=  \frac{D}{S} \sum_{i=1}^S \log p(\bar{r}_{ij} \mid \bar{u}^s_i, \bar{v}^s_j) -\sum_{i=1}^N \sum_{k=1}^K \left[  \frac{\sigma_{ik}^2 + \mu_{ik}^2}{2\sigma_U^2} - \log \sigma_{ik}  \right] - \sum_{j=1}^M \sum_{k=1}^K \left[ \frac{\tau_{jk}^2 + \nu_{jk}^2}{2\sigma_V^2} - \log \tau_{jk} \right] \\
+&~~~~~~~~~~~~~~~ + NK[1  -\log \sigma_U - \log \sigma_V]
+\end{align*}
+
+\item We can take the gradient of the above almost directly, but note that we go back one step so that we can re-parametrize the likelihood term in terms of our variational parameters:
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial \mu_{ik}} &= \frac{\partial }{\partial \mu_{ik}}\E_{q_{ij}} [\log p(\bar{r}_{ij} \mid u_i,v_j)] -\frac{\mu_{ik}}{\sigma_U^2} \\
+&=  \frac{\partial}{\partial \mu_{ik}}\E_{z_1,z_2 \sim \N(0,I_K)} [\log p(\bar{r}_{ij} \mid \mu_{i} + \sigma_{i}z_1, \nu_j + \tau_j z_2)] -\frac{\mu_{ik}}{\sigma_U^2} \\
+\frac{\partial \mathcal{L}}{\partial \nu_{jk}} &= \frac{\partial }{\partial \sigma_{ik}}\E_{q_{ij}} [\log p(\bar{r}_{ij} \mid u_i,v_j)] -\frac{\nu_{jk}}{\sigma_V^2} \\
+&= \frac{\partial}{\partial \sigma_{ik} }\E_{z_1,z_2 \sim \N(0,I_K)} [\log p(\bar{r}_{ij} \mid \mu_{i} + \sigma_{i}z_1, \nu_j + \tau_j z_2)] -\frac{\nu_{jk}}{\sigma_V^2} \\
+\frac{\partial \mathcal{L}}{\partial \sigma_{ik}} &= \frac{\partial }{\partial \nu_{ik}}\E_{q_{ij}} [\log p(\bar{r}_{ij} \mid u_i,v_j)] + \frac{1}{\sigma_{ik}} - \frac{\sigma_{ik}}{\sigma_U^2}\\
+&= \frac{\partial}{\partial \sigma_{ik}}\E_{z_1,z_2 \sim \N(0,I_K)} [\log p(\bar{r}_{ij} \mid \mu_{i} + \sigma_{i} z_1, \nu_j, \tau_j z_2)]  + \frac{1}{\sigma_{ik}} - \frac{\sigma_{ik}}{\sigma_U^2}\\
+\frac{\partial \mathcal{L}}{\partial \tau_{jk}} &= \frac{\partial }{\partial \tau_{ik}}\E_{q_{ij}} [\log p(\bar{r}_{ij} \mid u_i,v_j)] + \frac{1}{\tau_{jk}} - \frac{\tau_{jk}}{\sigma_V^2}\\
+&= \frac{\partial}{\partial \tau_{jk}}\E_{z_1,z_2 \sim \N(0,I_K)} [\log p(\bar{r}_{ij} \mid \mu_{i} + \sigma_{i}z_1, \nu_j+ \tau_j z_2)]  + \frac{1}{\tau_{jk}} - \frac{\tau_{jk}}{\sigma_V^2}
+\end{align*}
+
+Following the bode on Piazza, however, we now parametrize our lower bound in terms of log variances, rather than the variances directly. That is to way, we define new variables $\phi_{ik} = \log \sigma_{ik}$ and $\rho_{jk} = \log \tau_{jk}$.
+\begin{align*}
+\mathcal{L}(\{\mu_{ik}\}, \{\phi_{ik} \}, \{\nu_{jk}\}, \{\rho_{jk} \}) &=  \frac{D}{S} \sum_{i=1}^S \log p(\bar{r}_{ij} \mid \bar{u}^s_i, \bar{v}^s_j) -\sum_{i=1}^N \sum_{k=1}^K \left[  \frac{e^{2\phi_{ik}} + \mu_{ik}^2}{2\sigma_U^2} - \phi_{ik}  \right] - \sum_{j=1}^M \sum_{k=1}^K \left[ \frac{e^{2\rho_{jk}} + \nu_{jk}^2}{2\sigma_V^2} - \rho_{jk} \right] \\
+&~~~~~~~~~~~~~~~ + NK[1  -\log \sigma_U - \log \sigma_V]
+\end{align*}
+Note that the above only changes the derivatives slightly for two terms:
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial \phi_{ik}} = \frac{\partial}{\partial \phi_{ik}}\E_{z_1,z_2 \sim \N(0,I_K)} [\log p(\bar{r}_{ij} \mid \mu_{i} + e^{\phi_{i}}z_1, \nu_j+ e^{\phi_{j}} z_2)]  + 1 - \frac{e^{2\phi_{ik}}}{\sigma_U^2}\\
+ \frac{\partial \mathcal{L}}{\partial \rho_{jk}} = \frac{\partial}{\partial \rho_{jk}}\E_{z_1,z_2 \sim \N(0,I_K)} [\log p(\bar{r}_{ij} \mid \mu_{i} + e^{\rho_{i}}z_1, \nu_j+ e^{\rho_{j}} z_2)]  + 1 - \frac{e^{2\rho_{jk}}}{\sigma_V^2} \\
+\end{align*}
+We include the code for the MC Estimator below, along with the code for the rest of the assignment.
+
+\item
+The plot can be seen in Figure \ref{fig:bound_plot}. Note that due to computational limitations, we take the sample averages over just $10$ samples from U,V rather than over $100$ samples, as suggested by the problem statement. From the plots, it's clear that this method improves less quickly than Gibbs sampling, and we can see that the likelihood follows the same general trend as the lower bound. It's interesting to note this as it appears that there are periods in time during which the algorithm achieves maximal optimization under the prior and entropy terms, and must therefore continue only with the likelihood term. Our MC estimates add variance to the plot.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{hw4_bound_k_2.png}
+\caption{Likelihood and Lowerbound plot for $K = 2$.}
+\label{fig:bound_plot}
+\end{figure}
+
+Another thing to note of interest is the fact that the results are converging quite slowly. It could be due to the fact that the learning rate parameter we used was relatively small, with $\alpha = 0.1$. However, the results could also be due to the fact that we needed to perform some burn-in. Either way, it appears that 10 epochs is not enough for a randomly sampled subset of the data.
+
+\item Due to computational limitations, we perform the below only on values from $K =1$ and $K = 2$. We plot them in the same way as before. The shapes actually do not differ significantly, though we would expect that for higher values of $K$, the likelihood terms would have a larger impact on the lower bound than the prior and entropy (this is because the likelihood terms would have significantly more variance, given the increased dimensionality of its distribution).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{hw4_all_k.png}
+\caption{Likelihood and Lowerbound for $K = 1$.}
+\label{fig:bound_plot_1}
+\end{figure}
+
+The plots differ only slightly, and overall, maintain a shape that is consistent with attempting to fit the best model possible. While some values of $K$ take longer to achieve optimality, over-fitting does not appear to be an issue.
+
+\item From our own personal experience, these are some pros and cons of Gibbs sampling:
+\begin{itemize}
+\item It is simpler to implement. Gibbs sampling is a simple method to implement. We just need to write the joint distributions of our data and parameters, and then take a look at each parameter in turn.
+\item Gibbs sampling is useful, following from the above, in the case where it is difficult to even sample from the joint distribution. This is because we only need to know the marginal distributions!
+\item Gibbs sampling can be slow to converge, and often times, as with other MCMC methods, we must have a ``burn-in'' period or thin out our results to encourage independence.
+\item Gibbs sampling requires knowledge of the posterior distributions on the parameters we're interested in knowing. These might not always be possible to sample.
+\item Gibbs sampling is a fast algorithm when sampling from the posterior parameters is simple.
+\item Varients of Gibbs sampling (such as collapsed gibbs) allow for certain parameters to be marginalized out.
+\item Overall, Gibbs sampling is easier to understand and simpler to implement.
+\end{itemize}
+
+
+Next, we list some pros and cons of stochastic variational inference (SVI):
+\begin{itemize}
+\item SVI is useful in that it can be implemented in a black-box fashion. You don't need to know anything about your $p$ distribution, other than the fact that you can sample from it or at the very least calculate the probability of a given points.
+\item SVI can be fast, though difficult to implement, and won't always return the sample values (non-deterministic).
+\item SVI can be much harder to debug.
+\item SVI requires that we chose a function $q$ with which to approximate our joint distributions.
+\item SVI must learn over many more parameters, and requires taking the gradient, which can be difficult both computationally and conceptually.
+\item SVI is a general method that can be applied in almost any scenario and is therefore easier to work with.
+\item SVI can handle much larger data sets faster, and has more parameters which can be tweaked when computational resources are insufficient.
+\item SVI is harder to implement and difficult to understand conceptually.
+\end{itemize}
+\end{enumerate}
+
+
+We now include the code used to attempt to calculate the above results:
+\includepdf[pages=1-6]{code/assignment4/hw4_2.pdf}
+\includepdf[pages=1-6]{code/assignment4/hw4_2_2.pdf}
+\includepdf[pages=1-7]{code/assignment4/hw4_3.pdf}
+\includepdf[pages=1-7]{code/assignment4/hw4_3_2.pdf}
+\end{document}

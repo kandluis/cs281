@@ -1,0 +1,626 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass{article}
+
+    
+    
+    \usepackage{graphicx} % Used to insert images
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{color} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    
+
+    
+    
+    \definecolor{orange}{cmyk}{0,0.4,0.8,0.2}
+    \definecolor{darkorange}{rgb}{.71,0.21,0.01}
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{myteal}{rgb}{.26, .44, .56}
+    \definecolor{gray}{gray}{0.45}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{mediumgray}{gray}{.8}
+    \definecolor{inputbackground}{rgb}{.95, .95, .85}
+    \definecolor{outputbackground}{rgb}{.95, .95, .95}
+    \definecolor{traceback}{rgb}{1, .95, .95}
+    % ansi colors
+    \definecolor{red}{rgb}{.6,0,0}
+    \definecolor{green}{rgb}{0,.65,0}
+    \definecolor{brown}{rgb}{0.6,0.6,0}
+    \definecolor{blue}{rgb}{0,.145,.698}
+    \definecolor{purple}{rgb}{.698,.145,.698}
+    \definecolor{cyan}{rgb}{0,.698,.698}
+    \definecolor{lightgray}{gray}{0.5}
+    
+    % bright ansi colors
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+    
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{hw4\_3}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=blue,
+      linkcolor=darkorange,
+      citecolor=darkgreen,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} Imports}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{import} \PY{n+nn}{autograd.numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+        \PY{k+kn}{from} \PY{n+nn}{autograd.numpy.random} \PY{k+kn}{import} \PY{n}{multivariate\PYZus{}normal} \PY{k}{as} \PY{n}{N}
+        \PY{k+kn}{from} \PY{n+nn}{autograd.scipy.stats} \PY{k+kn}{import} \PY{n}{norm} \PY{k}{as} \PY{n}{N1}
+        \PY{k+kn}{from} \PY{n+nn}{autograd} \PY{k+kn}{import} \PY{n}{grad}
+        \PY{k+kn}{import} \PY{n+nn}{math}
+        \PY{k+kn}{import} \PY{n+nn}{random}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} Read in the data}
+        \PY{c}{\PYZsh{} Each row is formatted as [User ID] [Joke ID] [Rating]}
+        \PY{n}{ratingsFile} \PY{o}{=}  \PY{l+s}{\PYZdq{}}\PY{l+s}{ratings.dat}\PY{l+s}{\PYZdq{}}
+        \PY{n}{allData} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{ratingsFile}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{n+nb+bp}{None}\PY{p}{)}
+        \PY{n}{allData} \PY{o}{=} \PY{n}{allData}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{allData}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{UserID}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{JokeID}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Rating}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{numTrain} \PY{o}{=} \PY{l+m+mi}{100000}
+        \PY{n}{numTest} \PY{o}{=} \PY{l+m+mi}{100000}
+        \PY{n}{train} \PY{o}{=} \PY{n}{allData}\PY{p}{[}\PY{p}{:}\PY{n}{numTrain}\PY{p}{]}
+        \PY{n}{test} \PY{o}{=} \PY{n}{allData}\PY{p}{[}\PY{n}{numTrain}\PY{p}{:}\PY{n}{numTrain} \PY{o}{+} \PY{n}{numTest}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{trainUserIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{UserID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{trainJokeIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{JokeID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{testUserIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{UserID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{testJokeIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{JokeID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} Note that not all users in the testing set are in the training set! }
+        \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{trainJokeIDs}\PY{p}{)} \PY{o}{==} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{testJokeIDs}\PY{p}{)}\PY{p}{,} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{trainUserIDs}\PY{p}{)} \PY{o}{==} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{testUserIDs}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} We precompute the ratings each user gave to the movies he or she rated}
+        \PY{k}{def} \PY{n+nf}{createMappings}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Given a data set, creates the mappings necessary for quick access of results}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{userIds} \PY{o}{=} \PY{n}{trainUserIDs}
+            \PY{n}{jokeIds} \PY{o}{=} \PY{n}{trainJokeIDs}
+            
+            \PY{c}{\PYZsh{} This is a mapping from userID to an numpy array of ratings for that user.}
+            \PY{n}{userToRatings} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+            \PY{c}{\PYZsh{} This is a mapping from userID to a list of indexes corresponding to the jokes rated by the user.}
+            \PY{n}{userToJokeIDs} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+            
+            \PY{c}{\PYZsh{} Same as above, but in reverse.}
+            \PY{n}{jokeToRatings} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+            \PY{n}{jokeToUserIDs} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+            
+            \PY{c}{\PYZsh{} Fill the mappings per users}
+            \PY{k}{for} \PY{n}{userID} \PY{o+ow}{in} \PY{n}{userIds}\PY{p}{:}
+                \PY{n}{userToRatings}\PY{p}{[}\PY{n}{userID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{UserID} \PY{o}{==} \PY{n}{userID}\PY{p}{]}\PY{o}{.}\PY{n}{Rating}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                \PY{n}{userToJokeIDs}\PY{p}{[}\PY{n}{userID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{UserID} \PY{o}{==} \PY{n}{userID}\PY{p}{]}\PY{o}{.}\PY{n}{JokeID}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                
+            \PY{k}{for} \PY{n}{jokeID} \PY{o+ow}{in} \PY{n}{jokeIds}\PY{p}{:}
+                \PY{n}{jokeToRatings}\PY{p}{[}\PY{n}{jokeID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{JokeID} \PY{o}{==} \PY{n}{jokeID}\PY{p}{]}\PY{o}{.}\PY{n}{Rating}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                \PY{n}{jokeToUserIDs}\PY{p}{[}\PY{n}{jokeID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{JokeID} \PY{o}{==} \PY{n}{jokeID}\PY{p}{]}\PY{o}{.}\PY{n}{UserID}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                
+            \PY{k}{return} \PY{n}{userToRatings}\PY{p}{,} \PY{n}{userToJokeIDs}\PY{p}{,} \PY{n}{jokeToRatings}\PY{p}{,} \PY{n}{jokeToUserIDs}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{trainUtoR}\PY{p}{,} \PY{n}{trainUToJ}\PY{p}{,} \PY{n}{trainJtoR}\PY{p}{,} \PY{n}{trainJToU} \PY{o}{=} \PY{n}{createMappings}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} We\PYZsq{}re going to create a mapping from userID to row\PYZus{}index in U}
+        \PY{c}{\PYZsh{} Also, a mapping from jokeID to row\PYZus{}index in V}
+        \PY{c}{\PYZsh{} Additionally, a mapping from userID to row\PYZus{}index in V of jokes rated by the user}
+        \PY{c}{\PYZsh{} and a mapping from jokeID to row\PYZus{}index in U of the users that rated that joke}
+        \PY{k}{def} \PY{n+nf}{createInitialParams}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{sigma2u}\PY{p}{,} \PY{n}{sigma2v}\PY{p}{,} \PY{n}{users}\PY{p}{,} \PY{n}{jokes}\PY{p}{,} \PY{n}{UtoJ}\PY{p}{,} \PY{n}{JtoU}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Returns initial parameters of our U,V distributions along with the mappings described in the table above.}
+        \PY{l+s+sd}{    Input parameters K, the number of laten variables, the variance of U,V distributions respectively,}
+        \PY{l+s+sd}{    a list of userIds, list of jokeIds, a mapping from userIDs to jokes they\PYZsq{}ve rated, and a mapping from }
+        \PY{l+s+sd}{    jokeIDs to users that have rated them, in that order. }
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{c}{\PYZsh{} Maps from Users/Jokes to rows}
+            \PY{n}{UserToU} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user} \PY{p}{:} \PY{n}{i} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{user} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{users}\PY{p}{)}\PY{p}{\PYZcb{}}
+            \PY{n}{JokeToV} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke} \PY{p}{:} \PY{n}{i} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{joke} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{jokes}\PY{p}{)}\PY{p}{\PYZcb{}}
+            
+            \PY{c}{\PYZsh{} Now we create the more complicated mapping from Users to JokeRowsRater and Joke to UserRowsRatedBy}
+            \PY{n}{UserToV} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{UtoJ}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{users}\PY{p}{\PYZcb{}}
+            \PY{n}{JokeToU} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{JtoU}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{jokes}\PY{p}{\PYZcb{}}
+            
+            \PY{c}{\PYZsh{} Lastly, we create our parameters for the normal distributions from which we sample U,V}
+            \PY{n}{mus} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user}\PY{p}{:} \PY{n}{N}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{users}\PY{p}{\PYZcb{}}
+            \PY{n}{nus} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke}\PY{p}{:} \PY{n}{N}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{jokes}\PY{p}{\PYZcb{}}
+            \PY{n}{Sigmas} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user}\PY{p}{:} \PY{n}{sigma2u} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{users}\PY{p}{\PYZcb{}}
+            \PY{n}{Taus} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke}\PY{p}{:} \PY{n}{sigma2v} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{jokes}\PY{p}{\PYZcb{}}
+            
+            \PY{k}{return} \PY{n}{mus}\PY{p}{,} \PY{n}{nus}\PY{p}{,} \PY{n}{Sigmas}\PY{p}{,} \PY{n}{Taus}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} Now we try to code up Part 3!}
+        \PY{k}{def} \PY{n+nf}{LogLikelihood}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{rij}\PY{p}{,} \PY{n}{k}\PY{p}{,} \PY{n}{sigmaepsilon2}\PY{p}{,} \PY{n}{z1}\PY{p}{,} \PY{n}{z2}\PY{p}{)}\PY{p}{:}
+            \PY{c}{\PYZsh{} Return the log\PYZhy{}likelihood of a single rating.}
+            \PY{c}{\PYZsh{} Assumes rij | ui, vj \PYZbs{}sim N(ui\PYZca{}Tvj, sigamepsilon2)}
+            \PY{k}{assert}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{theta}\PY{p}{)} \PY{o}{==} \PY{n}{k} \PY{o}{*} \PY{l+m+mi}{4}\PY{p}{)}
+            \PY{n}{mui}\PY{p}{,} \PY{n}{nuj}\PY{p}{,} \PY{n}{logsigmai}\PY{p}{,} \PY{n}{logtauj} \PY{o}{=} \PY{n}{theta}\PY{p}{[}\PY{p}{:}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{theta}\PY{p}{[}\PY{n}{k}\PY{p}{:}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{theta}\PY{p}{[}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{p}{:}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{theta}\PY{p}{[}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{k}\PY{p}{:}\PY{p}{]}
+            \PY{n}{mean} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{k}{for} \PY{n}{a} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+                \PY{n}{mean} \PY{o}{=} \PY{n}{mean} \PY{o}{+} \PY{p}{(}\PY{n}{mui}\PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o}{+} \PY{n}{z1}\PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{logsigmai}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{nuj}\PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o}{+} \PY{n}{z2}\PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{logtauj}\PY{p}{[}\PY{n}{a}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+            
+            \PY{n}{mean} \PY{o}{=} \PY{n}{mean} \PY{o}{/} \PY{n}{k}
+            \PY{k}{return} \PY{n}{N1}\PY{o}{.}\PY{n}{logpdf}\PY{p}{(}\PY{n}{rij}\PY{p}{,} \PY{n}{mean}\PY{p}{,} \PY{n}{sigmaepsilon2}\PY{p}{)}
+        
+        \PY{n}{gradLogLikelihood} \PY{o}{=} \PY{n}{grad}\PY{p}{(}\PY{n}{LogLikelihood}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{MCExpectedGradLogLikelihood}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{rij}\PY{p}{,} \PY{n}{sigmaepsilon2}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{S}\PY{p}{)}\PY{p}{:}
+            \PY{c}{\PYZsh{} S is the number of samples to use for estimating the expected value of the gradient of the log likelihood}
+            \PY{c}{\PYZsh{} K is number of latent variables}
+            \PY{n}{total} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{theta}\PY{p}{)}\PY{p}{)}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{S}\PY{p}{)}\PY{p}{:}
+                \PY{n}{z1}\PY{p}{,} \PY{n}{z2} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{N}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)}\PY{p}{)}
+                \PY{n}{total} \PY{o}{=} \PY{n}{total} \PY{o}{+} \PY{n}{gradLogLikelihood}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{rij}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{sigmaepsilon2}\PY{p}{,} \PY{n}{z1}\PY{p}{,} \PY{n}{z2}\PY{p}{)}
+            \PY{k}{return} \PY{n}{total} \PY{o}{/} \PY{n}{S}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} We now code up our gradient ascept algorithm, on the data, using multiple epochs!}
+        \PY{n}{EPOCHS} \PY{o}{=} \PY{l+m+mi}{10}
+        \PY{n}{sigmaU2}\PY{p}{,} \PY{n}{sigmaV2}\PY{p}{,} \PY{n}{sigmaepsilon2} \PY{o}{=} \PY{l+m+mf}{5.0}\PY{p}{,} \PY{l+m+mf}{5.0}\PY{p}{,} \PY{l+m+mf}{1.0}
+        \PY{k}{def} \PY{n+nf}{optimzeLowerBound}\PY{p}{(}\PY{n}{alpha}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{S}\PY{p}{,} \PY{n}{NSamples}\PY{p}{)}\PY{p}{:}
+            \PY{c}{\PYZsh{} Optimizes the lowerbound and the set of parameters for each epoch as muis, nuis, logsigmais, logtauis}
+            \PY{c}{\PYZsh{} K is the number of latent variables}
+            \PY{c}{\PYZsh{} alpha is the learning rate for stochastic gradient ascent.}
+            \PY{c}{\PYZsh{} Initialize parameters}
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initializing initial distributions...}\PY{l+s}{\PYZdq{}}
+            \PY{n}{mus}\PY{p}{,} \PY{n}{nus}\PY{p}{,} \PY{n}{Sigmas}\PY{p}{,} \PY{n}{Taus}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV} \PY{o}{=} \PY{n}{createInitialParams}\PY{p}{(}
+                \PY{n}{K}\PY{p}{,}\PY{n}{sigmaU2}\PY{p}{,} \PY{n}{sigmaV2}\PY{p}{,} \PY{n}{trainUserIDs}\PY{p}{,} \PY{n}{trainJokeIDs}\PY{p}{,} \PY{n}{trainUToJ}\PY{p}{,} \PY{n}{trainJToU}\PY{p}{)}
+            
+            \PY{c}{\PYZsh{} Convert to logs}
+            \PY{n}{logSigmas} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{k}\PY{p}{:} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{k}\PY{p}{,}\PY{n}{v} \PY{o+ow}{in} \PY{n}{Sigmas}\PY{o}{.}\PY{n}{iteritems}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+            \PY{n}{logTaus} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{k} \PY{p}{:} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{v}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{k}\PY{p}{,}\PY{n}{v} \PY{o+ow}{in} \PY{n}{Taus}\PY{o}{.}\PY{n}{iteritems}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+            
+            \PY{c}{\PYZsh{} Let\PYZsq{}s precompute numbers}
+            \PY{n}{numUsers} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{joke} \PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{JokeToU}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{trainJokeIDs}\PY{p}{\PYZcb{}} 
+            \PY{n}{numJokes} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{user} \PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{UserToV}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{trainUserIDs}\PY{p}{\PYZcb{}} 
+            
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initialized prior distributions...}\PY{l+s}{\PYZdq{}}
+            
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initializing random samples of params...}\PY{l+s}{\PYZdq{}}
+            \PY{n}{thetasUser} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trainUserIDs}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{K}\PY{p}{)}\PY{p}{)}
+            \PY{n}{thetasJoke} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trainJokeIDs}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{K}\PY{p}{)}\PY{p}{)}
+            \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{trainUserIDs}\PY{p}{:}
+                \PY{n}{thetasUser}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{mus}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{n}{logSigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+            \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{trainJokeIDs}\PY{p}{:}
+                \PY{n}{thetasJoke}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{nus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{n}{logTaus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+                
+            \PY{n}{userThetas} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+            \PY{n}{jokeThetas} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+            \PY{n}{userThetas}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{thetasUser}\PY{p}{)}
+            \PY{n}{jokeThetas}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{thetasJoke}\PY{p}{)}
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished initializing parameters...}\PY{l+s}{\PYZdq{}}
+                
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initializing epoch iterations!....}\PY{l+s}{\PYZdq{}}    
+            \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{EPOCHS}\PY{p}{)}\PY{p}{:}
+                \PY{n}{userThetas}\PY{p}{[}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{userThetas}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{)}
+                \PY{n}{jokeThetas}\PY{p}{[}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{jokeThetas}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{)}
+                
+                \PY{c}{\PYZsh{} select a random subset of the training data!}
+                \PY{n}{rows} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{NSamples}\PY{p}{)}
+                \PY{n}{trainSample} \PY{o}{=} \PY{n}{train}\PY{o}{.}\PY{n}{ix}\PY{p}{[}\PY{n}{rows}\PY{p}{]}
+                \PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+                \PY{k}{for} \PY{n}{rating\PYZus{}Num}\PY{p}{,}\PY{n}{row} \PY{o+ow}{in} \PY{n}{trainSample}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                    \PY{c}{\PYZsh{} Get the rating and user for this row}
+                    \PY{n}{rij} \PY{o}{=} \PY{n}{row}\PY{o}{.}\PY{n}{Rating}
+                    \PY{n}{user} \PY{o}{=} \PY{n}{row}\PY{o}{.}\PY{n}{UserID}
+                    \PY{n}{joke} \PY{o}{=} \PY{n}{row}\PY{o}{.}\PY{n}{JokeID}
+                    
+                    \PY{c}{\PYZsh{} Grab parameters for this user in the epoch we\PYZsq{}re updating!}
+                    \PY{n}{mui} \PY{o}{=} \PY{n}{userThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{n}{K}\PY{p}{]}
+                    \PY{n}{logsigmai} \PY{o}{=} \PY{n}{userThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{n}{K}\PY{p}{:}\PY{p}{]}
+                    \PY{n}{nuj} \PY{o}{=} \PY{n}{jokeThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{n}{K}\PY{p}{]}
+                    \PY{n}{logtauj} \PY{o}{=} \PY{n}{jokeThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{n}{K}\PY{p}{:}\PY{p}{]}
+                    
+                    \PY{c}{\PYZsh{} Calculate gradient of likelihood term for mui, nuj, logsigmai, logtauj.}
+                    \PY{n}{theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{mui}\PY{p}{,} \PY{n}{nuj}\PY{p}{,} \PY{n}{logsigmai}\PY{p}{,} \PY{n}{logtauj}\PY{p}{)}\PY{p}{)}
+                    \PY{k}{assert}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{theta}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{4} \PY{o}{*} \PY{n}{K}\PY{p}{)}
+                    \PY{n}{gradL} \PY{o}{=} \PY{n}{MCExpectedGradLogLikelihood}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{rij}\PY{p}{,} \PY{n}{sigmaepsilon2}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{S}\PY{p}{)}
+                    
+                    \PY{c}{\PYZsh{} Calculate analytical gradient of prior and entropy terms, and additionally, scale them!}
+                    \PY{n}{gradKL} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{mui} \PY{o}{/} \PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{sigmaU2}\PY{p}{)} \PY{o}{*} \PY{n}{numJokes}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)}\PY{p}{,} 
+                                             \PY{o}{\PYZhy{}}\PY{n}{nuj} \PY{o}{/} \PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{sigmaV2}\PY{p}{)} \PY{o}{*} \PY{n}{numUsers}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                                             \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{logsigmai}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{sigmaU2}\PY{p}{)} \PY{o}{*} \PY{n}{numJokes}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                                             \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{logtauj}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{sigmaV2}\PY{p}{)} \PY{o}{*} \PY{n}{numUsers}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                    
+                    \PY{c}{\PYZsh{} Now we can combine them}
+                    \PY{n}{gradient} \PY{o}{=} \PY{n}{gradL} \PY{o}{+} \PY{n}{gradKL} 
+                    \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{isnan}\PY{p}{(}\PY{n}{gradKL}\PY{p}{)}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                        \PY{n}{gradient} \PY{o}{=} \PY{n}{gradL}
+                        
+                    \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{isnan}\PY{p}{(}\PY{n}{gradient}\PY{p}{)}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                        \PY{k}{pass}
+                    \PY{k}{else}\PY{p}{:}
+                        \PY{c}{\PYZsh{} Update the results using gradient ascent!}
+                        \PY{n}{userThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{n}{K}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{alpha} \PY{o}{*} \PY{p}{(}\PY{n}{gradient}\PY{p}{[}\PY{p}{:}\PY{n}{K}\PY{p}{]}\PY{p}{)}
+                        \PY{n}{jokeThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{n}{K}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{alpha} \PY{o}{*} \PY{p}{(}\PY{n}{gradient}\PY{p}{[}\PY{n}{K}\PY{p}{:}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{K}\PY{p}{]}\PY{p}{)}
+                        \PY{n}{userThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{n}{K}\PY{p}{:}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{alpha} \PY{o}{*} \PY{p}{(}\PY{n}{gradient}\PY{p}{[}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{K}\PY{p}{:}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{K}\PY{p}{]}\PY{p}{)}
+                        \PY{n}{jokeThetas}\PY{p}{[}\PY{n}{epoch}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{n}{K}\PY{p}{:}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{alpha} \PY{o}{*} \PY{p}{(}\PY{n}{gradient}\PY{p}{[}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{K}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+        
+                    \PY{k}{if} \PY{n}{i} \PY{o}{\PYZpc{}} \PY{l+m+mi}{1000} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                        \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Processed \PYZob{}\PYZcb{} ratings}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+                    \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                               
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished the results for epoch \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{)}
+                    
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished Epochs!}\PY{l+s}{\PYZdq{}}
+            
+            \PY{k}{return} \PY{n}{userThetas}\PY{p}{,} \PY{n}{jokeThetas}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV}
+            
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{userThetas}\PY{p}{,} \PY{n}{jokeThetas}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV} \PY{o}{=} \PY{n}{optimzeLowerBound}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{10000}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{print} \PY{n}{userThetas}\PY{p}{[}\PY{l+m+mi}{10}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{createRatingSet}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{nusers}\PY{p}{,} \PY{n}{njokes}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{n}{filename}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{test.out}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Given a pandas data frame, creates a matrix R with the ratings of each user filled in.}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{try}\PY{p}{:}
+                \PY{n}{R} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{n}{filename}\PY{p}{)}
+            \PY{k}{except} \PY{n+ne}{IOError}\PY{p}{:}
+                \PY{n}{R} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{nusers}\PY{p}{,} \PY{n}{njokes}\PY{p}{)}\PY{p}{)}
+                \PY{n}{ignored} \PY{o}{=} \PY{l+m+mi}{0}
+                \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n}{data}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                    \PY{k}{try}\PY{p}{:}
+                        \PY{n}{i} \PY{o}{=} \PY{n}{UserToU}\PY{p}{[}\PY{n}{row}\PY{o}{.}\PY{n}{UserID}\PY{p}{]}
+                        \PY{n}{j} \PY{o}{=} \PY{n}{JokeToV}\PY{p}{[}\PY{n}{row}\PY{o}{.}\PY{n}{JokeID}\PY{p}{]}
+                        \PY{n}{R}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{row}\PY{o}{.}\PY{n}{Rating}
+                    \PY{k}{except} \PY{n+ne}{KeyError}\PY{p}{:}
+                        \PY{c}{\PYZsh{} We don\PYZsq{}t have this user or joke in our training set, so we just ignore it?}
+                        \PY{n}{ignored} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                        \PY{k}{pass}
+                    
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Ignored a total of \PYZob{}\PYZcb{} users/ratings that don}\PY{l+s}{\PYZsq{}}\PY{l+s}{t exist in training set}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{ignored}\PY{p}{)}
+        
+                \PY{n}{np}\PY{o}{.}\PY{n}{savetxt}\PY{p}{(}\PY{n}{filename}\PY{p}{,} \PY{n}{R}\PY{p}{)}
+            \PY{k}{return} \PY{n}{R}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{nonZeroSubtract}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Computs x\PYZhy{}y iff x \PYZbs{}neq 0, otherwise returns 0.}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{return} \PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{y} \PY{k}{if} \PY{n}{x} \PY{o}{!=} \PY{l+m+mi}{0} \PY{k}{else} \PY{l+m+mi}{0}
+        
+        \PY{n}{vectSub} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{vectorize}\PY{p}{(}\PY{n}{nonZeroSubtract}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c}{\PYZsh{} We can calculate these after as long as we return our stack of Us }
+        \PY{k}{def} \PY{n+nf}{getTrainTestResults}\PY{p}{(}\PY{n}{userTheta}\PY{p}{,} \PY{n}{jokeTheta}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,}\PY{n}{k}\PY{p}{,} \PY{n}{nsamples} \PY{o}{=} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    Given the sequence of created parameters from optimizing our lowerbound, we now use those parameters}
+        \PY{l+s+sd}{    to sample from the distributution nsamples. }
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{c}{\PYZsh{} We calculate the results profressively, so let us iterated over the sorted keys for the epochs.}
+            \PY{k}{assert}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{userTheta}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{==} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{jokeTheta}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+            \PY{c}{\PYZsh{} The running mean for U and V}
+            \PY{n}{n}\PY{p}{,} \PY{n}{m} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{trainUserIDs}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{trainJokeIDs}\PY{p}{)}
+        
+            \PY{c}{\PYZsh{} Precompute the users/joke that exists in the testing set}
+            \PY{n}{testUserUIndex} \PY{o}{=} \PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{testUserIDs} \PY{k}{if} \PY{n}{user} \PY{o+ow}{in} \PY{n}{UserToU}\PY{p}{]}
+            \PY{n}{testJokeVIndex} \PY{o}{=} \PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{testJokeIDs} \PY{k}{if} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{JokeToV}\PY{p}{]}
+            
+            \PY{c}{\PYZsh{} Create R (note that this function tries to read from disk if R already exists)}
+            \PY{n}{RTrain} \PY{o}{=} \PY{n}{createRatingSet}\PY{p}{(}\PY{n}{train}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{R\PYZus{}Train.out}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{RTest} \PY{o}{=} \PY{n}{createRatingSet}\PY{p}{(}\PY{n}{test}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{R\PYZus{}Test.out}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{k}{assert}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{RTrain}\PY{p}{)} \PY{o}{==} \PY{n+nb}{len}\PY{p}{(}\PY{n}{train}\PY{p}{)}\PY{p}{)}
+            \PY{n}{trainN} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{RTrain}\PY{p}{)}
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Training samples: \PYZob{}\PYZcb{}.}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{trainN}\PY{p}{)}
+            \PY{n}{testN} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{RTest}\PY{p}{)}
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Testing samples: \PYZob{}\PYZcb{}.}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{testN}\PY{p}{)}
+            
+            \PY{n}{train\PYZus{}likelihood} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{n}{train\PYZus{}l} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{n}{test\PYZus{}likelihood} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{n}{test\PYZus{}l} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Beginning epochs!}\PY{l+s}{\PYZdq{}}
+            \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{EPOCHS}\PY{p}{)}\PY{p}{:}
+                \PY{c}{\PYZsh{} Sample so we can estimate the likelihood term!}
+                \PY{n}{tll} \PY{o}{=} \PY{l+m+mi}{0}
+                \PY{n}{tll\PYZus{}test} \PY{o}{=} \PY{l+m+mi}{0}
+                
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Starting sampling from distribution!}\PY{l+s}{\PYZdq{}}
+                \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{nsamples}\PY{p}{)}\PY{p}{:}
+                    \PY{c}{\PYZsh{} Sample U,V}
+                    \PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{n}{k}\PY{p}{)}\PY{p}{)}
+                    \PY{n}{V} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{m}\PY{p}{,}\PY{n}{k}\PY{p}{)}\PY{p}{)}
+                    \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{trainUserIDs}\PY{p}{:}
+                        \PY{n}{index} \PY{o}{=} \PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}
+                        \PY{n}{U}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                    \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{trainJokeIDs}\PY{p}{:}
+                        \PY{n}{index} \PY{o}{=} \PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}
+                        \PY{n}{V}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{index}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                        
+                    \PY{c}{\PYZsh{} We have a new sample, so calculate predictions}
+                    \PY{n}{predictions} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{U}\PY{p}{,}\PY{n}{V}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+                    
+                    \PY{c}{\PYZsh{} Calculate likelihood}
+                    \PY{n}{tll} \PY{o}{+}\PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{math}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{n}{sigmaepsilon2}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{vectSub}\PY{p}{(}\PY{n}{RTrain}\PY{p}{,} \PY{n}{predictions}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+                    \PY{n}{tll\PYZus{}test} \PY{o}{+}\PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{math}\PY{o}{.}\PY{n}{pi} \PY{o}{*} \PY{n}{sigmaepsilon2}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{vectSub}\PY{p}{(}\PY{n}{RTest}\PY{p}{,} \PY{n}{predictions}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+                
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished sampling! Calculating values!}\PY{l+s}{\PYZdq{}}
+                
+                \PY{n}{tll} \PY{o}{=} \PY{n}{tll} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{n}{nsamples}\PY{p}{)}
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Train Log Likelihood for Epoch \PYZob{}\PYZcb{} is \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{,} \PY{n}{tll}\PY{p}{)}
+                \PY{n}{tll\PYZus{}test} \PY{o}{=} \PY{n}{tll\PYZus{}test} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{n}{nsamples}\PY{p}{)}
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Test Log Likelihood for Epoch \PYZob{}\PYZcb{} is \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{,} \PY{n}{tll\PYZus{}test}\PY{p}{)}
+                
+                \PY{c}{\PYZsh{} Now that we have the expected likelihood, use closed form solution to calculate entropy and prior terms}
+                \PY{c}{\PYZsh{} for the lower bound!}
+                \PY{n}{train\PYZus{}bound} \PY{o}{=} \PY{n}{tll} \PY{o}{+} \PY{n}{trainN} \PY{o}{*} \PY{n}{k} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{sigmaU2}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{sigmaV2}\PY{p}{)}\PY{p}{)}
+                \PY{n}{train\PYZus{}bound} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)} 
+                                      \PY{o}{+} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]} \PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{sigmaU2}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+                \PY{n}{train\PYZus{}bound} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)} 
+                                      \PY{o}{+} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]} \PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{sigmaU2}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Train Lower Bound for Epoch \PYZob{}\PYZcb{} is \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{,} \PY{n}{train\PYZus{}bound}\PY{p}{)}
+                
+                \PY{c}{\PYZsh{} For the test, we repeat the same as the train but we can only do it with the parameters where}
+                \PY{c}{\PYZsh{} the user/joke exists in the test set.}
+                \PY{n}{test\PYZus{}bound} \PY{o}{=} \PY{n}{tll\PYZus{}test} \PY{o}{+} \PY{n}{testN} \PY{o}{*} \PY{n}{k} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{sigmaU2}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{sigmaV2}\PY{p}{)}\PY{p}{)}
+                \PY{n}{test\PYZus{}bound} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{testUserUIndex}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)} 
+                                     \PY{o}{+} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{testUserUIndex}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]} \PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{sigmaU2}\PY{p}{)} 
+                                     \PY{o}{\PYZhy{}} \PY{n}{userTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{testUserUIndex}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+                \PY{n}{test\PYZus{}bound} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{testJokeVIndex}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)} 
+                                     \PY{o}{+} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{testJokeVIndex}\PY{p}{,} \PY{p}{:}\PY{n}{k}\PY{p}{]} \PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{sigmaU2}\PY{p}{)} 
+                                     \PY{o}{\PYZhy{}} \PY{n}{jokeTheta}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{testJokeVIndex}\PY{p}{,} \PY{n}{k}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+                \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Test Lower Bound for Epoch \PYZob{}\PYZcb{} is \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{,} \PY{n}{test\PYZus{}bound}\PY{p}{)}
+                
+                \PY{c}{\PYZsh{} Store the results!}
+                \PY{n}{train\PYZus{}likelihood}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{tll}\PY{p}{)}
+                \PY{n}{train\PYZus{}l}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{train\PYZus{}bound}\PY{p}{)}
+                \PY{n}{test\PYZus{}likelihood}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{tll\PYZus{}test}\PY{p}{)}
+                \PY{n}{test\PYZus{}l}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{test\PYZus{}bound}\PY{p}{)}
+                
+            \PY{k}{return} \PY{n}{train\PYZus{}likelihood}\PY{p}{,} \PY{n}{train\PYZus{}l}\PY{p}{,} \PY{n}{test\PYZus{}likelihood}\PY{p}{,} \PY{n}{test\PYZus{}l}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{train\PYZus{}ll} \PY{p}{,} \PY{n}{train\PYZus{}lb}\PY{p}{,} \PY{n}{test\PYZus{}l}\PY{p}{,} \PY{n}{test\PYZus{}lb} \PY{o}{=} \PY{n}{getTrainTestResults}\PY{p}{(}\PY{n}{userThetas}\PY{p}{,} \PY{n}{jokeThetas}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{train\PYZus{}lb}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}lb}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Train Data LowerBound}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}ll}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Train Data Log Likelihood}\PY{l+s}{\PYZdq{}} \PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,} \PY{n}{test\PYZus{}lb}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Test Data Lower Bound}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,} \PY{n}{test\PYZus{}l}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Test Data Log Likelihood}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Log Likelihood and LowerBound Plots for K = 2}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Epoch}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Log Likelihood/LowerBound}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

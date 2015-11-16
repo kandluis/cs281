@@ -1,0 +1,1384 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass{article}
+
+    
+    
+    \usepackage{graphicx} % Used to insert images
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{color} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    
+
+    
+    
+    \definecolor{orange}{cmyk}{0,0.4,0.8,0.2}
+    \definecolor{darkorange}{rgb}{.71,0.21,0.01}
+    \definecolor{darkgreen}{rgb}{.12,.54,.11}
+    \definecolor{myteal}{rgb}{.26, .44, .56}
+    \definecolor{gray}{gray}{0.45}
+    \definecolor{lightgray}{gray}{.95}
+    \definecolor{mediumgray}{gray}{.8}
+    \definecolor{inputbackground}{rgb}{.95, .95, .85}
+    \definecolor{outputbackground}{rgb}{.95, .95, .95}
+    \definecolor{traceback}{rgb}{1, .95, .95}
+    % ansi colors
+    \definecolor{red}{rgb}{.6,0,0}
+    \definecolor{green}{rgb}{0,.65,0}
+    \definecolor{brown}{rgb}{0.6,0.6,0}
+    \definecolor{blue}{rgb}{0,.145,.698}
+    \definecolor{purple}{rgb}{.698,.145,.698}
+    \definecolor{cyan}{rgb}{0,.698,.698}
+    \definecolor{lightgray}{gray}{0.5}
+    
+    % bright ansi colors
+    \definecolor{darkgray}{gray}{0.25}
+    \definecolor{lightred}{rgb}{1.0,0.39,0.28}
+    \definecolor{lightgreen}{rgb}{0.48,0.99,0.0}
+    \definecolor{lightblue}{rgb}{0.53,0.81,0.92}
+    \definecolor{lightpurple}{rgb}{0.87,0.63,0.87}
+    \definecolor{lightcyan}{rgb}{0.5,1.0,0.83}
+    
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{hw4.2}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=blue,
+      linkcolor=darkorange,
+      citecolor=darkgreen,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}99}]:} \PY{c}{\PYZsh{} Imports}
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{import} \PY{n+nn}{autograd.numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+         \PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+         \PY{k+kn}{from} \PY{n+nn}{numpy.random} \PY{k+kn}{import} \PY{n}{multivariate\PYZus{}normal} \PY{k}{as} \PY{n}{N}
+         \PY{k+kn}{from} \PY{n+nn}{scipy.stats} \PY{k+kn}{import} \PY{n}{norm} \PY{k}{as} \PY{n}{N1}
+         \PY{k+kn}{from} \PY{n+nn}{autograd} \PY{k+kn}{import} \PY{n}{grad}
+         \PY{k+kn}{import} \PY{n+nn}{math}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}100}]:} \PY{c}{\PYZsh{} Read in the data}
+          \PY{c}{\PYZsh{} Each row is formatted as [User ID] [Joke ID] [Rating]}
+          \PY{n}{ratingsFile} \PY{o}{=}  \PY{l+s}{\PYZdq{}}\PY{l+s}{ratings.dat}\PY{l+s}{\PYZdq{}}
+          \PY{n}{allData} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{ratingsFile}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{n+nb+bp}{None}\PY{p}{)}
+          \PY{n}{allData} \PY{o}{=} \PY{n}{allData}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}101}]:} \PY{n}{allData}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{UserID}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{JokeID}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{Rating}\PY{l+s}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}102}]:} \PY{n}{numTrain} \PY{o}{=} \PY{l+m+mi}{100000}
+          \PY{n}{numTest} \PY{o}{=} \PY{l+m+mi}{100000}
+          \PY{n}{train} \PY{o}{=} \PY{n}{allData}\PY{p}{[}\PY{p}{:}\PY{n}{numTrain}\PY{p}{]}
+          \PY{n}{test} \PY{o}{=} \PY{n}{allData}\PY{p}{[}\PY{n}{numTrain}\PY{p}{:}\PY{n}{numTrain} \PY{o}{+} \PY{n}{numTest}\PY{p}{]}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}103}]:} \PY{n}{trainUserIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{UserID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          \PY{n}{trainJokeIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{JokeID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          \PY{n}{testUserIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{UserID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          \PY{n}{testJokeIDs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{l+s}{\PYZsq{}}\PY{l+s}{JokeID}\PY{l+s}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}104}]:} \PY{c}{\PYZsh{} Note that not all users in the testing set are in the training set! }
+          \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{trainJokeIDs}\PY{p}{)} \PY{o}{==} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{testJokeIDs}\PY{p}{)}\PY{p}{,} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{trainUserIDs}\PY{p}{)} \PY{o}{==} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{testUserIDs}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}104}]:} (True, False)
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}105}]:} \PY{c}{\PYZsh{} We precompute the ratings each user gave to the movies he or she rated}
+          \PY{k}{def} \PY{n+nf}{createMappings}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Given a data set, creates the mappings necessary for quick access of results}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{n}{userIds} \PY{o}{=} \PY{n}{trainUserIDs}
+              \PY{n}{jokeIds} \PY{o}{=} \PY{n}{trainJokeIDs}
+              
+              \PY{c}{\PYZsh{} This is a mapping from userID to an numpy array of ratings for that user.}
+              \PY{n}{userToRatings} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+              \PY{c}{\PYZsh{} This is a mapping from userID to a list of indexes corresponding to the jokes rated by the user.}
+              \PY{n}{userToJokeIDs} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+              
+              \PY{c}{\PYZsh{} Same as above, but in reverse.}
+              \PY{n}{jokeToRatings} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+              \PY{n}{jokeToUserIDs} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+              
+              \PY{c}{\PYZsh{} Fill the mappings per users}
+              \PY{k}{for} \PY{n}{userID} \PY{o+ow}{in} \PY{n}{userIds}\PY{p}{:}
+                  \PY{n}{userToRatings}\PY{p}{[}\PY{n}{userID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{UserID} \PY{o}{==} \PY{n}{userID}\PY{p}{]}\PY{o}{.}\PY{n}{Rating}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                  \PY{n}{userToJokeIDs}\PY{p}{[}\PY{n}{userID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{UserID} \PY{o}{==} \PY{n}{userID}\PY{p}{]}\PY{o}{.}\PY{n}{JokeID}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                  
+              \PY{k}{for} \PY{n}{jokeID} \PY{o+ow}{in} \PY{n}{jokeIds}\PY{p}{:}
+                  \PY{n}{jokeToRatings}\PY{p}{[}\PY{n}{jokeID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{JokeID} \PY{o}{==} \PY{n}{jokeID}\PY{p}{]}\PY{o}{.}\PY{n}{Rating}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                  \PY{n}{jokeToUserIDs}\PY{p}{[}\PY{n}{jokeID}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{train}\PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{JokeID} \PY{o}{==} \PY{n}{jokeID}\PY{p}{]}\PY{o}{.}\PY{n}{UserID}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+                  
+              \PY{k}{return} \PY{n}{userToRatings}\PY{p}{,} \PY{n}{userToJokeIDs}\PY{p}{,} \PY{n}{jokeToRatings}\PY{p}{,} \PY{n}{jokeToUserIDs}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{trainUtoR}\PY{p}{,} \PY{n}{trainUToJ}\PY{p}{,} \PY{n}{trainJtoR}\PY{p}{,} \PY{n}{trainJToU} \PY{o}{=} \PY{n}{createMappings}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}106}]:} \PY{c}{\PYZsh{} We\PYZsq{}re going to create a mapping from userID to row\PYZus{}index in U}
+          \PY{c}{\PYZsh{} Also, a mapping from jokeID to row\PYZus{}index in V}
+          \PY{c}{\PYZsh{} Additionally, a mapping from userID to row\PYZus{}index in V of jokes rated by the user}
+          \PY{c}{\PYZsh{} and a mapping from jokeID to row\PYZus{}index in U of the users that rated that joke}
+          \PY{k}{def} \PY{n+nf}{createInitialParams}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{sigma2u}\PY{p}{,} \PY{n}{sigma2v}\PY{p}{,} \PY{n}{users}\PY{p}{,} \PY{n}{jokes}\PY{p}{,} \PY{n}{UtoJ}\PY{p}{,} \PY{n}{JtoU}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Returns initial parameters of our U,V distributions along with the mappings described in the table above.}
+          \PY{l+s+sd}{    Input parameters K, the number of laten variables, the variance of U,V distributions respectively,}
+          \PY{l+s+sd}{    a list of userIds, list of jokeIds, a mapping from userIDs to jokes they\PYZsq{}ve rated, and a mapping from }
+          \PY{l+s+sd}{    jokeIDs to users that have rated them, in that order. }
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{c}{\PYZsh{} Maps from Users/Jokes to rows}
+              \PY{n}{UserToU} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user} \PY{p}{:} \PY{n}{i} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{user} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{users}\PY{p}{)}\PY{p}{\PYZcb{}}
+              \PY{n}{JokeToV} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke} \PY{p}{:} \PY{n}{i} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{joke} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{jokes}\PY{p}{)}\PY{p}{\PYZcb{}}
+              
+              \PY{c}{\PYZsh{} Now we create the more complicated mapping from Users to JokeRowsRater and Joke to UserRowsRatedBy}
+              \PY{n}{UserToV} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{UtoJ}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{users}\PY{p}{\PYZcb{}}
+              \PY{n}{JokeToU} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{JtoU}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{jokes}\PY{p}{\PYZcb{}}
+              
+              \PY{c}{\PYZsh{} Lastly, we create our parameters for the normal distributions from which we sample U,V}
+              \PY{n}{mus} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{K}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{users}\PY{p}{\PYZcb{}}
+              \PY{n}{nus} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{K}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{jokes}\PY{p}{\PYZcb{}}
+              \PY{n}{Sigmas} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{user}\PY{p}{:} \PY{n}{sigma2u} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{users}\PY{p}{\PYZcb{}}
+              \PY{n}{Taus} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{joke}\PY{p}{:} \PY{n}{sigma2v} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{K}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{jokes}\PY{p}{\PYZcb{}}
+              
+              \PY{k}{return} \PY{n}{mus}\PY{p}{,} \PY{n}{nus}\PY{p}{,} \PY{n}{Sigmas}\PY{p}{,} \PY{n}{Taus}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}107}]:} \PY{c}{\PYZsh{} Constant values that won\PYZsq{}t change. The only parameter that changes is K.}
+          \PY{n}{sigma2u}\PY{p}{,} \PY{n}{sigma2v}\PY{p}{,} \PY{n}{sigma2} \PY{o}{=} \PY{l+m+mf}{5.0}\PY{p}{,} \PY{l+m+mf}{5.0}\PY{p}{,} \PY{l+m+mf}{1.0}
+          
+          \PY{c}{\PYZsh{} Start epoch iterations.}
+          \PY{c}{\PYZsh{} We do gibs sampling on the specified value of K, the number of latent variables to consdier.}
+          \PY{k}{def} \PY{n+nf}{gibbsSampling}\PY{p}{(}\PY{n}{K}\PY{p}{,} \PY{n}{EPOCHS} \PY{o}{=} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{:}
+              \PY{c}{\PYZsh{} We start by creating our subsets of parameters using the mappings we pre\PYZhy{}computed with createMappings function.}
+              \PY{c}{\PYZsh{} The function returns a list of the likelihood results on the test and training for each epoch.}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    trainUserIDs = a list of ids in the training set for users}
+          \PY{l+s+sd}{    trainJokeIDs = a list of ids in the training set for jokes}
+          \PY{l+s+sd}{    trainUtoR \PYZhy{} training user to list of ratings}
+          \PY{l+s+sd}{    trainUToJ \PYZhy{} training user to list of joke ids rated}
+          \PY{l+s+sd}{    trainJtoR \PYZhy{} training joke to list of raings }
+          \PY{l+s+sd}{    trainJToU \PYZhy{} training joke to list of usersids that rated it}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initializing prior distributions...}\PY{l+s}{\PYZdq{}}
+              \PY{n}{mus}\PY{p}{,} \PY{n}{nus}\PY{p}{,} \PY{n}{Sigmas}\PY{p}{,} \PY{n}{Taus}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV} \PY{o}{=} \PY{n}{createInitialParams}\PY{p}{(}
+                  \PY{n}{K}\PY{p}{,}\PY{n}{sigma2u}\PY{p}{,} \PY{n}{sigma2v}\PY{p}{,} \PY{n}{trainUserIDs}\PY{p}{,} \PY{n}{trainJokeIDs}\PY{p}{,} \PY{n}{trainUToJ}\PY{p}{,} \PY{n}{trainJToU}\PY{p}{)}
+              
+              \PY{c}{\PYZsh{} Additionally, we create distionaries of inverse Sigmas and Taus}
+              \PY{n}{inverseSigmas} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{user} \PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{Sigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{Sigmas}\PY{p}{\PYZcb{}} 
+              \PY{n}{inverseTaus} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{joke} \PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{Taus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)} \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{Taus}\PY{p}{\PYZcb{}}
+              
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initialized prior distributions...}\PY{l+s}{\PYZdq{}}
+              
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initializing random samples of U,V...}\PY{l+s}{\PYZdq{}}
+              \PY{n}{U0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trainUserIDs}\PY{p}{)}\PY{p}{,} \PY{n}{K}\PY{p}{)}\PY{p}{)}
+              \PY{n}{V0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{trainJokeIDs}\PY{p}{)}\PY{p}{,} \PY{n}{K}\PY{p}{)}\PY{p}{)}
+              \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{trainUserIDs}\PY{p}{:}
+                  \PY{n}{U0}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{mus}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{n}{Sigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)}
+                  
+              \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{trainJokeIDs}\PY{p}{:}
+                  \PY{n}{V0}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{nus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{n}{Taus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)}
+                  
+              \PY{n}{Us} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+              \PY{n}{Vs} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+              \PY{n}{Us}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{U0}
+              \PY{n}{Vs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{V0}
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished initializing U,V...}\PY{l+s}{\PYZdq{}}
+                  
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Initializing epoch iterations!....}\PY{l+s}{\PYZdq{}}    
+              \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{EPOCHS}\PY{p}{)}\PY{p}{:}
+                  \PY{c}{\PYZsh{} Iterate over the users}
+                  \PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{Us}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+                  \PY{k}{for} \PY{n}{user} \PY{o+ow}{in} \PY{n}{trainUserIDs}\PY{p}{:}
+                      \PY{c}{\PYZsh{} Update the mu and Sigma}
+                      \PY{n}{Vi} \PY{o}{=} \PY{n}{Vs}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{UserToV}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{c}{\PYZsh{} The jokes rated by user i}
+                      \PY{n}{Rij} \PY{o}{=} \PY{n}{trainUtoR}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{c}{\PYZsh{} The ratings by user i}
+                      \PY{n}{inverseSigmaNew} \PY{o}{=} \PY{n}{inverseSigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{o}{+} \PY{n}{Vi}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Vi}\PY{p}{)}
+                      \PY{n}{SigmaNew} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{inverseSigmaNew}\PY{p}{)}
+                      \PY{n}{muNew} \PY{o}{=} \PY{n}{SigmaNew}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Vi}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Rij}\PY{p}{)} \PY{o}{+} \PY{n}{inverseSigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{mus}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+                      
+                      \PY{c}{\PYZsh{} Sample a new latent vector for this user.}
+                      \PY{n}{U}\PY{p}{[}\PY{n}{UserToU}\PY{p}{[}\PY{n}{user}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{muNew}\PY{p}{,} \PY{n}{SigmaNew}\PY{p}{)}
+                      
+                      \PY{c}{\PYZsh{} Store new values}
+                      \PY{n}{mus}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{o}{=} \PY{n}{muNew}
+                      \PY{n}{Sigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{o}{=} \PY{n}{SigmaNew}
+                      \PY{n}{inverseSigmas}\PY{p}{[}\PY{n}{user}\PY{p}{]} \PY{o}{=} \PY{n}{inverseSigmaNew}
+                      
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished updating the U matrix...}\PY{l+s}{\PYZdq{}}
+                  
+                  \PY{c}{\PYZsh{} Iteratve over the jokes}
+                  \PY{n}{V} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{Vs}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+                  \PY{k}{for} \PY{n}{joke} \PY{o+ow}{in} \PY{n}{trainJokeIDs}\PY{p}{:}
+                      \PY{c}{\PYZsh{} Update the nu and Tau}
+                      \PY{n}{Ui} \PY{o}{=} \PY{n}{Us}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}\PY{p}{[}\PY{n}{JokeToU}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{c}{\PYZsh{} The users rated that rated our joke}
+                      \PY{n}{Rij} \PY{o}{=} \PY{n}{trainJtoR}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{c}{\PYZsh{} The ratings of the joke}
+                      \PY{n}{inverseTauNew} \PY{o}{=} \PY{n}{inverseTaus}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{o}{+} \PY{n}{Ui}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Ui}\PY{p}{)}
+                      \PY{n}{TauNew} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{inverseTauNew}\PY{p}{)}
+                      \PY{n}{nuNew} \PY{o}{=} \PY{n}{TauNew}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Ui}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Rij}\PY{p}{)} \PY{o}{+} \PY{n}{inverseTaus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{nus}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+                      
+                      \PY{c}{\PYZsh{} Sample a new laten vector for this user.}
+                      \PY{n}{V}\PY{p}{[}\PY{n}{JokeToV}\PY{p}{[}\PY{n}{joke}\PY{p}{]}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{N}\PY{p}{(}\PY{n}{nuNew}\PY{p}{,} \PY{n}{TauNew}\PY{p}{)}
+                      
+                      \PY{c}{\PYZsh{} Store new values}
+                      \PY{n}{nus}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{o}{=} \PY{n}{nuNew}
+                      \PY{n}{Taus}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{o}{=} \PY{n}{TauNew}
+                      \PY{n}{inverseTaus}\PY{p}{[}\PY{n}{joke}\PY{p}{]} \PY{o}{=} \PY{n}{inverseTauNew}
+                      
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished updating the V matrix....}\PY{l+s}{\PYZdq{}}
+                      
+                  \PY{c}{\PYZsh{} Store the results!}
+                  \PY{n}{Us}\PY{p}{[}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{U}
+                  \PY{n}{Vs}\PY{p}{[}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{V}
+                  
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished updating the results!...}\PY{l+s}{\PYZdq{}}
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Done with Epoch \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{)}
+              
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Finished Epochs!}\PY{l+s}{\PYZdq{}}
+              
+              \PY{c}{\PYZsh{} We return the stack of Us ans well as the mappings from Users to U/V and from Jokes to U/V}
+              \PY{k}{return} \PY{n}{Us}\PY{p}{,} \PY{n}{Vs}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}108}]:} \PY{c}{\PYZsh{} We run 100 times}
+          \PY{n}{Us}\PY{p}{,} \PY{n}{Vs}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{UserToV}\PY{p}{,} \PY{n}{JokeToU}\PY{p}{,} \PY{n}{JokeToV} \PY{o}{=} \PY{n}{gibbsSampling}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Initializing prior distributions{\ldots}
+Initialized prior distributions{\ldots}
+Initializing random samples of U,V{\ldots}
+Finished initializing U,V{\ldots}
+Initializing epoch iterations!{\ldots}
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 0
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 1
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 2
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 3
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 4
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 5
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 6
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 7
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 8
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 9
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 10
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 11
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 12
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 13
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 14
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 15
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 16
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 17
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 18
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 19
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 20
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 21
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 22
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 23
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 24
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 25
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 26
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 27
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 28
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 29
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 30
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 31
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 32
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 33
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 34
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 35
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 36
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 37
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 38
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 39
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 40
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 41
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 42
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 43
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 44
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 45
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 46
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 47
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 48
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 49
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 50
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 51
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 52
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 53
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 54
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 55
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 56
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 57
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 58
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 59
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 60
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 61
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 62
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 63
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 64
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 65
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 66
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 67
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 68
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 69
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 70
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 71
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 72
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 73
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 74
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 75
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 76
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 77
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 78
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 79
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 80
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 81
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 82
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 83
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 84
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 85
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 86
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 87
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 88
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 89
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 90
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 91
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 92
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 93
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 94
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 95
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 96
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 97
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 98
+Finished updating the U matrix{\ldots}
+Finished updating the V matrix{\ldots}
+Finished updating the results!{\ldots}
+Done with Epoch 99
+Finished Epochs!
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}117}]:} \PY{k}{def} \PY{n+nf}{createRatingSet}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{nusers}\PY{p}{,} \PY{n}{njokes}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{n}{filename}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{test.out}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Given a pandas data frame, creates a matrix R with the ratings of each user filled in.}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{k}{try}\PY{p}{:}
+                  \PY{n}{R} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{n}{filename}\PY{p}{)}
+              \PY{k}{except} \PY{n+ne}{IOError}\PY{p}{:}
+                  \PY{n}{R} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{nusers}\PY{p}{,} \PY{n}{njokes}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{ignored} \PY{o}{=} \PY{l+m+mi}{0}
+                  \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n}{data}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                      \PY{k}{try}\PY{p}{:}
+                          \PY{n}{i} \PY{o}{=} \PY{n}{UserToU}\PY{p}{[}\PY{n}{row}\PY{o}{.}\PY{n}{UserID}\PY{p}{]}
+                          \PY{n}{j} \PY{o}{=} \PY{n}{JokeToV}\PY{p}{[}\PY{n}{row}\PY{o}{.}\PY{n}{JokeID}\PY{p}{]}
+                          \PY{n}{R}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{row}\PY{o}{.}\PY{n}{Rating}
+                      \PY{k}{except} \PY{n+ne}{KeyError}\PY{p}{:}
+                          \PY{c}{\PYZsh{} We don\PYZsq{}t have this user or joke in our training set, so we just ignore it?}
+                          \PY{n}{ignored} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                          \PY{k}{pass}
+                      
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Ignored a total of \PYZob{}\PYZcb{} users/ratings that don}\PY{l+s}{\PYZsq{}}\PY{l+s}{t exist in training set}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{ignored}\PY{p}{)}
+          
+                  \PY{n}{np}\PY{o}{.}\PY{n}{savetxt}\PY{p}{(}\PY{n}{filename}\PY{p}{,} \PY{n}{R}\PY{p}{)}
+              \PY{k}{return} \PY{n}{R}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}118}]:} \PY{k}{def} \PY{n+nf}{nonZeroSubtract}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Computs x\PYZhy{}y iff x \PYZbs{}neq 0, otherwise returns 0.}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{k}{return} \PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{y} \PY{k}{if} \PY{n}{x} \PY{o}{!=} \PY{l+m+mi}{0} \PY{k}{else} \PY{l+m+mi}{0}
+          
+          \PY{n}{vectSub} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{vectorize}\PY{p}{(}\PY{n}{nonZeroSubtract}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}130}]:} \PY{c}{\PYZsh{} We can calculate these after as long as we return our stack of Us }
+          \PY{k}{def} \PY{n+nf}{getTrainTestMSE}\PY{p}{(}\PY{n}{Us}\PY{p}{,} \PY{n}{Vs}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+          \PY{l+s+sd}{    Given the sequence of created Us and Vs during the Epochs, we calculate the log likelihood on the}
+          \PY{l+s+sd}{    training and testing data. We also need the mappings from UserID to index in U and JokeId to index in V.}
+          \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+              \PY{c}{\PYZsh{} We calculate the results profressively, so let us iterated over the sorted keys for the epochs.}
+              \PY{k}{assert}\PY{p}{(}\PY{n+nb}{sorted}\PY{p}{(}\PY{n}{Us}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{==} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{Vs}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+              \PY{n}{epochs} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{Us}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+              \PY{k}{assert}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{epochs}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}
+              \PY{c}{\PYZsh{} The running mean for U and V}
+              \PY{n}{UMean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{Us}\PY{p}{[}\PY{n}{epochs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+              \PY{n}{VMean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{Vs}\PY{p}{[}\PY{n}{epochs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+              \PY{n}{n}\PY{p}{,} \PY{n}{k} \PY{o}{=} \PY{n}{UMean}\PY{o}{.}\PY{n}{shape}
+              \PY{n}{m}\PY{p}{,} \PY{n}{k} \PY{o}{=} \PY{n}{VMean}\PY{o}{.}\PY{n}{shape}
+              
+              \PY{c}{\PYZsh{} Create R (note that this function tries to read from disk if R already exists)}
+              \PY{n}{RTrain} \PY{o}{=} \PY{n}{createRatingSet}\PY{p}{(}\PY{n}{train}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{R\PYZus{}Train.out}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+              \PY{n}{RTest} \PY{o}{=} \PY{n}{createRatingSet}\PY{p}{(}\PY{n}{test}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{m}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{,} \PY{l+s}{\PYZsq{}}\PY{l+s}{R\PYZus{}Test.out}\PY{l+s}{\PYZsq{}}\PY{p}{)}
+              \PY{k}{assert}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{RTrain}\PY{p}{)} \PY{o}{==} \PY{n+nb}{len}\PY{p}{(}\PY{n}{train}\PY{p}{)}\PY{p}{)}
+              \PY{n}{trainN} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{RTrain}\PY{p}{)}
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Training samples: \PYZob{}\PYZcb{}.}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{trainN}\PY{p}{)}
+              \PY{n}{testN} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{count\PYZus{}nonzero}\PY{p}{(}\PY{n}{RTest}\PY{p}{)}
+              \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Testing samples: \PYZob{}\PYZcb{}.}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{testN}\PY{p}{)}
+              
+              \PY{n}{train\PYZus{}mse} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{utrain\PYZus{}mse} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{train\PYZus{}avg} \PY{o}{=} \PY{l+m+mi}{0}
+              \PY{n}{test\PYZus{}mse} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{utest\PYZus{}mse} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{test\PYZus{}avg} \PY{o}{=} \PY{l+m+mi}{0}
+              \PY{k}{for} \PY{n}{epoch} \PY{o+ow}{in} \PY{n}{epochs}\PY{p}{:}
+                  \PY{c}{\PYZsh{} We DO NOT AVERAGE Us, we average the likelihood\PYZsq{}s instead}
+                  \PY{n}{UMean} \PY{o}{=} \PY{n}{Us}\PY{p}{[}\PY{n}{epoch}\PY{p}{]} 
+                  \PY{n}{VMean} \PY{o}{=} \PY{n}{Vs}\PY{p}{[}\PY{n}{epoch}\PY{p}{]}
+                  
+                  \PY{n}{predictions} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{UMean}\PY{p}{,} \PY{n}{VMean}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+                  
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Calculating MSE of training data for epoch \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{)}
+              
+                  \PY{n}{res} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{vectSub}\PY{p}{(}\PY{n}{RTrain}\PY{p}{,} \PY{n}{predictions}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{train}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{utrain\PYZus{}mse}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{res}\PY{p}{)}
+                  \PY{n}{train\PYZus{}avg} \PY{o}{=} \PY{p}{(}\PY{n}{res} \PY{o}{+} \PY{n}{epoch} \PY{o}{*} \PY{n}{train\PYZus{}avg}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+                  \PY{n}{train\PYZus{}mse}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{train\PYZus{}avg}\PY{p}{)}
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Train MSE for Epoch \PYZob{}\PYZcb{} is \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{,} \PY{n}{train\PYZus{}avg}\PY{p}{)}
+          
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Calculating MSE of testing data for epoch \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{)}
+                  \PY{n}{res} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{vectSub}\PY{p}{(}\PY{n}{RTest}\PY{p}{,} \PY{n}{predictions}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2}\PY{p}{)} \PY{o}{/} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{test}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{utest\PYZus{}mse}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{res}\PY{p}{)}
+                  \PY{n}{test\PYZus{}avg} \PY{o}{=} \PY{p}{(}\PY{n}{res} \PY{o}{+} \PY{n}{epoch} \PY{o}{*} \PY{n}{test\PYZus{}avg}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+                  \PY{n}{test\PYZus{}mse}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{test\PYZus{}avg}\PY{p}{)}
+                  \PY{k}{print} \PY{l+s}{\PYZdq{}}\PY{l+s}{Test MSE for Epoch \PYZob{}\PYZcb{} is \PYZob{}\PYZcb{}}\PY{l+s}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{epoch}\PY{p}{,} \PY{n}{test\PYZus{}avg}\PY{p}{)}
+                  
+              \PY{k}{return} \PY{p}{(}\PY{n}{test\PYZus{}mse}\PY{p}{,} \PY{n}{train\PYZus{}mse}\PY{p}{,} \PY{n}{utest\PYZus{}mse}\PY{p}{,} \PY{n}{utrain\PYZus{}mse}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}131}]:} \PY{p}{(}\PY{n}{testMSE}\PY{p}{,} \PY{n}{trainMSE}\PY{p}{,} \PY{n}{uTestMSE}\PY{p}{,} \PY{n}{uTrainMSE}\PY{p}{)} \PY{o}{=} \PY{n}{getTrainTestMSE}\PY{p}{(}\PY{n}{Us}\PY{p}{,} \PY{n}{Vs}\PY{p}{,} \PY{n}{UserToU}\PY{p}{,} \PY{n}{JokeToV}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Training samples: 100000.
+Testing samples: 84946.
+Calculating MSE of training data for epoch 0
+Train MSE for Epoch 0 is 60.28199
+Calculating MSE of testing data for epoch 0
+Test MSE for Epoch 0 is 50.36661
+Calculating MSE of training data for epoch 1
+Train MSE for Epoch 1 is 35.314775
+Calculating MSE of testing data for epoch 1
+Test MSE for Epoch 1 is 29.636775
+Calculating MSE of training data for epoch 2
+Train MSE for Epoch 2 is 26.1719533333
+Calculating MSE of testing data for epoch 2
+Test MSE for Epoch 2 is 22.79918
+Calculating MSE of training data for epoch 3
+Train MSE for Epoch 3 is 21.31422
+Calculating MSE of testing data for epoch 3
+Test MSE for Epoch 3 is 19.6236925
+Calculating MSE of training data for epoch 4
+Train MSE for Epoch 4 is 18.201528
+Calculating MSE of testing data for epoch 4
+Test MSE for Epoch 4 is 18.04438
+Calculating MSE of training data for epoch 5
+Train MSE for Epoch 5 is 16.0197783333
+Calculating MSE of testing data for epoch 5
+Test MSE for Epoch 5 is 17.2983183333
+Calculating MSE of training data for epoch 6
+Train MSE for Epoch 6 is 14.4000142857
+Calculating MSE of testing data for epoch 6
+Test MSE for Epoch 6 is 17.00144
+Calculating MSE of training data for epoch 7
+Train MSE for Epoch 7 is 13.14903625
+Calculating MSE of testing data for epoch 7
+Test MSE for Epoch 7 is 16.969575
+Calculating MSE of training data for epoch 8
+Train MSE for Epoch 8 is 12.1543188889
+Calculating MSE of testing data for epoch 8
+Test MSE for Epoch 8 is 17.0772833333
+Calculating MSE of training data for epoch 9
+Train MSE for Epoch 9 is 11.344838
+Calculating MSE of testing data for epoch 9
+Test MSE for Epoch 9 is 17.247306
+Calculating MSE of training data for epoch 10
+Train MSE for Epoch 10 is 10.6738345455
+Calculating MSE of testing data for epoch 10
+Test MSE for Epoch 10 is 17.4635027273
+Calculating MSE of training data for epoch 11
+Train MSE for Epoch 11 is 10.1068691667
+Calculating MSE of testing data for epoch 11
+Test MSE for Epoch 11 is 17.6948775
+Calculating MSE of training data for epoch 12
+Train MSE for Epoch 12 is 9.62228846154
+Calculating MSE of testing data for epoch 12
+Test MSE for Epoch 12 is 17.9175476923
+Calculating MSE of training data for epoch 13
+Train MSE for Epoch 13 is 9.20283142857
+Calculating MSE of testing data for epoch 13
+Test MSE for Epoch 13 is 18.1392692857
+Calculating MSE of training data for epoch 14
+Train MSE for Epoch 14 is 8.836106
+Calculating MSE of testing data for epoch 14
+Test MSE for Epoch 14 is 18.3524986667
+Calculating MSE of training data for epoch 15
+Train MSE for Epoch 15 is 8.512226875
+Calculating MSE of testing data for epoch 15
+Test MSE for Epoch 15 is 18.55764125
+Calculating MSE of training data for epoch 16
+Train MSE for Epoch 16 is 8.22401705882
+Calculating MSE of testing data for epoch 16
+Test MSE for Epoch 16 is 18.7532076471
+Calculating MSE of training data for epoch 17
+Train MSE for Epoch 17 is 7.96551333333
+Calculating MSE of testing data for epoch 17
+Test MSE for Epoch 17 is 18.9369844444
+Calculating MSE of training data for epoch 18
+Train MSE for Epoch 18 is 7.73249368421
+Calculating MSE of testing data for epoch 18
+Test MSE for Epoch 18 is 19.1073021053
+Calculating MSE of training data for epoch 19
+Train MSE for Epoch 19 is 7.521211
+Calculating MSE of testing data for epoch 19
+Test MSE for Epoch 19 is 19.2652295
+Calculating MSE of training data for epoch 20
+Train MSE for Epoch 20 is 7.32841761905
+Calculating MSE of testing data for epoch 20
+Test MSE for Epoch 20 is 19.4212042857
+Calculating MSE of training data for epoch 21
+Train MSE for Epoch 21 is 7.15192136364
+Calculating MSE of testing data for epoch 21
+Test MSE for Epoch 21 is 19.570145
+Calculating MSE of training data for epoch 22
+Train MSE for Epoch 22 is 6.98933391304
+Calculating MSE of testing data for epoch 22
+Test MSE for Epoch 22 is 19.7042473913
+Calculating MSE of training data for epoch 23
+Train MSE for Epoch 23 is 6.83943708333
+Calculating MSE of testing data for epoch 23
+Test MSE for Epoch 23 is 19.8277895833
+Calculating MSE of training data for epoch 24
+Train MSE for Epoch 24 is 6.7003872
+Calculating MSE of testing data for epoch 24
+Test MSE for Epoch 24 is 19.949814
+Calculating MSE of training data for epoch 25
+Train MSE for Epoch 25 is 6.57097038462
+Calculating MSE of testing data for epoch 25
+Test MSE for Epoch 25 is 20.0658126923
+Calculating MSE of training data for epoch 26
+Train MSE for Epoch 26 is 6.45021888889
+Calculating MSE of testing data for epoch 26
+Test MSE for Epoch 26 is 20.1731403704
+Calculating MSE of training data for epoch 27
+Train MSE for Epoch 27 is 6.33752285714
+Calculating MSE of testing data for epoch 27
+Test MSE for Epoch 27 is 20.2766017857
+Calculating MSE of training data for epoch 28
+Train MSE for Epoch 28 is 6.23159206897
+Calculating MSE of testing data for epoch 28
+Test MSE for Epoch 28 is 20.3745041379
+Calculating MSE of training data for epoch 29
+Train MSE for Epoch 29 is 6.13185133333
+Calculating MSE of testing data for epoch 29
+Test MSE for Epoch 29 is 20.466605
+Calculating MSE of training data for epoch 30
+Train MSE for Epoch 30 is 6.03791677419
+Calculating MSE of testing data for epoch 30
+Test MSE for Epoch 30 is 20.5559025806
+Calculating MSE of training data for epoch 31
+Train MSE for Epoch 31 is 5.949188125
+Calculating MSE of testing data for epoch 31
+Test MSE for Epoch 31 is 20.6401821875
+Calculating MSE of training data for epoch 32
+Train MSE for Epoch 32 is 5.86527757576
+Calculating MSE of testing data for epoch 32
+Test MSE for Epoch 32 is 20.7204324242
+Calculating MSE of training data for epoch 33
+Train MSE for Epoch 33 is 5.78568735294
+Calculating MSE of testing data for epoch 33
+Test MSE for Epoch 33 is 20.7956926471
+Calculating MSE of training data for epoch 34
+Train MSE for Epoch 34 is 5.71016
+Calculating MSE of testing data for epoch 34
+Test MSE for Epoch 34 is 20.8668622857
+Calculating MSE of training data for epoch 35
+Train MSE for Epoch 35 is 5.63832694444
+Calculating MSE of testing data for epoch 35
+Test MSE for Epoch 35 is 20.9360186111
+Calculating MSE of training data for epoch 36
+Train MSE for Epoch 36 is 5.56979918919
+Calculating MSE of testing data for epoch 36
+Test MSE for Epoch 36 is 20.9995308108
+Calculating MSE of training data for epoch 37
+Train MSE for Epoch 37 is 5.50451
+Calculating MSE of testing data for epoch 37
+Test MSE for Epoch 37 is 21.0619655263
+Calculating MSE of training data for epoch 38
+Train MSE for Epoch 38 is 5.44206717949
+Calculating MSE of testing data for epoch 38
+Test MSE for Epoch 38 is 21.1212228205
+Calculating MSE of training data for epoch 39
+Train MSE for Epoch 39 is 5.38242975
+Calculating MSE of testing data for epoch 39
+Test MSE for Epoch 39 is 21.17923275
+Calculating MSE of training data for epoch 40
+Train MSE for Epoch 40 is 5.32544317073
+Calculating MSE of testing data for epoch 40
+Test MSE for Epoch 40 is 21.2360614634
+Calculating MSE of training data for epoch 41
+Train MSE for Epoch 41 is 5.27070095238
+Calculating MSE of testing data for epoch 41
+Test MSE for Epoch 41 is 21.2883597619
+Calculating MSE of training data for epoch 42
+Train MSE for Epoch 42 is 5.21822139535
+Calculating MSE of testing data for epoch 42
+Test MSE for Epoch 42 is 21.3395537209
+Calculating MSE of training data for epoch 43
+Train MSE for Epoch 43 is 5.16772568182
+Calculating MSE of testing data for epoch 43
+Test MSE for Epoch 43 is 21.3899890909
+Calculating MSE of training data for epoch 44
+Train MSE for Epoch 44 is 5.11910711111
+Calculating MSE of testing data for epoch 44
+Test MSE for Epoch 44 is 21.4378488889
+Calculating MSE of training data for epoch 45
+Train MSE for Epoch 45 is 5.07230543478
+Calculating MSE of testing data for epoch 45
+Test MSE for Epoch 45 is 21.4859332609
+Calculating MSE of training data for epoch 46
+Train MSE for Epoch 46 is 5.02723191489
+Calculating MSE of testing data for epoch 46
+Test MSE for Epoch 46 is 21.5329653191
+Calculating MSE of training data for epoch 47
+Train MSE for Epoch 47 is 4.98369166667
+Calculating MSE of testing data for epoch 47
+Test MSE for Epoch 47 is 21.5773202083
+Calculating MSE of training data for epoch 48
+Train MSE for Epoch 48 is 4.94168530612
+Calculating MSE of testing data for epoch 48
+Test MSE for Epoch 48 is 21.6187459184
+Calculating MSE of training data for epoch 49
+Train MSE for Epoch 49 is 4.9010944
+Calculating MSE of testing data for epoch 49
+Test MSE for Epoch 49 is 21.6598238
+Calculating MSE of training data for epoch 50
+Train MSE for Epoch 50 is 4.86177156863
+Calculating MSE of testing data for epoch 50
+Test MSE for Epoch 50 is 21.6986545098
+Calculating MSE of training data for epoch 51
+Train MSE for Epoch 51 is 4.82373403846
+Calculating MSE of testing data for epoch 51
+Test MSE for Epoch 51 is 21.7348701923
+Calculating MSE of training data for epoch 52
+Train MSE for Epoch 52 is 4.78686
+Calculating MSE of testing data for epoch 52
+Test MSE for Epoch 52 is 21.7711579245
+Calculating MSE of training data for epoch 53
+Train MSE for Epoch 53 is 4.75116537037
+Calculating MSE of testing data for epoch 53
+Test MSE for Epoch 53 is 21.8077892593
+Calculating MSE of training data for epoch 54
+Train MSE for Epoch 54 is 4.71647072727
+Calculating MSE of testing data for epoch 54
+Test MSE for Epoch 54 is 21.8435492727
+Calculating MSE of training data for epoch 55
+Train MSE for Epoch 55 is 4.68289482143
+Calculating MSE of testing data for epoch 55
+Test MSE for Epoch 55 is 21.8785351786
+Calculating MSE of training data for epoch 56
+Train MSE for Epoch 56 is 4.65030192982
+Calculating MSE of testing data for epoch 56
+Test MSE for Epoch 56 is 21.9123966667
+Calculating MSE of training data for epoch 57
+Train MSE for Epoch 57 is 4.61860448276
+Calculating MSE of testing data for epoch 57
+Test MSE for Epoch 57 is 21.9446036207
+Calculating MSE of training data for epoch 58
+Train MSE for Epoch 58 is 4.58780355932
+Calculating MSE of testing data for epoch 58
+Test MSE for Epoch 58 is 21.9773377966
+Calculating MSE of training data for epoch 59
+Train MSE for Epoch 59 is 4.5578295
+Calculating MSE of testing data for epoch 59
+Test MSE for Epoch 59 is 22.0077383333
+Calculating MSE of training data for epoch 60
+Train MSE for Epoch 60 is 4.52874295082
+Calculating MSE of testing data for epoch 60
+Test MSE for Epoch 60 is 22.035507377
+Calculating MSE of training data for epoch 61
+Train MSE for Epoch 61 is 4.50042629032
+Calculating MSE of testing data for epoch 61
+Test MSE for Epoch 61 is 22.0646782258
+Calculating MSE of training data for epoch 62
+Train MSE for Epoch 62 is 4.47282428571
+Calculating MSE of testing data for epoch 62
+Test MSE for Epoch 62 is 22.0926722222
+Calculating MSE of training data for epoch 63
+Train MSE for Epoch 63 is 4.4459425
+Calculating MSE of testing data for epoch 63
+Test MSE for Epoch 63 is 22.1212189063
+Calculating MSE of training data for epoch 64
+Train MSE for Epoch 64 is 4.41979984615
+Calculating MSE of testing data for epoch 64
+Test MSE for Epoch 64 is 22.148774
+Calculating MSE of training data for epoch 65
+Train MSE for Epoch 65 is 4.39424212121
+Calculating MSE of testing data for epoch 65
+Test MSE for Epoch 65 is 22.1759368182
+Calculating MSE of training data for epoch 66
+Train MSE for Epoch 66 is 4.3693461194
+Calculating MSE of testing data for epoch 66
+Test MSE for Epoch 66 is 22.2014492537
+Calculating MSE of training data for epoch 67
+Train MSE for Epoch 67 is 4.34504058824
+Calculating MSE of testing data for epoch 67
+Test MSE for Epoch 67 is 22.2262507353
+Calculating MSE of training data for epoch 68
+Train MSE for Epoch 68 is 4.32128536232
+Calculating MSE of testing data for epoch 68
+Test MSE for Epoch 68 is 22.250826087
+Calculating MSE of training data for epoch 69
+Train MSE for Epoch 69 is 4.29813157143
+Calculating MSE of testing data for epoch 69
+Test MSE for Epoch 69 is 22.2733187143
+Calculating MSE of training data for epoch 70
+Train MSE for Epoch 70 is 4.27551267606
+Calculating MSE of testing data for epoch 70
+Test MSE for Epoch 70 is 22.2969398592
+Calculating MSE of training data for epoch 71
+Train MSE for Epoch 71 is 4.25335652778
+Calculating MSE of testing data for epoch 71
+Test MSE for Epoch 71 is 22.3211845833
+Calculating MSE of training data for epoch 72
+Train MSE for Epoch 72 is 4.23167876712
+Calculating MSE of testing data for epoch 72
+Test MSE for Epoch 72 is 22.3444372603
+Calculating MSE of training data for epoch 73
+Train MSE for Epoch 73 is 4.21047283784
+Calculating MSE of testing data for epoch 73
+Test MSE for Epoch 73 is 22.3662022973
+Calculating MSE of training data for epoch 74
+Train MSE for Epoch 74 is 4.18982853333
+Calculating MSE of testing data for epoch 74
+Test MSE for Epoch 74 is 22.3896648
+Calculating MSE of training data for epoch 75
+Train MSE for Epoch 75 is 4.16960671053
+Calculating MSE of testing data for epoch 75
+Test MSE for Epoch 75 is 22.4108742105
+Calculating MSE of training data for epoch 76
+Train MSE for Epoch 76 is 4.14976675325
+Calculating MSE of testing data for epoch 76
+Test MSE for Epoch 76 is 22.4326523377
+Calculating MSE of training data for epoch 77
+Train MSE for Epoch 77 is 4.13041294872
+Calculating MSE of testing data for epoch 77
+Test MSE for Epoch 77 is 22.4535694872
+Calculating MSE of training data for epoch 78
+Train MSE for Epoch 78 is 4.1114443038
+Calculating MSE of testing data for epoch 78
+Test MSE for Epoch 78 is 22.4743010127
+Calculating MSE of training data for epoch 79
+Train MSE for Epoch 79 is 4.092871625
+Calculating MSE of testing data for epoch 79
+Test MSE for Epoch 79 is 22.494873875
+Calculating MSE of training data for epoch 80
+Train MSE for Epoch 80 is 4.07462098765
+Calculating MSE of testing data for epoch 80
+Test MSE for Epoch 80 is 22.5143518519
+Calculating MSE of training data for epoch 81
+Train MSE for Epoch 81 is 4.0567297561
+Calculating MSE of testing data for epoch 81
+Test MSE for Epoch 81 is 22.5338007317
+Calculating MSE of training data for epoch 82
+Train MSE for Epoch 82 is 4.03917975904
+Calculating MSE of testing data for epoch 82
+Test MSE for Epoch 82 is 22.5521550602
+Calculating MSE of training data for epoch 83
+Train MSE for Epoch 83 is 4.02201809524
+Calculating MSE of testing data for epoch 83
+Test MSE for Epoch 83 is 22.5706197619
+Calculating MSE of training data for epoch 84
+Train MSE for Epoch 84 is 4.00514964706
+Calculating MSE of testing data for epoch 84
+Test MSE for Epoch 84 is 22.5888998824
+Calculating MSE of training data for epoch 85
+Train MSE for Epoch 85 is 3.98858953488
+Calculating MSE of testing data for epoch 85
+Test MSE for Epoch 85 is 22.6073744186
+Calculating MSE of training data for epoch 86
+Train MSE for Epoch 86 is 3.97231712644
+Calculating MSE of testing data for epoch 86
+Test MSE for Epoch 86 is 22.6247463218
+Calculating MSE of training data for epoch 87
+Train MSE for Epoch 87 is 3.95638511364
+Calculating MSE of testing data for epoch 87
+Test MSE for Epoch 87 is 22.6424639773
+Calculating MSE of training data for epoch 88
+Train MSE for Epoch 88 is 3.94075438202
+Calculating MSE of testing data for epoch 88
+Test MSE for Epoch 88 is 22.6596975281
+Calculating MSE of training data for epoch 89
+Train MSE for Epoch 89 is 3.92540266667
+Calculating MSE of testing data for epoch 89
+Test MSE for Epoch 89 is 22.6757957778
+Calculating MSE of training data for epoch 90
+Train MSE for Epoch 90 is 3.91027901099
+Calculating MSE of testing data for epoch 90
+Test MSE for Epoch 90 is 22.6923040659
+Calculating MSE of training data for epoch 91
+Train MSE for Epoch 91 is 3.89542358696
+Calculating MSE of testing data for epoch 91
+Test MSE for Epoch 91 is 22.7088054348
+Calculating MSE of training data for epoch 92
+Train MSE for Epoch 92 is 3.88083010753
+Calculating MSE of testing data for epoch 92
+Test MSE for Epoch 92 is 22.7255315054
+Calculating MSE of training data for epoch 93
+Train MSE for Epoch 93 is 3.86649861702
+Calculating MSE of testing data for epoch 93
+Test MSE for Epoch 93 is 22.7414767021
+Calculating MSE of training data for epoch 94
+Train MSE for Epoch 94 is 3.85239821053
+Calculating MSE of testing data for epoch 94
+Test MSE for Epoch 94 is 22.7570566316
+Calculating MSE of training data for epoch 95
+Train MSE for Epoch 95 is 3.83853479167
+Calculating MSE of testing data for epoch 95
+Test MSE for Epoch 95 is 22.7720353125
+Calculating MSE of training data for epoch 96
+Train MSE for Epoch 96 is 3.82488597938
+Calculating MSE of testing data for epoch 96
+Test MSE for Epoch 96 is 22.7855207216
+Calculating MSE of training data for epoch 97
+Train MSE for Epoch 97 is 3.81145673469
+Calculating MSE of testing data for epoch 97
+Test MSE for Epoch 97 is 22.7998835714
+Calculating MSE of training data for epoch 98
+Train MSE for Epoch 98 is 3.79824666667
+Calculating MSE of testing data for epoch 98
+Test MSE for Epoch 98 is 22.8143035354
+Calculating MSE of training data for epoch 99
+Train MSE for Epoch 99 is 3.7852845
+Calculating MSE of testing data for epoch 99
+Test MSE for Epoch 99 is 22.828841
+Calculating MSE of training data for epoch 100
+Train MSE for Epoch 100 is 3.77249455446
+Calculating MSE of testing data for epoch 100
+Test MSE for Epoch 100 is 22.8437472277
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}133}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{,} \PY{n}{testMSE}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Test Data (Averaged)}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{,} \PY{n}{trainMSE}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Train Data (Averaged)}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{,} \PY{n}{uTestMSE}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Test Data}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{101}\PY{p}{)}\PY{p}{,} \PY{n}{uTrainMSE}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s}{\PYZsq{}}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s}{\PYZdq{}}\PY{l+s}{Train Data}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{MSE of Test and Training Data (Averaged and Unaveraged)}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Epoch}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Mean Squared Error}\PY{l+s}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}133}]:} <matplotlib.legend.Legend at 0x7f66b0ef1250>
+\end{Verbatim}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}134}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

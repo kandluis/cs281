@@ -103,4 +103,8 @@ target/
 
 # iPython notebook
 code/assignment1/.ipynb_checkpoints/*
+code/assignment2/.ipynb_checkpoints/*
+code/assignment3/.ipynb_checkpoints/*
+code/assignment4/.ipynb_checkpoints/*
+*.txt
 *.dat
